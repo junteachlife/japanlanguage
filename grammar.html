@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第三階段：JLPT N5 核心文法與老師解說網</title>
+    <style>
+        :root {
+            --primary-color: #00796b;
+            --bg-color: #e0f2f1;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background-color: #b2dfdb;
+            color: #004d40;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+
+        /* 文法卡片樣式 */
+        .grammar-card {
+            background: #f1f8e9;
+            border-left: 6px solid #689f38;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        .grammar-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #33691e;
+            margin-bottom: 8px;
+        }
+        .grammar-desc {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .example-box {
+            background: #ffffff;
+            border: 1px solid #c5e1a5;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .example-box:hover {
+            background: #f9fbe7;
+        }
+        .ex-jp {
+            font-size: 17px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .ex-zh {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .teacher-note {
+            background: #fffde7;
+            border: 1px dashed #fbc02d;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #f57f17;
+        }
+
+        /* 測驗區樣式 */
+        .quiz-box {
+            text-align: center;
+        }
+        .quiz-question {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary-color);
+            line-height: 1.5;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .option-btn {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #b2dfdb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .option-btn:hover {
+            background: #e0f2f1;
+            border-color: #00796b;
+        }
+        .score-board {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            font-size: 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🌱 第三階段：JLPT N5 核心文法與老師解說</h1>
+        <p>系統化掌握 N5 必備助詞、動詞與形容詞句型，告別死背！</p>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('grammar')">📖 核心文法導覽</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">✍️ 文法克漏字測驗</button>
+    </div>
+
+    <div class="container">
+        <!-- 第一部分：文法總表導覽 -->
+        <div id="grammar-section" class="section active">
+            <h3>點擊例句即可聆聽標準日語發音：</h3>
+            <div id="grammarContainer"></div>
+        </div>
+
+        <!-- 第二部分：文法測驗區 -->
+        <div id="quiz-section" class="section">
+            <div class="quiz-box">
+                <div class="score-board">目前得分：<span id="score">0</span> 分</div>
+                <div id="quizPrompt" style="font-size: 16px; color: #666;">請選出最適當的文法助詞或答案：</div>
+                <div class="quiz-question" id="quizQuestion"></div>
+                <div class="options-grid" id="optionsGrid"></div>
+                <div class="feedback" id="feedback"></div>
+                <button class="next-btn" id="nextBtn" onclick="nextQuizQuestion()">下一題</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // N5 核心文法資料庫
+        const grammarData = [
+            {
+                title: "1. 主題提示助詞「は (wa)」",
+                desc: "用來標示一句話的主題（也就是「關於……」）。注意寫成「は」，但發音要念作「wa」。",
+                note: "💡 老師解說：把它想成中文的「至於……」或「說到……」，是用來把對話焦點鎖定在某個主體上。",
+                examples: [
+                    { jp: "私は学生です。", read: "わたしはがくせいです", zh: "我是學生。" },
+                    { jp: "今日は日曜日です。", read: "きょうはにちようびです", zh: "今天是星期日。" }
+                ]
+            },
+            {
+                title: "2. 主格助詞「が (ga)」",
+                desc: "用來強調「真正的主體」或在疑問詞（誰、什麼）前面指出具體的人事物。",
+                note: "💡 老師解說：「は」是舊話題或大主題，「が」則是新資訊或強調「是『誰/什麼』做了這件事」。",
+                examples: [
+                    { jp: "雨が降っています。", read: "あめがふっています", zh: "正在下雨。" },
+                    { jp: "誰が来ましたか。", read: "だれがきましたか", zh: "誰來了？" }
+                ]
+            },
+            {
+                title: "3. 受詞助詞「を (o/wo)」",
+                desc: "用在動作的對象（受詞）後面，表示這個動作直接作用在什麼東西上面。",
+                note: "💡 老師解說：吃『什麼』、喝『什麼』、看『什麼』，那個『什麼』後面就要加「を」。",
+                examples: [
+                    { jp: "りんごを食べます。", read: "りんごをたべます", zh: "吃蘋果。" },
+                    { jp: "日本語を勉強します。", read: "にほんごをべんきょうします", zh: "學習日文。" }
+                ]
+            },
+            {
+                title: "4. 移動與停留場所助詞「に (ni)」",
+                desc: "表示移動行為的目的地（去哪裡），或是動作發生的時間點、存在的場所。",
+                note: "💡 老師解說：當動詞是「行く（去）」、「来る（來）」、「帰る（回）」時，目的地後面接「に」或「へ」都可以。",
+                examples: [
+                    { jp: "学校に行きます。", read: "がっこうにいきます", zh: "去學校。" },
+                    { jp: "6時に起きます。", read: "ろくじにおきます", zh: "6點起床。" }
+                ]
+            },
+            {
+                title: "5. 工具與發生場所助詞「で (de)」",
+                desc: "表示進行某個動作時所使用的「工具/手段」，或是動作發生的「場所（餐廳、學校、圖書館等）」。",
+                note: "💡 老師解說：用筆寫（ペンで書く）、在圖書館讀書（図書館で勉強する），有「手段」或「範圍場所」的感覺就用「で」。",
+                examples: [
+                    { jp: "バスで会社に行きます。", read: "ばすでかいしゃにいきます", zh: "搭公車去公司。" },
+                    { jp: "図書館で本を読みます。", read: "としょかんでほんをよみます", zh: "在圖書館看書。" }
+                ]
+            }
+        ];
+
+        // 語音播放
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // 渲染文法導覽頁面
+        const container = document.getElementById('grammarContainer');
+        grammarData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'grammar-card';
+            
+            let exHtml = '';
+            item.examples.forEach(ex => {
+                exHtml += `
+                    <div class="example-box" onclick="speak('${ex.read}')">
+                        <div class="ex-jp">🔊 ${ex.jp}</div>
+                        <div class="ex-zh">${ex.zh}</div>
+                    </div>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="grammar-title">${item.title}</div>
+                <div class="grammar-desc">${item.desc}</div>
+                <div class="teacher-note">${item.note}</div>
+                ${exHtml}
+            `;
+            container.appendChild(card);
+        });
+
+        // 切換頁籤
+        function switchTab(tabName) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (tabName === 'grammar') {
+                document.getElementById('grammar-section').classList.add('active');
+                event.target.classList.add('active');
+            } else {
+                document.getElementById('quiz-section').classList.add('active');
+                event.target.classList.add('active');
+                nextQuizQuestion();
+            }
+        }
+
+        // 測驗題庫
+        const quizQuestions = [
+            { q: "私 (　　) 学生です。", correct: "は", options: ["は", "を", "に", "で"], hint: "標示主題「我」" },
+            { q: "りんご (　　) 食べます。", correct: "を", options: ["は", "を", "が", "で"], hint: "標示動作的受詞「蘋果」" },
+            { q: "学校 (　　) 行きます。", correct: "に", options: ["を", "に", "と", "の"], hint: "標示移動目的地「學校」" },
+            { q: "図書館 (　　) 本を読みます。", correct: "で", options: ["に", "を", "で", "は"], hint: "標示動作發生的場所「圖書館」" },
+            { q: "バス (　　) 会社に行きます。", correct: "で", options: ["に", "を", "で", "が"], hint: "標示交通工具/手段「公車」" }
+        ];
+
+        let currentScore = 0;
+        let currentQuizIndex = 0;
+        let activeQuiz = {};
+
+        function nextQuizQuestion() {
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('nextBtn').style.display = 'none';
+
+            activeQuiz = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+
+            document.getElementById('quizQuestion').innerHTML = `填入適當的助詞：<br><span style="color:#00796b;">${activeQuiz.q}</span><br><span style="font-size:14px; color:#666;">💡 提示：${activeQuiz.hint}</span>`;
+
+            let options = [...activeQuiz.options];
+            options.sort(() => Math.random() - 0.5);
+
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(opt, btn, activeQuiz.correct);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedOption, btnElement, correctAns) {
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            const feedback = document.getElementById('feedback');
+            if (selectedOption === correctAns) {
+                feedback.style.color = '#00796b';
+                feedback.innerText = '⭕ 答對了！文法觀念很清楚！';
+                currentScore += 10;
+                document.getElementById('score').innerText = currentScore;
+                btnElement.style.background = '#b2dfdb';
+            } else {
+                feedback.style.color = '#d32f2f';
+                feedback.innerText = `❌ 答錯囉！正確答案是：【 ${correctAns} 】`;
+                btnElement.style.background = '#ffebee';
+                allBtns.forEach(b => {
+                    if (b.innerText === correctAns) {
+                        b.style.background = '#b2dfdb';
+                    }
+                });
+            }
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
+
