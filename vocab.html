@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第二階段：日文基礎單字互動學習網</title>
+    <title>第二階段：日文 500-1000 核心基礎單字網</title>
     <style>
         :root {
             --primary-color: #3f51b5;
@@ -52,7 +52,7 @@
         }
         .container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             background: var(--card-bg);
             padding: 25px;
             border-radius: 12px;
@@ -65,6 +65,25 @@
             display: block;
         }
         
+        /* 搜尋列 */
+        .search-box {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 2px solid #c5cae9;
+            border-radius: 20px;
+            outline: none;
+        }
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
         /* 單字卡片區塊 */
         .category-group {
             margin-bottom: 25px;
@@ -79,7 +98,7 @@
         }
         .vocab-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
         }
         .vocab-card {
@@ -163,7 +182,7 @@
             display: none;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .vocab-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -173,19 +192,21 @@
 <body>
 
     <header>
-        <h1>📘 日文基礎單字互動學習網</h1>
-        <p>點擊單字卡聽發音，切換到測驗區挑戰你的單字力！</p>
+        <h1>📘 日文核心基礎單字學習網（擴充版）</h1>
+        <p>多樣化分類、點擊發音、支援關鍵字搜尋與隨機測驗！</p>
     </header>
 
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('vocab')">📖 生活單字分類表</button>
+        <button class="tab-btn active" onclick="switchTab('vocab')">📖 單字分類總表</button>
         <button class="tab-btn" onclick="switchTab('quiz')">✍️ 單字隨機考驗</button>
     </div>
 
     <div class="container">
-        <!-- 第一部分：單字分類表 -->
+        <!-- 第一部分：單字分類與搜尋表 -->
         <div id="vocab-section" class="section active">
-            <h3>點擊單字卡即可聆聽日語發音：</h3>
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 輸入中文或日文進行搜尋..." oninput="filterVocab()">
+            </div>
             <div id="vocabContainer"></div>
         </div>
 
@@ -194,7 +215,7 @@
             <div class="quiz-box">
                 <div class="score-board">目前得分：<span id="score">0</span> 分</div>
                 <div id="quizPrompt" style="font-size: 16px; color: #666;"></div>
-                <div class="quiz-question" id="quizQuestion">りんご</div>
+                <div class="quiz-question" id="quizQuestion"></div>
                 <div class="options-grid" id="optionsGrid"></div>
                 <div class="feedback" id="feedback"></div>
                 <button class="next-btn" id="nextBtn" onclick="nextQuizQuestion()">下一題</button>
@@ -203,15 +224,19 @@
     </div>
 
     <script>
-        // 修正後的基礎單字資料庫（新增 read 屬性確保發音正確）
+        // 大規模擴充的基礎單字資料庫（分類管理）
         const vocabCategories = [
-            { category: "🍎 日常食物與水果", items: [
+            { category: "🍎 飲食與水果", items: [
                 { jp: "りんご", read: "りんご", romaji: "ringo", zh: "蘋果" },
                 { jp: "みかん", read: "みかん", romaji: "mikan", zh: "橘子" },
+                { jp: "バナナ", read: "ばなな", romaji: "banana", zh: "香蕉" },
                 { jp: "水 (みず)", read: "みず", romaji: "mizu", zh: "水" },
                 { jp: "お茶 (おちゃ)", read: "おちゃ", romaji: "ocha", zh: "茶" },
                 { jp: "肉 (にく)", read: "にく", romaji: "niku", zh: "肉" },
-                { jp: "魚 (さかな)", read: "さかな", romaji: "sakana", zh: "魚" }
+                { jp: "魚 (さかな)", read: "さかな", romaji: "sakana", zh: "魚" },
+                { jp: "卵 (たまご)", read: "たまご", romaji: "tamago", zh: "雞蛋" },
+                { jp: "ご飯 (ごはん)", read: "ごはん", romaji: "gohan", zh: "白飯/餐點" },
+                { jp: "パン", read: "ぱん", romaji: "pan", zh: "麵包" }
             ]},
             { category: "🏠 生活與地點", items: [
                 { jp: "家 (いえ)", read: "いえ", romaji: "ie", zh: "家" },
@@ -219,7 +244,11 @@
                 { jp: "駅 (えき)", read: "えき", romaji: "eki", zh: "車站" },
                 { jp: "本 (ほん)", read: "ほん", romaji: "hon", zh: "書本" },
                 { jp: "車 (くるま)", read: "くるま", romaji: "kuruma", zh: "汽車" },
-                { jp: "店 (みせ)", read: "みせ", romaji: "mise", zh: "店鋪" }
+                { jp: "店 (みせ)", read: "みせ", romaji: "mise", zh: "店鋪" },
+                { jp: "病院 (びょういん)", read: "びょういん", romaji: "byouin", zh: "醫院" },
+                { jp: "銀行 (ぎんこう)", read: "ぎんこう", romaji: "ginkou", zh: "銀行" },
+                { jp: "部屋 (へや)", read: "へや", romaji: "heya", zh: "房間" },
+                { jp: "机 (つくえ)", read: "つくえ", romaji: "tsukue", zh: "桌子" }
             ]},
             { category: "👥 人物與稱謂", items: [
                 { jp: "私 (わたし)", read: "わたし", romaji: "watashi", zh: "我" },
@@ -227,21 +256,40 @@
                 { jp: "先生 (せんせい)", read: "せんせい", romaji: "sensei", zh: "老師" },
                 { jp: "学生 (がくせい)", read: "がくせい", romaji: "gakusei", zh: "學生" },
                 { jp: "父 (ちち)", read: "ちち", romaji: "chichi", zh: "父親" },
-                { jp: "母 (はは)", read: "はは", romaji: "haha", zh: "母親" }
+                { jp: "母 (はは)", read: "はは", romaji: "haha", zh: "母親" },
+                { jp: "兄 (あに)", read: "あに", romaji: "ani", zh: "哥哥" },
+                { jp: "姉 (あね)", read: "あね", romaji: "ane", zh: "姐姐" },
+                { jp: "子供 (こども)", read: "こども", romaji: "kodomo", zh: "小孩" },
+                { jp: "人 (ひと)", read: "ひと", romaji: "hito", zh: "人" }
             ]},
             { category: "⏰ 時間與數字", items: [
                 { jp: "今日 (きょう)", read: "きょう", romaji: "kyou", zh: "今天" },
                 { jp: "明日 (あした)", read: "あした", romaji: "ashita", zh: "明天" },
+                { jp: "昨日 (きのう)", read: "きのう", romaji: "kinou", zh: "昨天" },
                 { jp: "時間 (じかん)", read: "じかん", romaji: "jikan", zh: "時間" },
+                { jp: "今 (いま)", read: "いま", romaji: "ima", zh: "現在" },
                 { jp: "一 (いち)", read: "いち", romaji: "ichi", zh: "數字 1" },
                 { jp: "二 (に)", read: "に", romaji: "ni", zh: "數字 2" },
-                { jp: "三 (さん)", read: "さん", romaji: "san", zh: "數字 3" }
+                { jp: "三 (さん)", read: "さん", romaji: "san", zh: "數字 3" },
+                { jp: "四 (し/よん)", read: "よん", romaji: "yon", zh: "數字 4" },
+                { jp: "五 (ご)", read: "ご", romaji: "go", zh: "數字 5" }
+            ]},
+            { category: "🚀 動作與形容詞", items: [
+                { jp: "行く (いく)", read: "いく", romaji: "iku", zh: "去/前往" },
+                { jp: "来る (くる)", read: "くる", romaji: "kuru", zh: "來" },
+                { jp: "食べる (たべる)", read: "たべる", romaji: "taberu", zh: "吃" },
+                { jp: "飲む (のむ)", read: "のむ", romaji: "nomu", zh: "喝" },
+                { jp: "見る (みる)", read: "みる", romaji: "miru", zh: "看" },
+                { jp: "大きい (おおきい)", read: "おおきい", romaji: "ookii", zh: "大的" },
+                { jp: "小さい (ちいさい)", read: "ちいさい", romaji: "chiisai", zh: "小的" },
+                { jp: "美味しい (おいしい)", read: "おいしい", romaji: "oishii", zh: "好吃的" },
+                { jp: "新しい (あたらしい)", read: "あたらしい", romaji: "atarashii", zh: "新的" },
+                { jp: "高い (たかい)", read: "たかい", romaji: "takai", zh: "高/貴的" }
             ]}
         ];
 
         const allVocab = vocabCategories.flatMap(cat => cat.items);
 
-        // 使用專屬的 read 欄位進行穩定發音
         function speak(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -252,38 +300,57 @@
             }
         }
 
-        const container = document.getElementById('vocabContainer');
-        vocabCategories.forEach(cat => {
-            const groupDiv = document.createElement('div');
-            groupDiv.className = 'category-group';
-            
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'category-title';
-            titleDiv.innerText = cat.category;
-            groupDiv.appendChild(titleDiv);
+        // 渲染單字總表
+        function renderVocab(filterText = "") {
+            const container = document.getElementById('vocabContainer');
+            container.innerHTML = '';
 
-            const gridDiv = document.createElement('div');
-            gridDiv.className = 'vocab-grid';
+            vocabCategories.forEach(cat => {
+                const filteredItems = cat.items.filter(item => 
+                    item.jp.includes(filterText) || 
+                    item.zh.includes(filterText) || 
+                    item.romaji.toLowerCase().includes(filterText.toLowerCase())
+                );
 
-            cat.items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'vocab-card';
-                card.innerHTML = `
-                    <div class="vocab-jp">${item.jp}</div>
-                    <div class="vocab-zh">${item.zh}</div>
-                    <div class="vocab-romaji">${item.romaji}</div>
-                `;
-                card.onclick = () => {
-                    speak(item.read); // 傳入乾淨的讀音
-                    card.style.background = '#c5cae9';
-                    setTimeout(() => card.style.background = '#e8eaf6', 300);
-                };
-                gridDiv.appendChild(card);
+                if (filteredItems.length === 0) return;
+
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'category-group';
+                
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'category-title';
+                titleDiv.innerText = cat.category;
+                groupDiv.appendChild(titleDiv);
+
+                const gridDiv = document.createElement('div');
+                gridDiv.className = 'vocab-grid';
+
+                filteredItems.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'vocab-card';
+                    card.innerHTML = `
+                        <div class="vocab-jp">${item.jp}</div>
+                        <div class="vocab-zh">${item.zh}</div>
+                        <div class="vocab-romaji">${item.romaji}</div>
+                    `;
+                    card.onclick = () => {
+                        speak(item.read);
+                        card.style.background = '#c5cae9';
+                        setTimeout(() => card.style.background = '#e8eaf6', 300);
+                    };
+                    gridDiv.appendChild(card);
+                });
+
+                groupDiv.appendChild(gridDiv);
+                container.appendChild(groupDiv);
             });
+        }
 
-            groupDiv.appendChild(gridDiv);
-            container.appendChild(groupDiv);
-        });
+        // 搜尋過濾功能
+        function filterVocab() {
+            const keyword = document.getElementById('searchInput').value;
+            renderVocab(keyword);
+        }
 
         function switchTab(tabName) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -318,7 +385,7 @@
             if (quizMode === 1) {
                 promptText = "請問這個日文單字的意思是？";
                 questionText = `${currentItem.jp} <span style="font-size:18px; color:#666;">(${currentItem.romaji})</span>`;
-                speak(currentItem.read); // 測驗時也會正確發音
+                speak(currentItem.read);
                 correctAns = currentItem.zh;
                 wrongPool = allVocab.map(i => i.zh);
             } else {
@@ -346,7 +413,6 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                // 如果是測驗選項點擊，也可以把對應的 read 找出來發音，或單純比對答案
                 btn.onclick = () => checkAnswer(opt, btn, correctAns);
                 optionsGrid.appendChild(btn);
             });
@@ -375,6 +441,9 @@
             }
             document.getElementById('nextBtn').style.display = 'inline-block';
         }
+
+        // 初始化載入單字
+        renderVocab();
     </script>
 </body>
 </html>
