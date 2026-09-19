@@ -1200,4 +1200,272 @@ function clearWrongWords(){
 }
 
 function shuffle(array){
-    const a
+    const a=[...array];
+
+    for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+    }
+
+    return a;
+}
+
+function startQuiz(){
+    score=0;
+    correctCount=0;
+    wrongCount=0;
+    lastQuizUid=null;
+
+    updateQuizScore();
+    nextQuestion();
+}
+
+function updateQuizScore(){
+    document.getElementById("score").textContent=score;
+    document.getElementById("correctCount").textContent=correctCount;
+    document.getElementById("wrongCount").textContent=wrongCount;
+}
+
+function nextQuestion(){
+
+    document.getElementById("feedback").innerHTML="";
+    document.getElementById("quizExample").style.display="none";
+    document.getElementById("quizExample").innerHTML="";
+    document.getElementById("nextBtn").style.display="none";
+    document.getElementById("listenButtonArea").innerHTML="";
+
+    const level=document.getElementById("quizLevel").value;
+
+    let pool=allVocab.filter(
+        x=>level==="ALL" || x.level===level
+    );
+
+    if(pool.length<4){
+        document.getElementById("quizPrompt").textContent=
+            "目前這個級別的單字不足 4 個，無法產生測驗。";
+        return;
+    }
+
+    let candidatePool=pool.filter(
+        x=>x.uid!==lastQuizUid
+    );
+
+    if(!candidatePool.length) candidatePool=pool;
+
+    currentQuizItem=
+        candidatePool[
+            Math.floor(Math.random()*candidatePool.length)
+        ];
+
+    lastQuizUid=currentQuizItem.uid;
+
+    let mode=document.getElementById("quizMode").value;
+
+    if(mode==="random"){
+        const modes=["jpZh","zhJp","reading","listening"];
+        mode=modes[Math.floor(Math.random()*modes.length)];
+    }
+
+    currentQuizMode=mode;
+
+    let prompt="";
+    let question="";
+    let read="";
+    let correct="";
+    let wrongPool=[];
+
+    if(mode==="jpZh"){
+        prompt="這個日文單字的中文意思是？";
+        question=currentQuizItem.jp;
+        read=currentQuizItem.read;
+        correct=currentQuizItem.zh;
+        wrongPool=pool.map(x=>x.zh);
+    }
+
+    if(mode==="zhJp"){
+        prompt="這個中文意思對應哪一個日文單字？";
+        question=currentQuizItem.zh;
+        correct=currentQuizItem.jp;
+        wrongPool=pool.map(x=>x.jp);
+    }
+
+    if(mode==="reading"){
+        prompt="請選出這個單字的正確讀音。";
+        question=currentQuizItem.jp;
+        correct=currentQuizItem.read;
+        wrongPool=pool.map(x=>x.read);
+    }
+
+    if(mode==="listening"){
+        prompt="🔊 聽發音後，選出正確的日文單字。";
+        question="🎧 聽力題";
+        correct=currentQuizItem.jp;
+        wrongPool=pool.map(x=>x.jp);
+
+        document.getElementById("listenButtonArea").innerHTML=`
+            <button class="audio-btn" onclick="playQuizAudio(.9)">
+                🔊 再聽一次
+            </button>
+            <button class="audio-btn" onclick="playQuizAudio(.7)">
+                🐢 慢速
+            </button>
+        `;
+
+        setTimeout(()=>playQuizAudio(.9),250);
+    }
+
+    currentCorrectAnswer=correct;
+
+    document.getElementById("quizPrompt").textContent=prompt;
+    document.getElementById("quizQuestion").textContent=question;
+    document.getElementById("quizRead").textContent=read;
+
+    const uniqueWrong=[
+        ...new Set(
+            wrongPool.filter(x=>x!==correct)
+        )
+    ];
+
+    const options=[
+        correct,
+        ...shuffle(uniqueWrong).slice(0,3)
+    ];
+
+    renderOptions(shuffle(options));
+}
+
+function playQuizAudio(rate=.9){
+    if(currentQuizItem){
+        speak(
+            currentQuizItem.read ||
+            currentQuizItem.jp,
+            rate
+        );
+    }
+}
+
+function renderOptions(options){
+    const grid=document.getElementById("optionsGrid");
+    grid.innerHTML="";
+
+    options.forEach(option=>{
+        const btn=document.createElement("button");
+        btn.className="option";
+        btn.textContent=option;
+
+        btn.onclick=()=>checkAnswer(
+            option,
+            btn
+        );
+
+        grid.appendChild(btn);
+    });
+}
+
+function checkAnswer(selected,button){
+    const buttons=document.querySelectorAll(".option");
+
+    buttons.forEach(b=>b.disabled=true);
+
+    const feedback=document.getElementById("feedback");
+
+    if(selected===currentCorrectAnswer){
+
+        score+=10;
+        correctCount++;
+
+        button.style.background="#dcedc8";
+        button.style.borderColor="#7cb342";
+
+        feedback.style.color="#2e7d32";
+        feedback.innerHTML="⭕ 答對了！";
+
+    }else{
+
+        wrongCount++;
+
+        button.style.background="#ffcdd2";
+        button.style.borderColor="#e57373";
+
+        buttons.forEach(b=>{
+            if(b.textContent===currentCorrectAnswer){
+                b.style.background="#dcedc8";
+                b.style.borderColor="#7cb342";
+            }
+        });
+
+        feedback.style.color="#c62828";
+        feedback.innerHTML=
+            `❌ 答錯了。正確答案：${currentCorrectAnswer}`;
+
+        const wrong=getWrongWords();
+
+        if(!wrong.includes(currentQuizItem.uid)){
+            wrong.push(currentQuizItem.uid);
+            saveWrongWords(wrong);
+        }
+    }
+
+    updateQuizScore();
+
+    const example=document.getElementById("quizExample");
+
+    example.innerHTML=`
+        <strong>
+            ${currentQuizItem.jp}
+            （${currentQuizItem.read}）
+        </strong>
+        <br>
+        ${currentQuizItem.zh}
+        <hr style="border:0;border-top:1px solid #ddd;">
+        ${currentQuizItem.stJp}
+        <br>
+        <span style="color:#777;">
+            ${currentQuizItem.stRead || ""}
+        </span>
+        <br>
+        ${currentQuizItem.stZh}
+        <br><br>
+        <button class="audio-btn" onclick="speakQuizExample()">
+            🔊 聽例句
+        </button>
+    `;
+
+    example.style.display="block";
+
+    document.getElementById("nextBtn").style.display="inline-block";
+}
+
+function speakQuizExample(){
+    if(currentQuizItem){
+        speak(
+            currentQuizItem.stRead ||
+            currentQuizItem.stJp,
+            .9
+        );
+    }
+}
+
+window.addEventListener("click",event=>{
+    if(event.target===document.getElementById("wordModal")){
+        closeModal();
+    }
+});
+
+document.addEventListener("keydown",event=>{
+    if(event.key==="Escape") closeModal();
+});
+
+function initialize(){
+    document.getElementById("romajiToggle").textContent=
+        `羅馬字：${showRomaji ? "顯示" : "隱藏"}`;
+
+    updateDashboard();
+    renderCategories();
+}
+
+initialize();
+</script>
+
+</body>
+</html>
