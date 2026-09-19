@@ -1,531 +1,1203 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第二階段：JLPT N5 核心單字圖卡網</title>
-    <style>
-        :root {
-            --primary-color: #3f51b5;
-            --bg-color: #f0f2f5;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .tab-btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            background-color: #e0e0e0;
-            color: #333;
-            transition: 0.3s;
-        }
-        .tab-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .container {
-            width: 100%;
-            max-width: 1150px;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .section {
-            display: none;
-        }
-        .section.active {
-            display: block;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JLPT N5・N4 核心單字學習中心</title>
 
-        /* 主題分類大卡片 */
-        .category-menu-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        .category-menu-card {
-            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
-            border: 2px solid #9fa8da;
-            border-radius: 12px;
-            padding: 25px 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .category-menu-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(63, 81, 181, 0.2);
-        }
-        .menu-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-        .menu-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #1a237e;
-        }
-        .menu-count {
-            font-size: 13px;
-            color: #555;
-            margin-top: 5px;
-        }
+<style>
+:root{
+    --primary:#3f51b5;
+    --primary-dark:#283593;
+    --n5:#2e7d32;
+    --n4:#ef6c00;
+    --bg:#f4f6fb;
+    --card:#fff;
+    --text:#263238;
+    --muted:#687078;
+    --border:#e1e5ee;
+    --danger:#d32f2f;
+    --warning:#f9a825;
+    --success:#2e7d32;
+}
 
-        /* 子單字列表畫面 */
-        .back-btn {
-            background-color: #757575;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-bottom: 20px;
-            transition: 0.2s;
-        }
-        .back-btn:hover {
-            background-color: #616161;
-        }
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-        .vocab-card {
-            background: #fafafa;
-            border: 2px solid #c5cae9;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-        }
-        .vocab-card:hover {
-            background: #e8eaf6;
-            transform: translateY(-3px);
-        }
-        .vocab-jp {
-            font-size: 17px;
-            font-weight: bold;
-            color: #1a237e;
-        }
-        .vocab-zh {
-            font-size: 14px;
-            color: #333;
-            margin-top: 4px;
-        }
-        .vocab-romaji {
-            font-size: 12px;
-            color: #666;
-            margin-top: 2px;
-        }
+*{box-sizing:border-box}
 
-        /* 彈跳視窗 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #888;
-        }
-        .close-btn:hover {
-            color: #000;
-        }
-        .modal-word {
-            font-size: 28px;
-            font-weight: bold;
-            color: #3f51b5;
-        }
-        .modal-romaji {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-        }
-        .modal-zh {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2e7d32;
-            margin-top: 10px;
-        }
-        .sentence-box {
-            background: #f1f8e9;
-            border-left: 4px solid #8bc34a;
-            padding: 12px;
-            border-radius: 6px;
-            margin-top: 20px;
-            text-align: left;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .sentence-box:hover {
-            background: #e8f5e9;
-        }
-        .st-jp {
-            font-size: 16px;
-            font-weight: bold;
-            color: #1b5e20;
-        }
-        .st-zh {
-            font-size: 14px;
-            color: #555;
-            margin-top: 4px;
-        }
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+    "Noto Sans TC","Noto Sans JP",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
 
-        /* 測驗區樣式 */
-        .quiz-box {
-            text-align: center;
-        }
-        .quiz-question {
-            font-size: 36px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: var(--primary-color);
-        }
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .option-btn {
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .option-btn:hover {
-            background: #f0f0f0;
-            border-color: #bbb;
-        }
-        .score-board {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #555;
-        }
-        .feedback {
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .next-btn {
-            margin-top: 20px;
-            padding: 10px 25px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
+.topbar{
+    background:linear-gradient(135deg,#283593,#3f51b5,#5c6bc0);
+    color:white;
+    padding:28px 20px 32px;
+}
 
-        @media (max-width: 768px) {
-            .category-menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .vocab-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
-    <!-- 引入獨立的完整單字資料庫 -->
-    <script src="js/vocab-data.js"></script>
+.top-inner{
+    max-width:1200px;
+    margin:auto;
+}
+
+.home-link{
+    color:white;
+    text-decoration:none;
+    font-weight:700;
+    display:inline-block;
+    margin-bottom:16px;
+}
+
+h1{
+    margin:0 0 8px;
+    font-size:32px;
+}
+
+.subtitle{
+    margin:0;
+    opacity:.92;
+    line-height:1.7;
+}
+
+.wrapper{
+    max-width:1200px;
+    margin:24px auto;
+    padding:0 16px 40px;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.stat-number{
+    font-size:27px;
+    font-weight:800;
+    margin-top:5px;
+    color:var(--primary);
+}
+
+.progress-wrap{
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:20px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+}
+
+.progress-row{
+    display:grid;
+    grid-template-columns:80px 1fr 80px;
+    gap:12px;
+    align-items:center;
+    margin:10px 0;
+}
+
+.progress-bg{
+    height:12px;
+    background:#e9ecf4;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#3f51b5,#7986cb);
+    transition:.3s;
+}
+
+.nav-tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.tab-btn{
+    border:0;
+    background:#e4e7ef;
+    padding:11px 18px;
+    border-radius:25px;
+    font-size:15px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.tab-btn.active{
+    background:var(--primary);
+    color:white;
+}
+
+.panel{
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+}
+
+.section{display:none}
+.section.active{display:block}
+
+.filters{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.filters input,
+.filters select{
+    width:100%;
+    border:1px solid #ccd2df;
+    border-radius:9px;
+    padding:11px;
+    font-size:15px;
+    background:white;
+}
+
+.category-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.category-card{
+    border:1px solid #dce1ed;
+    background:linear-gradient(145deg,#fff,#f5f6fb);
+    border-radius:13px;
+    padding:20px 12px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.category-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 7px 18px rgba(63,81,181,.12);
+}
+
+.category-icon{font-size:34px}
+.category-title{
+    font-weight:800;
+    margin-top:8px;
+}
+.category-count{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:5px;
+}
+
+.back-btn{
+    border:0;
+    background:#607d8b;
+    color:white;
+    padding:9px 15px;
+    border-radius:7px;
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+.vocab-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.vocab-card{
+    position:relative;
+    border:2px solid #e0e4ee;
+    border-radius:12px;
+    padding:15px 10px;
+    text-align:center;
+    cursor:pointer;
+    background:#fff;
+    transition:.2s;
+}
+
+.vocab-card:hover{
+    transform:translateY(-3px);
+    border-color:#9fa8da;
+    box-shadow:0 5px 15px rgba(0,0,0,.06);
+}
+
+.level-badge{
+    position:absolute;
+    right:7px;
+    top:7px;
+    font-size:11px;
+    color:white;
+    padding:3px 7px;
+    border-radius:12px;
+    font-weight:800;
+}
+
+.level-N5{background:var(--n5)}
+.level-N4{background:var(--n4)}
+
+.vocab-jp{
+    font-size:20px;
+    font-weight:800;
+    color:#1a237e;
+    margin-top:8px;
+}
+
+.vocab-read{
+    font-size:14px;
+    color:#555;
+    margin-top:5px;
+}
+
+.vocab-zh{
+    margin-top:6px;
+    font-size:14px;
+}
+
+.vocab-romaji{
+    margin-top:3px;
+    color:#888;
+    font-size:12px;
+}
+
+.status-dot{
+    margin-top:8px;
+    font-size:12px;
+    color:#777;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#777;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:1000;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.modal-content{
+    background:white;
+    width:100%;
+    max-width:560px;
+    max-height:92vh;
+    overflow:auto;
+    border-radius:16px;
+    padding:28px;
+    position:relative;
+}
+
+.close{
+    position:absolute;
+    right:17px;
+    top:12px;
+    font-size:27px;
+    cursor:pointer;
+    color:#777;
+}
+
+.modal-word{
+    font-size:32px;
+    font-weight:900;
+    color:var(--primary-dark);
+}
+
+.modal-read{
+    font-size:18px;
+    margin-top:5px;
+}
+
+.modal-romaji{
+    color:#888;
+    margin-top:3px;
+}
+
+.modal-zh{
+    color:#2e7d32;
+    font-size:20px;
+    font-weight:800;
+    margin-top:10px;
+}
+
+.audio-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:16px;
+}
+
+.audio-btn{
+    border:0;
+    background:#3f51b5;
+    color:white;
+    padding:9px 13px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.sentence-box{
+    background:#f1f8e9;
+    border-left:5px solid #7cb342;
+    padding:15px;
+    border-radius:9px;
+    margin-top:18px;
+}
+
+.sentence-jp{
+    font-size:18px;
+    font-weight:800;
+    line-height:1.7;
+}
+
+.sentence-read{
+    margin-top:6px;
+    color:#555;
+    line-height:1.6;
+}
+
+.sentence-zh{
+    margin-top:7px;
+    color:#555;
+}
+
+.learning-status{
+    margin-top:20px;
+    border-top:1px solid #eee;
+    padding-top:17px;
+}
+
+.status-buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:10px;
+}
+
+.status-btn{
+    padding:10px 5px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:white;
+    cursor:pointer;
+}
+
+.status-btn.selected{
+    outline:3px solid #c5cae9;
+    font-weight:800;
+}
+
+.quiz-settings{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-bottom:20px;
+}
+
+.quiz-settings select{
+    padding:9px;
+    border:1px solid #ccc;
+    border-radius:7px;
+}
+
+.quiz-box{text-align:center}
+
+.quiz-score{
+    font-weight:800;
+    color:#555;
+    margin-bottom:12px;
+}
+
+.quiz-prompt{
+    color:#666;
+    margin-bottom:10px;
+}
+
+.quiz-question{
+    font-size:32px;
+    font-weight:900;
+    color:var(--primary-dark);
+    margin:18px 0;
+    min-height:48px;
+}
+
+.quiz-read{
+    color:#777;
+    font-size:15px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    max-width:800px;
+    margin:20px auto 0;
+}
+
+.option{
+    padding:15px;
+    border:2px solid #ddd;
+    background:white;
+    border-radius:9px;
+    font-size:17px;
+    cursor:pointer;
+}
+
+.option:hover{
+    border-color:#9fa8da;
+    background:#f7f7fb;
+}
+
+.feedback{
+    margin-top:17px;
+    font-size:17px;
+    font-weight:800;
+    line-height:1.7;
+}
+
+.quiz-example{
+    max-width:650px;
+    margin:15px auto;
+    padding:13px;
+    background:#f7f8fb;
+    border-radius:8px;
+    display:none;
+}
+
+.next-btn{
+    display:none;
+    border:0;
+    background:#43a047;
+    color:white;
+    padding:11px 25px;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.review-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.settings-line{
+    margin-bottom:16px;
+}
+
+.toggle-btn{
+    border:1px solid #aaa;
+    background:white;
+    padding:8px 13px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+@media(max-width:900px){
+    .dashboard{grid-template-columns:repeat(2,1fr)}
+    .category-grid{grid-template-columns:repeat(3,1fr)}
+    .vocab-grid,.review-grid{grid-template-columns:repeat(3,1fr)}
+    .filters{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:600px){
+    .topbar{padding:22px 15px}
+    h1{font-size:25px}
+    .wrapper{padding:0 10px 30px}
+    .dashboard{grid-template-columns:repeat(2,1fr)}
+    .stat-number{font-size:22px}
+    .panel{padding:14px}
+    .category-grid{grid-template-columns:repeat(2,1fr)}
+    .vocab-grid,.review-grid{grid-template-columns:repeat(2,1fr)}
+    .filters{grid-template-columns:1fr}
+    .options{grid-template-columns:1fr}
+    .status-buttons{grid-template-columns:1fr}
+    .modal-content{padding:24px 18px}
+    .progress-row{grid-template-columns:55px 1fr 60px}
+}
+</style>
+
+<script src="js/vocab-data.js"></script>
 </head>
+
 <body>
-<div style="margin-bottom: 15px; text-align: left; width: 100%; max-width: 1150px;">
-    <a href="index.html" style="text-decoration: none; color: #3f51b5; font-weight: bold;">⬅️ 返回學習首頁</a>
+
+<header class="topbar">
+<div class="top-inner">
+<a class="home-link" href="index.html">⬅️ 返回學習首頁</a>
+<h1>📘 JLPT N5・N4 核心單字學習中心</h1>
+<p class="subtitle">
+從 N5 基礎一路學到 N4。每個單字都有讀音、中文意思、專屬例句與日文發音，
+並記錄自己的熟悉程度與錯題。
+</p>
+</div>
+</header>
+
+<main class="wrapper">
+
+<div class="dashboard">
+<div class="stat-card">
+<div class="stat-label">📚 真實詞彙</div>
+<div class="stat-number" id="totalWords">0</div>
 </div>
 
-    <header>
-        <h1>📘 JLPT N5 核心單字圖卡與例句網</h1>
-        <p>點擊主題卡片深入學習單字與專屬例句，支援語音朗讀與隨機測驗！</p>
-    </header>
+<div class="stat-card">
+<div class="stat-label">🌱 N5 詞彙</div>
+<div class="stat-number" id="n5Words">0</div>
+</div>
 
-    <div class="nav-tabs">
-        <button class="tab-btn active" id="tabMenuBtn" onclick="switchMainTab('menu')">🗂️ 主題分類圖卡庫</button>
-        <button class="tab-btn" id="tabQuizBtn" onclick="switchMainTab('quiz')">✍️ 單字隨機測驗挑戰</button>
-    </div>
+<div class="stat-card">
+<div class="stat-label">🚀 N4 詞彙</div>
+<div class="stat-number" id="n4Words">0</div>
+</div>
 
-    <div class="container">
-        <!-- 第一部分主畫面：分類圖卡主選單 -->
-        <div id="main-menu-section" class="section active">
-            <h3 id="totalCategoryCount" style="margin-bottom: 20px; color: #3f51b5;">載入中...</h3>
-            <div class="category-menu-grid" id="categoryMenuGrid"></div>
-        </div>
+<div class="stat-card">
+<div class="stat-label">⭐ 已熟悉</div>
+<div class="stat-number" id="masteredWords">0</div>
+</div>
+</div>
 
-        <!-- 第二部分子畫面：單一分類的單字清單 -->
-        <div id="category-detail-section" class="section">
-            <button class="back-btn" onclick="backToMenu()">⬅️ 返回主題分類選單</button>
-            <h2 id="detailCategoryTitle" style="color: #3f51b5; margin-bottom: 15px;"></h2>
-            <div class="vocab-grid" id="vocabDetailGrid"></div>
-        </div>
+<div class="progress-wrap">
+<strong>📊 我的學習進度</strong>
 
-        <!-- 第三部分：單字隨機測驗區 -->
-        <div id="quiz-section" class="section">
-            <div class="quiz-box">
-                <div class="score-board">目前得分：<span id="score">0</span> 分</div>
-                <div id="quizPrompt" style="font-size: 16px; color: #666;"></div>
-                <div class="quiz-question" id="quizQuestion"></div>
-                <div class="options-grid" id="optionsGrid"></div>
-                <div class="feedback" id="feedback"></div>
-                <button class="next-btn" id="nextBtn" onclick="nextQuizQuestion()">下一題</button>
-            </div>
-        </div>
-    </div>
+<div class="progress-row">
+<span>N5</span>
+<div class="progress-bg"><div id="n5Progress" class="progress-bar"></div></div>
+<span id="n5ProgressText">0%</span>
+</div>
 
-    <!-- 單字例句彈跳視窗 -->
-    <div id="wordModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div class="modal-word" id="modalJp"></div>
-            <div class="modal-romaji" id="modalRomaji"></div>
-            <div class="modal-zh" id="modalZh"></div>
-            <div style="margin-top: 15px; font-size: 13px; color: #888;">🔊 點擊下方例句可聽發音</div>
-            <div class="sentence-box" id="modalSentenceBox" onclick="speakModalSentence()">
-                <div class="st-jp" id="modalStJp"></div>
-                <div class="st-zh" id="modalStZh"></div>
-            </div>
-        </div>
-    </div>
+<div class="progress-row">
+<span>N4</span>
+<div class="progress-bg"><div id="n4Progress" class="progress-bar"></div></div>
+<span id="n4ProgressText">0%</span>
+</div>
+</div>
 
-    <script>
-        const allVocab = vocabCategories.flatMap(cat => cat.items);
+<div class="nav-tabs">
+<button class="tab-btn active" data-tab="learn" onclick="switchTab('learn')">📚 單字學習</button>
+<button class="tab-btn" data-tab="review" onclick="switchTab('review')">🧠 待複習</button>
+<button class="tab-btn" data-tab="quiz" onclick="switchTab('quiz')">✍️ 單字測驗</button>
+<button class="tab-btn" data-tab="wrong" onclick="switchTab('wrong')">⭐ 我的錯題</button>
+</div>
 
-        // 動態計算並顯示總單字量
-        document.getElementById('totalCategoryCount').innerText = `📊 目前資料庫共收錄 ${allVocab.length} 個 JLPT N5 核心單字與例句，請選擇主題：`;
+<div class="panel">
 
-        // 語音播放函數
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ja-JP';
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
+<section id="learn-section" class="section active">
 
-        // 初始化主選單分類卡片
-        const menuGrid = document.getElementById('categoryMenuGrid');
-        vocabCategories.forEach(cat => {
-            const card = document.createElement('div');
-            card.className = 'category-menu-card';
-            card.innerHTML = `
-                <div class="menu-icon">${cat.icon}</div>
-                <div class="menu-title">${cat.name}</div>
-                <div class="menu-count">包含 ${cat.items.length} 個單字與例句</div>
-            `;
-            card.onclick = () => openCategoryDetail(cat);
-            menuGrid.appendChild(card);
+<div class="filters">
+<input id="searchInput"
+       type="search"
+       placeholder="🔎 搜尋日文、假名、羅馬字或中文"
+       oninput="renderCategories()">
+
+<select id="levelFilter" onchange="renderCategories()">
+<option value="ALL">全部級別</option>
+<option value="N5">N5</option>
+<option value="N4">N4</option>
+</select>
+
+<select id="statusFilter" onchange="renderCategories()">
+<option value="ALL">全部學習狀態</option>
+<option value="new">未學習</option>
+<option value="learning">學習中</option>
+<option value="mastered">已熟悉</option>
+</select>
+
+<button class="toggle-btn" id="romajiToggle" onclick="toggleRomaji()">
+羅馬字：顯示
+</button>
+</div>
+
+<div id="categoryView">
+<h3 id="categorySummary"></h3>
+<div id="categoryGrid" class="category-grid"></div>
+</div>
+
+<div id="detailView" style="display:none;">
+<button class="back-btn" onclick="backToCategories()">⬅️ 返回主題分類</button>
+<h2 id="detailTitle"></h2>
+<div id="vocabGrid" class="vocab-grid"></div>
+</div>
+
+</section>
+
+<section id="review-section" class="section">
+<h2>🧠 待複習單字</h2>
+<p>這裡會集中顯示你標記為「不會」或「學習中」的單字。</p>
+<div id="reviewGrid" class="review-grid"></div>
+</section>
+
+<section id="quiz-section" class="section">
+
+<div class="quiz-settings">
+
+<select id="quizLevel">
+<option value="ALL">N5＋N4</option>
+<option value="N5">只測 N5</option>
+<option value="N4">只測 N4</option>
+</select>
+
+<select id="quizMode">
+<option value="random">🎲 隨機題型</option>
+<option value="jpZh">日文 → 中文</option>
+<option value="zhJp">中文 → 日文</option>
+<option value="reading">漢字 → 讀音</option>
+<option value="listening">聽力 → 選單字</option>
+</select>
+
+<button class="audio-btn" onclick="startQuiz()">開始／重新測驗</button>
+</div>
+
+<div class="quiz-box">
+
+<div class="quiz-score">
+得分：<span id="score">0</span>
+　｜　答對：<span id="correctCount">0</span>
+　｜　答錯：<span id="wrongCount">0</span>
+</div>
+
+<div class="quiz-prompt" id="quizPrompt">
+請選擇級別與題型後開始。
+</div>
+
+<div class="quiz-question" id="quizQuestion">🎌</div>
+<div class="quiz-read" id="quizRead"></div>
+
+<div id="listenButtonArea"></div>
+
+<div id="optionsGrid" class="options"></div>
+
+<div id="feedback" class="feedback"></div>
+
+<div id="quizExample" class="quiz-example"></div>
+
+<button id="nextBtn" class="next-btn" onclick="nextQuestion()">
+下一題 ➜
+</button>
+
+</div>
+</section>
+
+<section id="wrong-section" class="section">
+<h2>⭐ 我的錯題</h2>
+<p>答錯過的單字會自動收錄在這裡，答對後仍保留，方便反覆複習。</p>
+
+<button class="back-btn" onclick="clearWrongWords()">
+清除全部錯題紀錄
+</button>
+
+<div id="wrongGrid" class="review-grid"></div>
+</section>
+
+</div>
+</main>
+
+<div id="wordModal" class="modal">
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">&times;</span>
+
+<div>
+<span id="modalLevel" class="level-badge" style="position:static;display:inline-block;"></span>
+</div>
+
+<div id="modalWord" class="modal-word"></div>
+<div id="modalRead" class="modal-read"></div>
+<div id="modalRomaji" class="modal-romaji"></div>
+<div id="modalZh" class="modal-zh"></div>
+
+<div class="audio-row">
+<button class="audio-btn" onclick="speakCurrentWord(.9)">🔊 單字</button>
+<button class="audio-btn" onclick="speakCurrentWord(.7)">🐢 慢速</button>
+</div>
+
+<div class="sentence-box">
+<div id="modalSentence" class="sentence-jp"></div>
+<div id="modalSentenceRead" class="sentence-read"></div>
+<div id="modalSentenceZh" class="sentence-zh"></div>
+
+<div class="audio-row">
+<button class="audio-btn" onclick="speakCurrentSentence(.9)">🔊 例句</button>
+<button class="audio-btn" onclick="speakCurrentSentence(.7)">🐢 慢速例句</button>
+</div>
+</div>
+
+<div class="learning-status">
+<strong>我的熟悉程度</strong>
+
+<div class="status-buttons">
+<button id="status-new" class="status-btn"
+onclick="setLearningStatus('new')">😵 不會</button>
+
+<button id="status-learning" class="status-btn"
+onclick="setLearningStatus('learning')">🤔 有印象</button>
+
+<button id="status-mastered" class="status-btn"
+onclick="setLearningStatus('mastered')">😊 熟悉</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+const allVocab = [];
+
+vocabCategories.forEach(category=>{
+    category.items.forEach((item,index)=>{
+        allVocab.push({
+            ...item,
+            categoryId:category.id,
+            categoryName:category.name,
+            categoryIcon:category.icon,
+            uid:item.id || `${category.id}_${index}`
         });
+    });
+});
 
-        // 點擊分類卡片，切換到該分類的詳細單字畫面
-        function openCategoryDetail(cat) {
-            document.getElementById('main-menu-section').classList.remove('active');
-            document.getElementById('category-detail-section').classList.add('active');
-            
-            document.getElementById('detailCategoryTitle').innerText = `${cat.icon} ${cat.name}（共 ${cat.items.length} 個）`;
-            
-            const detailGrid = document.getElementById('vocabDetailGrid');
-            detailGrid.innerHTML = '';
+let showRomaji =
+    localStorage.getItem("jlptShowRomaji") !== "false";
 
-            cat.items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'vocab-card';
-                card.innerHTML = `
-                    <div class="vocab-jp">${item.jp}</div>
-                    <div class="vocab-zh">${item.zh}</div>
-                    <div class="vocab-romaji">${item.romaji}</div>
-                `;
-                card.onclick = () => {
-                    speak(item.read);
-                    showWordModal(item);
-                };
-                detailGrid.appendChild(card);
-            });
-        }
+let currentModalItem=null;
 
-        // 顯示單字例句彈跳視窗
-        let currentModalItem = {};
-        function showWordModal(item) {
-            currentModalItem = item;
-            document.getElementById('modalJp').innerText = item.jp;
-            document.getElementById('modalRomaji').innerText = item.romaji;
-            document.getElementById('modalZh').innerText = item.zh;
-            document.getElementById('modalStJp').innerText = `🔊 例句：${item.stJp}`;
-            document.getElementById('modalStZh').innerText = item.stZh;
-            document.getElementById('wordModal').style.display = 'flex';
-        }
+let score=0;
+let correctCount=0;
+let wrongCount=0;
+let currentQuizItem=null;
+let currentCorrectAnswer="";
+let currentQuizMode="";
+let lastQuizUid=null;
 
-        // 關閉彈跳視窗
-        function closeModal() {
-            document.getElementById('wordModal').style.display = 'none';
-        }
+function getProgress(){
+    try{
+        return JSON.parse(
+            localStorage.getItem("jlptVocabProgress") || "{}"
+        );
+    }catch{
+        return {};
+    }
+}
 
-        // 朗讀彈跳視窗中的例句
-        function speakModalSentence() {
-            if (currentModalItem.stRead) {
-                speak(currentModalItem.stRead);
+function saveProgress(data){
+    localStorage.setItem(
+        "jlptVocabProgress",
+        JSON.stringify(data)
+    );
+}
+
+function getWrongWords(){
+    try{
+        return JSON.parse(
+            localStorage.getItem("jlptWrongWords") || "[]"
+        );
+    }catch{
+        return [];
+    }
+}
+
+function saveWrongWords(arr){
+    localStorage.setItem(
+        "jlptWrongWords",
+        JSON.stringify([...new Set(arr)])
+    );
+}
+
+function statusText(status){
+    if(status==="mastered") return "😊 已熟悉";
+    if(status==="learning") return "🤔 學習中";
+    if(status==="new") return "😵 待複習";
+    return "尚未學習";
+}
+
+function normalize(text){
+    return String(text || "").toLowerCase().trim();
+}
+
+function speak(text,rate=.9){
+    if(!("speechSynthesis" in window)){
+        alert("目前瀏覽器不支援語音朗讀功能。");
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="ja-JP";
+    u.rate=rate;
+
+    const voices=speechSynthesis.getVoices();
+
+    const jaVoice=voices.find(v=>
+        v.lang &&
+        v.lang.toLowerCase().startsWith("ja")
+    );
+
+    if(jaVoice) u.voice=jaVoice;
+
+    speechSynthesis.speak(u);
+}
+
+function speakCurrentWord(rate){
+    if(currentModalItem){
+        speak(currentModalItem.read || currentModalItem.jp,rate);
+    }
+}
+
+function speakCurrentSentence(rate){
+    if(currentModalItem){
+        speak(
+            currentModalItem.stRead ||
+            currentModalItem.stJp,
+            rate
+        );
+    }
+}
+
+function updateDashboard(){
+    const n5=allVocab.filter(x=>x.level==="N5");
+    const n4=allVocab.filter(x=>x.level==="N4");
+    const progress=getProgress();
+
+    const mastered=allVocab.filter(
+        x=>progress[x.uid]==="mastered"
+    );
+
+    document.getElementById("totalWords").textContent=allVocab.length;
+    document.getElementById("n5Words").textContent=n5.length;
+    document.getElementById("n4Words").textContent=n4.length;
+    document.getElementById("masteredWords").textContent=mastered.length;
+
+    const n5Mastered=n5.filter(
+        x=>progress[x.uid]==="mastered"
+    ).length;
+
+    const n4Mastered=n4.filter(
+        x=>progress[x.uid]==="mastered"
+    ).length;
+
+    const n5Pct=n5.length ?
+        Math.round(n5Mastered/n5.length*100) : 0;
+
+    const n4Pct=n4.length ?
+        Math.round(n4Mastered/n4.length*100) : 0;
+
+    document.getElementById("n5Progress").style.width=n5Pct+"%";
+    document.getElementById("n4Progress").style.width=n4Pct+"%";
+
+    document.getElementById("n5ProgressText").textContent=n5Pct+"%";
+    document.getElementById("n4ProgressText").textContent=n4Pct+"%";
+}
+
+function switchTab(name){
+    document.querySelectorAll(".section")
+        .forEach(x=>x.classList.remove("active"));
+
+    document.querySelectorAll(".tab-btn")
+        .forEach(x=>x.classList.remove("active"));
+
+    document.getElementById(name+"-section")
+        .classList.add("active");
+
+    document.querySelector(`[data-tab="${name}"]`)
+        .classList.add("active");
+
+    if(name==="review") renderReview();
+    if(name==="wrong") renderWrongWords();
+}
+
+function getFilteredItems(items){
+    const q=normalize(
+        document.getElementById("searchInput").value
+    );
+
+    const level=
+        document.getElementById("levelFilter").value;
+
+    const status=
+        document.getElementById("statusFilter").value;
+
+    const progress=getProgress();
+
+    return items.filter(item=>{
+
+        const searchable=normalize([
+            item.jp,
+            item.read,
+            item.romaji,
+            item.zh,
+            item.stJp,
+            item.stZh
+        ].join(" "));
+
+        const matchSearch=!q || searchable.includes(q);
+        const matchLevel=level==="ALL" || item.level===level;
+
+        let matchStatus=true;
+
+        if(status!=="ALL"){
+            if(status==="new"){
+                matchStatus=
+                    !progress[item.uid] ||
+                    progress[item.uid]==="new";
+            }else{
+                matchStatus=progress[item.uid]===status;
             }
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('wordModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
+        return matchSearch && matchLevel && matchStatus;
+    });
+}
 
-        function backToMenu() {
-            document.getElementById('category-detail-section').classList.remove('active');
-            document.getElementById('main-menu-section').classList.add('active');
-        }
+function renderCategories(){
+    document.getElementById("detailView").style.display="none";
+    document.getElementById("categoryView").style.display="block";
 
-        function switchMainTab(tabName) {
-            document.querySelectorAll('.container > .section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById('tabMenuBtn').classList.remove('active');
-            document.getElementById('tabQuizBtn').classList.remove('active');
+    const grid=document.getElementById("categoryGrid");
+    grid.innerHTML="";
 
-            if (tabName === 'menu') {
-                document.getElementById('main-menu-section').classList.add('active');
-                document.getElementById('tabMenuBtn').classList.add('active');
-            } else {
-                document.getElementById('quiz-section').classList.add('active');
-                document.getElementById('tabQuizBtn').classList.add('active');
-                nextQuizQuestion();
-            }
-        }
+    let visibleTotal=0;
 
-        let currentScore = 0;
-        let currentItem = {};
-        let quizMode = 1;
+    vocabCategories.forEach(category=>{
 
-        function nextQuizQuestion() {
-            document.getElementById('feedback').innerText = '';
-            document.getElementById('nextBtn').style.display = 'none';
+        const categoryItems=allVocab.filter(
+            x=>x.categoryId===category.id
+        );
 
-            currentItem = allVocab[Math.floor(Math.random() * allVocab.length)];
-            quizMode = Math.random() < 0.5 ? 1 : 2;
+        const filtered=getFilteredItems(categoryItems);
 
-            let questionText = "";
-            let promptText = "";
-            let correctAns = "";
-            let wrongPool = [];
+        if(!filtered.length) return;
 
-            if (quizMode === 1) {
-                promptText = "請問這個 JLPT N5 單字的意思是？";
-                questionText = `${currentItem.jp} <span style="font-size:18px; color:#666;">(${currentItem.romaji})</span>`;
-                speak(currentItem.read);
-                correctAns = currentItem.zh;
-                wrongPool = allVocab.map(i => i.zh);
-            } else {
-                promptText = "請問這個中文意思對應的 N5 日文單字是？";
-                questionText = currentItem.zh;
-                correctAns = currentItem.jp;
-                wrongPool = allVocab.map(i => i.jp);
-            }
+        visibleTotal+=filtered.length;
 
-            document.getElementById('quizPrompt').innerText = promptText;
-            document.getElementById('quizQuestion').innerHTML = questionText;
+        const n5=filtered.filter(x=>x.level==="N5").length;
+        const n4=filtered.filter(x=>x.level==="N4").length;
 
-            let options = [correctAns];
-            while (options.length < 4) {
-                const randomWrong = wrongPool[Math.floor(Math.random() * wrongPool.length)];
-                if (!options.includes(randomWrong)) {
-                    options.push(randomWrong);
-                }
-            }
-            options.sort(() => Math.random() - 0.5);
+        const card=document.createElement("div");
+        card.className="category-card";
 
-            const optionsGrid = document.getElementById('optionsGrid');
-            optionsGrid.innerHTML = '';
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(opt, btn, correctAns);
-                optionsGrid.appendChild(btn);
-            });
-        }
+        card.innerHTML=`
+            <div class="category-icon">${category.icon}</div>
+            <div class="category-title">${category.name}</div>
+            <div class="category-count">
+                ${filtered.length} 字
+                ${n5 ? `・N5 ${n5}` : ""}
+                ${n4 ? `・N4 ${n4}` : ""}
+            </div>
+        `;
 
-        function checkAnswer(selectedOption, btnElement, correctAns) {
-            const allBtns = document.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.disabled = true);
+        card.onclick=()=>openCategory(category.id);
 
-            const feedback = document.getElementById('feedback');
-            if (selectedOption === correctAns) {
-                feedback.style.color = 'green';
-                feedback.innerText = '⭕ 答對了！太棒了！';
-                currentScore += 10;
-                document.getElementById('score').innerText = currentScore;
-                btnElement.style.background = '#d4edda';
-            } else {
-                feedback.style.color = 'red';
-                feedback.innerText = `❌ 答錯了！正確答案是：${correctAns}`;
-                btnElement.style.background = '#f8d7da';
-                allBtns.forEach(b => {
-                    if (b.innerText === correctAns) {
-                        b.style.background = '#c8e6c9';
-                    }
-                });
-            }
-            document.getElementById('nextBtn').style.display = 'inline-block';
-        }
-    </script>
-</body>
-</html>
+        grid.appendChild(card);
+    });
+
+    document.getElementById("categorySummary").textContent=
+        `📚 目前條件共 ${visibleTotal} 個真正詞彙`;
+
+    if(!visibleTotal){
+        grid.innerHTML=
+            `<div class="empty">找不到符合條件的單字。</div>`;
+    }
+}
+
+function openCategory(categoryId){
+    const category=vocabCategories.find(
+        c=>c.id===categoryId
+    );
+
+    if(!category) return;
+
+    const items=getFilteredItems(
+        allVocab.filter(x=>x.categoryId===categoryId)
+    );
+
+    document.getElementById("categoryView").style.display="none";
+    document.getElementById("detailView").style.display="block";
+
+    document.getElementById("detailTitle").textContent=
+        `${category.icon} ${category.name}（${items.length} 字）`;
+
+    renderWordCards(
+        document.getElementById("vocabGrid"),
+        items
+    );
+}
+
+function backToCategories(){
+    renderCategories();
+}
+
+function renderWordCards(container,items){
+    container.innerHTML="";
+
+    if(!items.length){
+        container.innerHTML=
+            `<div class="empty">目前沒有符合條件的單字。</div>`;
+        return;
+    }
+
+    const progress=getProgress();
+
+    items.forEach(item=>{
+
+        const card=document.createElement("div");
+        card.className="vocab-card";
+
+        card.innerHTML=`
+            <span class="level-badge level-${item.level}">
+                ${item.level}
+            </span>
+
+            <div class="vocab-jp">${item.jp}</div>
+            <div class="vocab-read">${item.read}</div>
+
+            <div class="vocab-romaji"
+                 style="${showRomaji ? "" : "display:none"}">
+                ${item.romaji || ""}
+            </div>
+
+            <div class="vocab-zh">${item.zh}</div>
+
+            <div class="status-dot">
+                ${statusText(progress[item.uid])}
+            </div>
+        `;
+
+        card.onclick=()=>showModal(item);
+
+        container.appendChild(card);
+    });
+}
+
+function showModal(item){
+    currentModalItem=item;
+
+    document.getElementById("modalLevel").textContent=item.level;
+    document.getElementById("modalLevel").className=
+        `level-badge level-${item.level}`;
+
+    document.getElementById("modalWord").textContent=item.jp;
+    document.getElementById("modalRead").textContent=item.read;
+    document.getElementById("modalRomaji").textContent=
+        showRomaji ? item.romaji : "";
+
+    document.getElementById("modalZh").textContent=item.zh;
+    document.getElementById("modalSentence").textContent=item.stJp;
+    document.getElementById("modalSentenceRead").textContent=
+        item.stRead || "";
+
+    document.getElementById("modalSentenceZh").textContent=item.stZh;
+
+    updateModalStatus();
+
+    document.getElementById("wordModal").style.display="flex";
+}
+
+function closeModal(){
+    speechSynthesis?.cancel();
+    document.getElementById("wordModal").style.display="none";
+}
+
+function updateModalStatus(){
+    document.querySelectorAll(".status-btn")
+        .forEach(x=>x.classList.remove("selected"));
+
+    if(!currentModalItem) return;
+
+    const status=getProgress()[currentModalItem.uid];
+
+    if(status){
+        const btn=document.getElementById("status-"+status);
+        if(btn) btn.classList.add("selected");
+    }
+}
+
+function setLearningStatus(status){
+    if(!currentModalItem) return;
+
+    const progress=getProgress();
+    progress[currentModalItem.uid]=status;
+    saveProgress(progress);
+
+    updateModalStatus();
+    updateDashboard();
+    renderCategories();
+}
+
+function toggleRomaji(){
+    showRomaji=!showRomaji;
+
+    localStorage.setItem(
+        "jlptShowRomaji",
+        String(showRomaji)
+    );
+
+    document.getElementById("romajiToggle").textContent=
+        `羅馬字：${showRomaji ? "顯示" : "隱藏"}`;
+
+    renderCategories();
+
+    if(currentModalItem){
+        document.getElementById("modalRomaji").textContent=
+            showRomaji ? currentModalItem.romaji : "";
+    }
+}
+
+function renderReview(){
+    const progress=getProgress();
+
+    const items=allVocab.filter(item=>
+        progress[item.uid]==="new" ||
+        progress[item.uid]==="learning"
+    );
+
+    renderWordCards(
+        document.getElementById("reviewGrid"),
+        items
+    );
+}
+
+function renderWrongWords(){
+    const ids=getWrongWords();
+
+    const items=ids
+        .map(id=>allVocab.find(x=>x.uid===id))
+        .filter(Boolean);
+
+    renderWordCards(
+        document.getElementById("wrongGrid"),
+        items
+    );
+}
+
+function clearWrongWords(){
+    if(!confirm("確定要清除全部錯題紀錄嗎？")) return;
+
+    saveWrongWords([]);
+    renderWrongWords();
+}
+
+function shuffle(array){
+    const a
