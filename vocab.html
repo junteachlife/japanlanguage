@@ -203,49 +203,49 @@
     </div>
 
     <script>
-        // 基礎單字資料庫（按主題分類）
+        // 修正後的基礎單字資料庫（新增 read 屬性確保發音正確）
         const vocabCategories = [
             { category: "🍎 日常食物與水果", items: [
-                { jp: "りんご", romaji: "ringo", zh: "蘋果" },
-                { jp: "みかん", romaji: "mikan", zh: "橘子" },
-                { jp: "水(みず)", romaji: "mizu", zh: "水" },
-                { jp: "茶(おちゃ)", romaji: "ocha", zh: "茶" },
-                { jp: "肉(にく)", romaji: "niku", zh: "肉" },
-                { jp: "魚(さかな)", romaji: "sakana", zh: "魚" }
+                { jp: "りんご", read: "りんご", romaji: "ringo", zh: "蘋果" },
+                { jp: "みかん", read: "みかん", romaji: "mikan", zh: "橘子" },
+                { jp: "水 (みず)", read: "みず", romaji: "mizu", zh: "水" },
+                { jp: "お茶 (おちゃ)", read: "おちゃ", romaji: "ocha", zh: "茶" },
+                { jp: "肉 (にく)", read: "にく", romaji: "niku", zh: "肉" },
+                { jp: "魚 (さかな)", read: "さかな", romaji: "sakana", zh: "魚" }
             ]},
             { category: "🏠 生活與地點", items: [
-                { jp: "家(いえ)", romaji: "ie", zh: "家" },
-                { jp: "学校(がっこう)", romaji: "gakkou", zh: "學校" },
-                { jp: "駅(えき)", romaji: "eki", zh: "車站" },
-                { jp: "本(ほん)", romaji: "hon", zh: "書本" },
-                { jp: "車(くるま)", romaji: "kuruma", zh: "汽車" },
-                { jp: "店(みせ)", romaji: "mise", zh: "店鋪" }
+                { jp: "家 (いえ)", read: "いえ", romaji: "ie", zh: "家" },
+                { jp: "学校 (がっこう)", read: "がっこう", romaji: "gakkou", zh: "學校" },
+                { jp: "駅 (えき)", read: "えき", romaji: "eki", zh: "車站" },
+                { jp: "本 (ほん)", read: "ほん", romaji: "hon", zh: "書本" },
+                { jp: "車 (くるま)", read: "くるま", romaji: "kuruma", zh: "汽車" },
+                { jp: "店 (みせ)", read: "みせ", romaji: "mise", zh: "店鋪" }
             ]},
             { category: "👥 人物與稱謂", items: [
-                { jp: "私(わたし)", romaji: "watashi", zh: "我" },
-                { jp: "友達(ともだち)", romaji: "tomodachi", zh: "朋友" },
-                { jp: "先生(せんせい)", romaji: "sensei", zh: "老師" },
-                { jp: "学生(がくせい)", romaji: "gakusei", zh: "學生" },
-                { jp: "父(ちち)", romaji: "chichi", zh: "父親" },
-                { jp: "母(はは)", romaji: "haha", zh: "母親" }
+                { jp: "私 (わたし)", read: "わたし", romaji: "watashi", zh: "我" },
+                { jp: "友達 (ともだち)", read: "ともだち", romaji: "tomodachi", zh: "朋友" },
+                { jp: "先生 (せんせい)", read: "せんせい", romaji: "sensei", zh: "老師" },
+                { jp: "学生 (がくせい)", read: "がくせい", romaji: "gakusei", zh: "學生" },
+                { jp: "父 (ちち)", read: "ちち", romaji: "chichi", zh: "父親" },
+                { jp: "母 (はは)", read: "はは", romaji: "haha", zh: "母親" }
             ]},
             { category: "⏰ 時間與數字", items: [
-                { jp: "今日(きょう)", romaji: "kyou", zh: "今天" },
-                { jp: "明日(あした)", romaji: "ashita", zh: "明天" },
-                { jp: "時間(じかん)", romaji: "jikan", zh: "時間" },
-                { jp: "一(いち)", romaji: "ichi", zh: "數字 1" },
-                { jp: "二(に)", romaji: "ni", zh: "數字 2" },
-                { jp: "三(さん)", romaji: "san", zh: "數字 3" }
+                { jp: "今日 (きょう)", read: "きょう", romaji: "kyou", zh: "今天" },
+                { jp: "明日 (あした)", read: "あした", romaji: "ashita", zh: "明天" },
+                { jp: "時間 (じかん)", read: "じかん", romaji: "jikan", zh: "時間" },
+                { jp: "一 (いち)", read: "いち", romaji: "ichi", zh: "數字 1" },
+                { jp: "二 (に)", read: "に", romaji: "ni", zh: "數字 2" },
+                { jp: "三 (さん)", read: "さん", romaji: "san", zh: "數字 3" }
             ]}
         ];
 
         const allVocab = vocabCategories.flatMap(cat => cat.items);
 
+        // 使用專屬的 read 欄位進行穩定發音
         function speak(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const cleanText = text.replace(/\(.*?\)/g, '');
-                const utterance = new SpeechSynthesisUtterance(cleanText);
+                const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'ja-JP';
                 utterance.rate = 0.9;
                 window.speechSynthesis.speak(utterance);
@@ -274,7 +274,7 @@
                     <div class="vocab-romaji">${item.romaji}</div>
                 `;
                 card.onclick = () => {
-                    speak(item.jp);
+                    speak(item.read); // 傳入乾淨的讀音
                     card.style.background = '#c5cae9';
                     setTimeout(() => card.style.background = '#e8eaf6', 300);
                 };
@@ -318,7 +318,7 @@
             if (quizMode === 1) {
                 promptText = "請問這個日文單字的意思是？";
                 questionText = `${currentItem.jp} <span style="font-size:18px; color:#666;">(${currentItem.romaji})</span>`;
-                speak(currentItem.jp);
+                speak(currentItem.read); // 測驗時也會正確發音
                 correctAns = currentItem.zh;
                 wrongPool = allVocab.map(i => i.zh);
             } else {
@@ -346,6 +346,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
+                // 如果是測驗選項點擊，也可以把對應的 read 找出來發音，或單純比對答案
                 btn.onclick = () => checkAnswer(opt, btn, correctAns);
                 optionsGrid.appendChild(btn);
             });
@@ -377,4 +378,3 @@
     </script>
 </body>
 </html>
-
