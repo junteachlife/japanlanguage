@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第五階段：JLPT N5 AI 情境角色扮演對話</title>
+    <style>
+        :root {
+            --primary-color: #673ab7;
+            --bg-color: #ede7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .scenario-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .sc-btn {
+            padding: 10px 15px;
+            border: 2px solid #b39ddb;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            color: #512da8;
+            transition: 0.2s;
+        }
+        .sc-btn.active, .sc-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .chat-box {
+            height: 400px;
+            border: 2px solid #d1c4e9;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: auto;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .message.npc {
+            background: #e8eaf6;
+            color: #1a237e;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .message.user {
+            background: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .choices-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .choice-btn {
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #9575cd;
+            border-radius: 8px;
+            background: white;
+            color: #311b92;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+        }
+        .choice-btn:hover {
+            background: #ede7f6;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #512da8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🤖 第五階段：AI 角色扮演情境對話</h1>
+        <p>模擬真實日本生活場景，透過對話選項與日語店員進行實戰互動！</p>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-link">⬅️ 返回課程首頁</a>
+        
+        <div class="scenario-select">
+            <button class="sc-btn active" onclick="changeScenario('convenience')">🏪 便利商店購物</button>
+            <button class="sc-btn" onclick="changeScenario('restaurant')">🍜 餐廳點餐</button>
+            <button class="sc-btn" onclick="changeScenario('station')">🚆 車站問路</button>
+        </div>
+
+        <div class="chat-box" id="chatBox"></div>
+        <div class="choices-area" id="choicesArea"></div>
+    </div>
+
+    <script>
+        const scenarios = {
+            convenience: {
+                title: "🏪 便利商店購物",
+                steps: [
+                    {
+                        npc: "いらっしゃいませ！お弁当あたためますか。",
+                        npcZh: "歡迎光臨！便當需要幫您加熱嗎？",
+                        choices: [
+                            { text: "はい、お願いします。(好的，麻煩請幫我加熱。)", next: 1, speak: "はい、おねがいします" },
+                            { text: "いいえ、結構です。(不用，謝謝。)", next: 2, speak: "いいえ、けっこうです" }
+                        ]
+                    },
+                    {
+                        npc: "かしこまりました。袋はご利用ですか。",
+                        npcZh: "好的，了解。需要使用塑膠袋嗎？",
+                        choices: [
+                            { text: "はい、お願いします。(はい、おねがいします)", next: 3, speak: "はい、おねがいします" },
+                            { text: "マイバッグがありますから、結構です。(我有自備環保袋，不用了。)", next: 3, speak: "まいばっぐがありますから、けっこうです" }
+                        ]
+                    },
+                    {
+                        npc: "そうですか。では、合計で650円になります。",
+                        npcZh: "這樣啊。那麼，總共是 650 日圓。",
+                        choices: [
+                            { text: "カードで払います。(用信用卡付款。)", next: 4, speak: "かーどではらいます" },
+                            { text: "現金で払います。(用現金付款。)", next: 4, speak: "げんきんではらいます" }
+                        ]
+                    },
+                    {
+                        npc: "ありがとうございました！またどうぞお越しくださいませ。",
+                        npcZh: "非常謝謝您！歡迎再度光臨。",
+                        choices: [
+                            { text: "（對話結束，點此重新開始）", next: 0, speak: "ありがとうございました" }
+                        ]
+                    }
+                ]
+            },
+            restaurant: {
+                title: "🍜 餐廳點餐",
+                steps: [
+                    {
+                        npc: "いらっしゃいませ！何名様ですか。",
+                        npcZh: "歡迎光臨！請問幾位呢？",
+                        choices: [
+                            { text: "一人です。(一人です / 一位。)", next: 1, speak: "ひとりです" },
+                            { text: "二人です。(ふたりです / 兩位。)", next: 1, speak: "ふたりです" }
+                        ]
+                    },
+                    {
+                        npc: "こちらへどうぞ。ご注文はお決まりですか。",
+                        npcZh: "請坐這邊。請問決定好要點餐了嗎？",
+                        choices: [
+                            { text: "ラーメンを一つお願いします。(我要一份拉麵。)", next: 2, speak: "らーめんをひとつおねがいします" },
+                            { text: "おすすめは何ですか。(請問推薦什麼呢？)", next: 2, speak: "おすすめはなんですか" }
+                        ]
+                    },
+                    {
+                        npc: "かしこまりました少々お待ちください！",
+                        npcZh: "好的，請稍等片刻！",
+                        choices: [
+                            { text: "（對話結束，點此重新開始）", next: 0, speak: "しょうしょうおまちください" }
+                        ]
+                    }
+                ]
+            },
+            station: {
+                title: "🚆 車站問路",
+                steps: [
+                    {
+                        npc: "すみません、何かお手伝いしましょうか。",
+                        npcZh: "不好意思，請問有需要幫忙嗎？",
+                        choices: [
+                            { text: "すみません、東京駅はどこですか。(不好意思，東京車站在哪裡？)", next: 1, speak: "すみません、とうきょうえきはどこですか" },
+                            { text: "切符売り場はどこですか。(售票處在哪裡？)", next: 1, speak: "きっぷうりばはどこですか" }
+                        ]
+                    },
+                    {
+                        npc: "東京駅ですねまっすぐ行って、左側にあります。",
+                        npcZh: "是東京車站對吧？直走後在左手邊。",
+                        choices: [
+                            { text: "ありがとうございます！(非常感謝！)", next: 2, speak: "ありがとうございます" }
+                        ]
+                    },
+                    {
+                        npc: "どういたしまして、お気をつけて！",
+                        npcZh: "不客氣，請一路小心！",
+                        choices: [
+                            { text: "（對話結束，點此重新開始）", next: 0, speak: "きをつけて" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        let currentKey = 'convenience';
+        let stepIndex = 0;
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function changeScenario(key) {
+            currentKey = key;
+            stepIndex = 0;
+            document.querySelectorAll('.sc-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderChat();
+        }
+
+        function renderChat() {
+            const sc = scenarios[currentKey];
+            const step = sc.steps[stepIndex];
+            
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="message npc">🤖 <strong>店員/路人：</strong><br>${step.npc}<br><span style="font-size:13px; color:#555;">(${step.npcZh})</span></div>`;
+            speak(step.npc);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const choicesArea = document.getElementById('choicesArea');
+            choicesArea.innerHTML = '';
+            step.choices.forEach(ch => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.innerText = `💬 ${ch.text}`;
+                btn.onclick = () => {
+                    chatBox.innerHTML += `<div class="message user">👤 <strong>你：</strong><br>${ch.text}</div>`;
+                    speak(ch.speak);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    
+                    stepIndex = ch.next;
+                    setTimeout(renderChat, 800);
+                };
+                choicesArea.appendChild(btn);
+            });
+        }
+
+        // 初始化載入
+        renderChat();
+    </script>
+</body>
+</html>
+
