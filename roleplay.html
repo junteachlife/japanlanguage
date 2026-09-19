@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第五階段：JLPT N5 AI 情境角色扮演對話</title>
+    <title>第五階段：JLPT N5 AI 情境角色扮演對話（解鎖升級版）</title>
     <style>
         :root {
             --primary-color: #673ab7;
@@ -31,7 +31,7 @@
         }
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             background: var(--card-bg);
             padding: 25px;
             border-radius: 12px;
@@ -45,7 +45,7 @@
             flex-wrap: wrap;
         }
         .sc-btn {
-            padding: 10px 15px;
+            padding: 10px 14px;
             border: 2px solid #b39ddb;
             border-radius: 20px;
             background: white;
@@ -53,6 +53,7 @@
             font-weight: bold;
             color: #512da8;
             transition: 0.2s;
+            font-size: 14px;
         }
         .sc-btn.active, .sc-btn:hover {
             background: var(--primary-color);
@@ -60,7 +61,7 @@
             border-color: var(--primary-color);
         }
         .chat-box {
-            height: 400px;
+            height: 420px;
             border: 2px solid #d1c4e9;
             border-radius: 8px;
             padding: 15px;
@@ -72,7 +73,7 @@
             margin-bottom: 20px;
         }
         .message {
-            max-width: 75%;
+            max-width: 80%;
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 16px;
@@ -124,17 +125,20 @@
 <body>
 
     <header>
-        <h1>🤖 第五階段：AI 角色扮演情境對話</h1>
-        <p>模擬真實日本生活場景，透過對話選項與日語店員進行實戰互動！</p>
+        <h1>🤖 第五階段：AI 角色扮演情境對話（解鎖 6 大主題）</h1>
+        <p>涵蓋超商、餐廳、飯店、藥妝店、車站與問路，點擊選項進行實戰演練！</p>
     </header>
 
     <div class="container">
         <a href="index.html" class="back-link">⬅️ 返回課程首頁</a>
         
         <div class="scenario-select">
-            <button class="sc-btn active" onclick="changeScenario('convenience')">🏪 便利商店購物</button>
+            <button class="sc-btn active" onclick="changeScenario('convenience')">🏪 便利商店</button>
             <button class="sc-btn" onclick="changeScenario('restaurant')">🍜 餐廳點餐</button>
-            <button class="sc-btn" onclick="changeScenario('station')">🚆 車站問路</button>
+            <button class="sc-btn" onclick="changeScenario('hotel')">🏨 飯店入住</button>
+            <button class="sc-btn" onclick="changeScenario('drugstore')">💊 藥妝店購物</button>
+            <button class="sc-btn" onclick="changeScenario('ticket')">🎫 車站買票</button>
+            <button class="sc-btn" onclick="changeScenario('station')">🗺️ 路邊問路</button>
         </div>
 
         <div class="chat-box" id="chatBox"></div>
@@ -144,7 +148,6 @@
     <script>
         const scenarios = {
             convenience: {
-                title: "🏪 便利商店購物",
                 steps: [
                     {
                         npc: "いらっしゃいませ！お弁当あたためますか。",
@@ -158,13 +161,20 @@
                         npc: "かしこまりました。袋はご利用ですか。",
                         npcZh: "好的，了解。需要使用塑膠袋嗎？",
                         choices: [
-                            { text: "はい、お願いします。(はい、おねがいします)", next: 3, speak: "はい、おねがいします" },
-                            { text: "マイバッグがありますから、結構です。(我有自備環保袋，不用了。)", next: 3, speak: "まいばっぐがありますから、けっこうです" }
+                            { text: "はい、お願いします。(請給我袋子。)", next: 3, speak: "はい、おねがいします" },
+                            { text: "袋は要りません。(不需要袋子。)", next: 3, speak: "ふくろはいりません" }
                         ]
                     },
                     {
-                        npc: "そうですか。では、合計で650円になります。",
-                        npcZh: "這樣啊。那麼，總共是 650 日圓。",
+                        npc: "わかりました。温め終わるまで少々お待ちください。",
+                        npcZh: "知道了。加熱好之前請稍等一下。",
+                        choices: [
+                            { text: "はい、わかりました。(好的，我知道了。)", next: 3, speak: "はい、わかりました" }
+                        ]
+                    },
+                    {
+                        npc: "合計で650円になります。お会計はどうなさいますか。",
+                        npcZh: "總共是 650 日圓。請問要怎麼付款？",
                         choices: [
                             { text: "カードで払います。(用信用卡付款。)", next: 4, speak: "かーどではらいます" },
                             { text: "現金で払います。(用現金付款。)", next: 4, speak: "げんきんではらいます" }
@@ -180,7 +190,6 @@
                 ]
             },
             restaurant: {
-                title: "🍜 餐廳點餐",
                 steps: [
                     {
                         npc: "いらっしゃいませ！何名様ですか。",
@@ -199,7 +208,7 @@
                         ]
                     },
                     {
-                        npc: "かしこまりました少々お待ちください！",
+                        npc: "かしこまりました！少々お待ちください。",
                         npcZh: "好的，請稍等片刻！",
                         choices: [
                             { text: "（對話結束，點此重新開始）", next: 0, speak: "しょうしょうおまちください" }
@@ -207,8 +216,102 @@
                     }
                 ]
             },
+            hotel: {
+                steps: [
+                    {
+                        npc: "いらっしゃいませ。本日はご予約でしょうか。",
+                        npcZh: "歡迎光臨。今天是預約入住嗎？",
+                        choices: [
+                            { text: "はい、予約した〇〇です。(是的，我是預約的某某某。)", next: 1, speak: "はい、よやくした〇〇です" },
+                            { text: "チェックインをお願いします。(我要辦理入住。)", next: 1, speak: "ちょっくいんをおねがいします" }
+                        ]
+                    },
+                    {
+                        npc: "パスポートをお願いします。それから、朝食券はこちらになります。",
+                        npcZh: "請出示您的護照。另外，這是您的早餐券。",
+                        choices: [
+                            { text: "はい、どうぞ。(好的，請看。)", next: 2, speak: "はい、どうぞ" }
+                        ]
+                    },
+                    {
+                        npc: "ありがとうございます。お部屋は502号室です。エレベーターはあちらです。",
+                        npcZh: "謝謝您。房間是 502 號房。電梯在這邊。",
+                        choices: [
+                            { text: "荷物を預かってもらえますか。(請問可以幫忙寄放行李嗎？)", next: 3, speak: "にもつをあずかってもらえますか" },
+                            { text: "ありがとうございます。(非常感謝！)", next: 3, speak: "ありがとうございます" }
+                        ]
+                    },
+                    {
+                        npc: "かしこまりました。ごゆっくりどうぞ！",
+                        npcZh: "沒問題。祝您住宿愉快！",
+                        choices: [
+                            { text: "（對話結束，點此重新開始）", next: 0, speak: "ごゆっくりどうぞ" }
+                        ]
+                    }
+                ]
+            },
+            drugstore: {
+                steps: [
+                    {
+                        npc: "いらっしゃいませ！何かお探しですか。",
+                        npcZh: "歡迎光臨！請問在找什麼東西嗎？",
+                        choices: [
+                            { text: "風邪薬はどこですか。(感冒藥在哪裡？)", next: 1, speak: "かぜぐすりはどこですか" },
+                            { text: "この目薬を探しています。(我在找這款眼藥水。)", next: 1, speak: "このめぐすりをさがしています" }
+                        ]
+                    },
+                    {
+                        npc: "あちらの棚の2番目にございます。免税は5000円以上からです。",
+                        npcZh: "在那個架子的第二排。免稅金額是滿 5000 日圓起。",
+                        choices: [
+                            { text: "わかりました。免税でお願いします。(知道了。我要辦理免稅。)", next: 2, speak: "わかりました。めんぜいでおねがいします" },
+                            { text: "そのまま払います。(直接結帳就可以了。)", next: 2, speak: "そのままはらいます" }
+                        ]
+                    },
+                    {
+                        npc: "かしこまりました。レジへどうぞ！",
+                        npcZh: "好的，請到櫃檯結帳！",
+                        choices: [
+                            { text: "（對話結束，點此重新開始）", next: 0, speak: "レジへどうぞ" }
+                        ]
+                    }
+                ]
+            },
+            ticket: {
+                steps: [
+                    {
+                        npc: "いらっしゃいませ。どこまで行きますか。",
+                        npcZh: "歡迎光臨。請間要到哪裡？",
+                        choices: [
+                            { text: "新宿まで大人一枚お願いします。(到新宿，成人票一張。)", next: 1, speak: "しんじゅくまでおとないちまいおねがいします" },
+                            { text: "京都行きの新幹線のチケットをください。(請給我一張去京都的新幹線車票。)", next: 1, speak: "きょうとゆきのしんかんせのちけっとをください" }
+                        ]
+                    },
+                    {
+                        npc: "片道ですか、往復ですか。",
+                        npcZh: "請問是單程還是來回呢？",
+                        choices: [
+                            { text: "片道でお願いします。(單程謝謝。)", next: 2, speak: "かたみちでおねがいします" },
+                            { text: "往復でお願いします。(來回謝謝。)", next: 2, speak: "おうふくでおねがいします" }
+                        ]
+                    },
+                    {
+                        npc: "1,500円になります。発車は3番ホームです。",
+                        npcZh: "總共 1,500 日圓。發車月台是 3 號月台。",
+                        choices: [
+                            { text: "ありがとうございます！(非常感謝！)", next: 3, speak: "ありがとうございます" }
+                        ]
+                    },
+                    {
+                        npc: "お気をつけていってらっしゃいませ！",
+                        npcZh: "請一路順風！",
+                        choices: [
+                            { text: "（對話結束，點此重新開始）", next: 0, speak: "いってらっしゃい" }
+                        ]
+                    }
+                ]
+            },
             station: {
-                title: "🚆 車站問路",
                 steps: [
                     {
                         npc: "すみません、何かお手伝いしましょうか。",
@@ -219,7 +322,7 @@
                         ]
                     },
                     {
-                        npc: "東京駅ですねまっすぐ行って、左側にあります。",
+                        npc: "東京駅ですね。まっすぐ行って、左側にあります。",
                         npcZh: "是東京車站對吧？直走後在左手邊。",
                         choices: [
                             { text: "ありがとうございます！(非常感謝！)", next: 2, speak: "ありがとうございます" }
@@ -254,6 +357,7 @@
             stepIndex = 0;
             document.querySelectorAll('.sc-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+            document.getElementById('chatBox').innerHTML = ''; // 切換時清空舊對話
             renderChat();
         }
 
@@ -289,4 +393,3 @@
     </script>
 </body>
 </html>
-
