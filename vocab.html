@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第二階段：JLPT N5 800核心單字全面附例句網</title>
+    <title>第二階段：JLPT N5 核心單字圖卡網</title>
     <style>
         :root {
             --primary-color: #3f51b5;
@@ -65,7 +65,7 @@
             display: block;
         }
 
-        /* 主題分類大卡片（首頁主選單） */
+        /* 主題分類大卡片 */
         .category-menu-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -148,7 +148,7 @@
             margin-top: 2px;
         }
 
-        /* 彈跳視窗（點擊單字顯示例句） */
+        /* 彈跳視窗 */
         .modal {
             display: none;
             position: fixed;
@@ -283,17 +283,19 @@
             }
         }
     </style>
+    <!-- 引入獨立的完整單字資料庫 -->
+    <script src="vocab-data.js"></script>
 </head>
 <body>
 
     <header>
-        <h1>📘 JLPT N5 800核心單字全圖卡（含完整例句）</h1>
-        <p>點擊任一單字，即可查看專屬例句、聆聽單字與例句發音！</p>
+        <h1>📘 JLPT N5 核心單字圖卡與例句網</h1>
+        <p>點擊主題卡片深入學習單字與專屬例句，支援語音朗讀與隨機測驗！</p>
     </header>
 
     <div class="nav-tabs">
         <button class="tab-btn active" id="tabMenuBtn" onclick="switchMainTab('menu')">🗂️ 主題分類圖卡庫</button>
-        <button class="tab-btn" id="tabQuizBtn" onclick="switchMainTab('quiz')">✍️ 800字隨機測驗挑戰</button>
+        <button class="tab-btn" id="tabQuizBtn" onclick="switchMainTab('quiz')">✍️ 單字隨機測驗挑戰</button>
     </div>
 
     <div class="container">
@@ -327,187 +329,22 @@
     <div id="wordModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div class="modal-word" id="modalJp">りんご</div>
-            <div class="modal-romaji" id="modalRomaji">ringo</div>
-            <div class="modal-zh" id="modalZh">蘋果</div>
-            <div style="margin-top: 15px; font-size: 13px; color: #888;">🔊 點擊單字或下方例句可聽發音</div>
+            <div class="modal-word" id="modalJp"></div>
+            <div class="modal-romaji" id="modalRomaji"></div>
+            <div class="modal-zh" id="modalZh"></div>
+            <div style="margin-top: 15px; font-size: 13px; color: #888;">🔊 點擊下方例句可聽發音</div>
             <div class="sentence-box" id="modalSentenceBox" onclick="speakModalSentence()">
-                <div class="st-jp" id="modalStJp">🔊 毎日りんごを食べます。</div>
-                <div class="st-zh" id="modalStZh">每天吃蘋果。</div>
+                <div class="st-jp" id="modalStJp"></div>
+                <div class="st-zh" id="modalStZh"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // JLPT N5 完整 800 核心高頻單字資料庫（每個單字皆附帶專屬例句）
-        const vocabCategories = [
-            { id: "food", icon: "🍎", name: "飲食、蔬果與調味料", items: [
-                { jp: "りんご", read: "りんご", romaji: "ringo", zh: "蘋果", stJp: "毎日りんごを食べます。", stRead: "まいにちりんごをたべます", stZh: "每天吃蘋果。" },
-                { jp: "みかん", read: "みかん", romaji: "mikan", zh: "橘子", stJp: "みかんを二つ買いました。", stRead: "みかんをふたつかいました", stZh: "買了兩個橘子。" },
-                { jp: "バナナ", read: "ばなな", romaji: "banana", zh: "香蕉", stJp: "朝ごはんにバナナを食べます。", stRead: "あさごはんにばななをたべます", stZh: "早餐吃香蕉。" },
-                { jp: "水 (みず)", read: "みず", romaji: "mizu", zh: "水", stJp: "冷たい水を飲みます。", stRead: "つめたいみずをのみます", stZh: "喝冰水。" },
-                { jp: "お茶 (おちゃ)", read: "おちゃ", romaji: "ocha", zh: "茶", stJp: "温かいお茶をどうぞ。", stRead: "あたたかいおちゃをどうぞ", stZh: "請用熱茶。" },
-                { jp: "肉 (にく)", read: "にく", romaji: "niku", zh: "肉", stJp: "牛肉と豚肉を食べます。", stRead: "ぎゅうにくとうぶたにくをたべます", stZh: "吃牛肉和豬肉。" },
-                { jp: "魚 (さかな)", read: "さかな", romaji: "sakana", zh: "魚", stJp: "川で魚を釣ります。", stRead: "かわでさかなをつります", stZh: "在河裡釣魚。" },
-                { jp: "卵 (たまご)", read: "たまご", romaji: "tamago", zh: "雞蛋", stJp: "卵を朝食に使います。", stRead: "たまごをちょうしょくにつかいます", stZh: "把雞蛋用在早餐上。" },
-                { jp: "ご飯 (ごはん)", read: "ごはん", romaji: "gohan", zh: "白飯/餐點", stJp: "ご飯をたくさん食べます。", stRead: "ごはんをたくさんたべます", stZh: "吃很多白飯。" },
-                { jp: "パン", read: "ぱん", romaji: "pan", zh: "麵包", stJp: "パンと牛乳を買います。", stRead: "ぱんときゅうにゅうをかいめます", stZh: "買麵包和牛奶。" },
-                { jp: "野菜 (やさい)", read: "やさい", romaji: "yasai", zh: "蔬菜", stJp: "新鮮な野菜を食べます。", stRead: "しんせんなやさいをたべます", stZh: "吃新鮮的蔬菜。" },
-                { jp: "果物 (くだもの)", read: "くだもの", romaji: "kudamono", zh: "水果", stJp: "果物が好きです。", stRead: "くだものがすきです", stZh: "我喜歡水果。" },
-                { jp: "牛乳 (ぎゅうにゅう)", read: "ぎゅうにゅう", romaji: "gyuunyuu", zh: "牛乳", stJp: "毎朝牛乳を飲みます。", stRead: "まいあさぎゅうにゅうをのみます", stZh: "每天早上喝牛奶。" },
-                { jp: "珈琲 (コーヒー)", read: "こーひー", romaji: "koohii", zh: "咖啡", stJp: "コーヒーに砂糖を入れます。", stRead: "こーひーにさとうをいれます", stZh: "咖啡裡加糖。" },
-                { jp: "紅茶 (こうちゃ)", read: "こうちゃ", romaji: "koucha", zh: "紅茶", stJp: "午後ティーに紅茶を飲みます。", stRead: "ごごてぃーにこうちゃをのみます", stZh: "下午茶喝紅茶。" },
-                { jp: "酒 (さけ)", read: "さけ", romaji: "sake", zh: "酒", stJp: "父はお酒が好きです。", stRead: "ちちはおさけがすきです", stZh: "我父親喜歡酒。" },
-                { jp: "食堂 (しょくどう)", read: "しょくどう", romaji: "shokudou", zh: "食堂/餐廳", stJp: "学食で昼ご飯を食べます。", stRead: "がくしょくでひるごはんをたべます", stZh: "在學生食堂吃午餐。" },
-                { jp: "料理 (りょうり)", read: "りょうり", romaji: "ryouri", zh: "料理", stJp: "母の料理は美味しいです。", stRead: "ははのりょうりはおいしいです", stZh: "媽媽做的料理很好吃。" },
-                { jp: "塩 (しお)", read: "しお", romaji: "shio", zh: "鹽", stJp: "スープに塩を少々入れます。", stRead: "すーぷにしおをしょうしょういれます", stZh: "湯裡加少許鹽巴。" },
-                { jp: "砂糖 (さとう)", read: "さとう", romaji: "satou", zh: "糖", stJp: "砂糖は甘いです。", stRead: "さとうはあまいです", stZh: "糖是甜的。" },
-                { jp: "醤油 (しょうゆ)", read: "しょうゆ", romaji: "shouyu", zh: "醬油", stJp: "刺身に醤油をつけます。", stRead: "さしみにしょうゆをつけます", stZh: "生魚片沾醬油。" },
-                { jp: "朝ご飯 (あさごはん)", read: "あさごはん", romaji: "asagohan", zh: "早餐", stJp: "朝ご飯はパンです。", stRead: "あさごはんはぱんです", stZh: "早餐是麵包。" },
-                { jp: "昼ご飯 (ひるごはん)", read: "ひるごはん", romaji: "hirugohan", zh: "午餐", stJp: "12時に昼ご飯を食べます。", stRead: "じゅうにじにひるごはんをたべます", stZh: "12點吃午餐。" },
-                { jp: "晩ご飯 (ばんごはん)", read: "ばんごはん", romaji: "bangohan", zh: "晚餐", stJp: "今夜の晩ご飯は何ですか。", stRead: "こんやのばんごはんはなんですか", stZh: "今晚的晚餐是什麼？" },
-                { jp: "牛肉 (ぎゅうにく)", read: "ぎゅうにく", romaji: "gyuuniku", zh: "牛肉", stJp: "すき焼きに牛肉を使います。", stRead: "すきやきにぎゅうにくをつかいます", stZh: "壽喜燒使用牛肉。" },
-                { jp: "豚肉 (ぶたにく)", read: "ぶたにく", romaji: "butaniku", zh: "豬肉", stJp: "豚肉の生姜焼きを作ります。", stRead: "ぶたにくのしょうがやきをつくります", stZh: "做生薑燒豬肉。" },
-                { jp: "鶏肉 (とりにく)", read: "とりにく", romaji: "toriniku", zh: "雞肉", stJp: "鶏肉を唐揚げにします。", stRead: "とりにくをからあげにします", stZh: "將雞肉做成炸雞。" },
-                { jp: "ビール", read: "びーる", romaji: "biiru", zh: "啤酒", stJp: "仕事の後にビールを飲みます。", stRead: "しごとのあとにびーるをのみます", stZh: "工作後喝啤酒。" },
-                { jp: "ジュース", read: "じゅーす", romaji: "juusu", zh: "果汁", stJp: "子供はジュースが好きです。", stRead: "こどもはじゅーすがすきです", stZh: "小孩子喜歡果汁。" },
-                { jp: "アイスクリーム", read: "あいすくりーむ", romaji: "aisukuriimu", zh: "冰淇淋", stJp: "夏にアイスクリームを食べます。", stRead: "なつにあいすくりーむをたべます", stZh: "夏天吃冰淇淋。" }
-            ]},
-            { id: "place", icon: "🏠", name: "居家、建築與生活場所", items: [
-                { jp: "家 (いえ)", read: "いえ", romaji: "ie", zh: "家", stJp: "私のお家は大きいです。", stRead: "わたしのおうちはおおきいです", stZh: "我的家很大。" },
-                { jp: "学校 (がっこう)", read: "がっこう", romaji: "gakkou", zh: "學校", stJp: "毎日学校へ行きます。", stRead: "まいにちがっこうへいきます", stZh: "每天去學校。" },
-                { jp: "駅 (えき)", read: "えき", romaji: "eki", zh: "車站", stJp: "駅で友達を待ちます。", stRead: "えきでともだちをまちます", stZh: "在車站等朋友。" },
-                { jp: "本 (ほん)", read: "ほん", romaji: "hon", zh: "書本", stJp: "本を読書します。", stRead: "ほんをどくしょします", stZh: "閱讀書本。" },
-                { jp: "車 (くるま)", read: "くるま", romaji: "kuruma", zh: "汽車", stJp: "赤い車を運転します。", stRead: "あかいくるまをつうてんします", stZh: "開紅色的車。" },
-                { jp: "店 (みせ)", read: "みせ", romaji: "mise", zh: "店鋪", stJp: "この店は安いです。", stRead: "このみせはやすいです", stZh: "這家店很便宜。" },
-                { jp: "病院 (びょういん)", read: "びょういん", romaji: "byouin", zh: "醫院", stJp: "風邪で病院に行きます。", stRead: "かぜでびょういんにいきます", stZh: "因為感冒去醫院。" },
-                { jp: "銀行 (ぎんこう)", read: "ぎんこう", romaji: "ginkou", zh: "銀行", stJp: "銀行でお金を下ろします。", stRead: "ぎんこうでおかねをおろします", stZh: "在銀行領錢。" },
-                { jp: "部屋 (へや)", read: "へや", romaji: "heya", zh: "房間", stJp: "私の部屋はきれいです。", stRead: "わたしのへやはきれいです", stZh: "我的房間很乾淨。" },
-                { jp: "机 (つくえ)", read: "つくえ", romaji: "tsukue", zh: "桌子", stJp: "机の上に本があります。", stRead: "つくえのうえにほんがあります", stZh: "桌上有書本。" },
-                { jp: "椅子 (いす)", read: "いす", romaji: "isu", zh: "椅子", stJp: "椅子に座ってください。", stRead: "いすにすわってください", stZh: "請坐在椅子上。" },
-                { jp: "窓 (まど)", read: "まど", romaji: "mado", zh: "窗戶", stJp: "窓を開けてください。", stRead: "まどをあけてください", stZh: "請打開窗戶。" },
-                { jp: "扉 (どあ / ドア)", read: "どあ", romaji: "doa", zh: "門", stJp: "ドアを閉めてください。", stRead: "どあをしめてください", stZh: "請關門。" },
-                { jp: "傘 (かさ)", read: "かさ", romaji: "kasa", zh: "雨傘", stJp: "傘を持っていきます。", stRead: "かさをもっていきます", stZh: "帶著雨傘去。" },
-                { jp: "鞄 (かばん)", read: "かばん", romaji: "kaban", zh: "包包", stJp: "新しい鞄を買いました。", stRead: "あたらしいかばんをかいました", stZh: "買了新包包。" },
-                { jp: "図書館 (としょかん)", read: "としょかん", romaji: "toshokan", zh: "圖書館", stJp: "図書館で勉強します。", stRead: "としょかんでべんきょうします", stZh: "在圖書館讀書。" },
-                { jp: "郵便局 (ゆうびんきょく)", read: "ゆうびんきょく", romaji: "yuubinkyoku", zh: "郵局", stJp: "手紙を郵便局に出します。", stRead: "てがみをゆうびんきょくに出します", stZh: "把信件拿到郵局寄。" },
-                { jp: "公園 (こうえん)", read: "こうえん", romaji: "kouen", zh: "公園", stJp: "公園を散歩します。", stRead: "こうえんをさんぽします", stZh: "在公園散步。" },
-                { jp: "映画館 (えいがかん)", read: "えいがかん", romaji: "eigakan", zh: "電影院", stJp: "週末に映画館へ行きます。", stRead: "しゅうまつにえいがかんへいきます", stZh: "週末去電影院。" },
-                { jp: "建物 (たてもの)", read: "たてもの", romaji: "tatemono", zh: "建築物", stJp: "東京には高い建物が多いです。", stRead: "とうきょうにはたかいたてものがおおいです", stZh: "東京有很多高大的建築物。" },
-                { jp: "階段 (かいだん)", read: "かいだん", romaji: "kaidan", zh: "樓梯", stJp: "階段を上ります。", stRead: "かいだんをのぼります", stZh: "爬樓梯。" },
-                { jp: "庭 (にわ)", read: "にわ", romaji: "niwa", zh: "庭院", stJp: "庭に花が咲いています。", stRead: "にわにはながさいています", stZh: "庭院裡花朵盛開著。" },
-                { jp: "池 (いけ)", read: "いけ", romaji: "ike", zh: "池塘", stJp: "池に鯉がいます。", stRead: "いけにこいがいます", stZh: "池塘裡有鯉魚。" },
-                { jp: "橋 (はし)", read: "はし", romaji: "hashi", zh: "橋", stJp: "古い橋を渡ります。", stRead: "ふるいはしをわたります", stZh: "過古老的橋。" },
-                { jp: "道 (みち)", read: "みち", romaji: "michi", zh: "道路", stJp: "道に迷いました。", stRead: "みちにまよいました", stZh: "迷路了。" },
-                { jp: "町 (まち)", read: "まち", romaji: "machi", zh: "城鎮", stJp: "この町は静かです。", stRead: "このまちはしずかです", stZh: "這個城鎮很安靜。" },
-                { jp: "国 (くに)", read: "くに", romaji: "kuni", zh: "國家", stJp: "私の国は日本です。", stRead: "わたしのくにはにほんです", stZh: "我的國家是日本。" },
-                { jp: "交番 (こうばん)", read: "こうばん", romaji: "kouban", zh: "派出所", stJp: "道を聞きに交番へ行きます。", stRead: "みちをききにこうばんへいきます", stZh: "去派出所問路。" },
-                { jp: "寝室 (しんしつ)", read: "しんしつ", romaji: "shinshitsu", zh: "臥室", stJp: "寝室で休みます。", stRead: "しんしつでやすみます", stZh: "在臥室休息。" },
-                { jp: "台所 (だいどころ)", read: "だいどころ", romaji: "daidokoro", zh: "廚房", stJp: "母は台所にいます。", stRead: "はははだいどころにいます", stZh: "媽媽在廚房裡。" }
-            ]},
-            { id: "people", icon: "👥", name: "人物、家庭與職業身分", items: [
-                { jp: "私 (わたし)", read: "わたし", romaji: "watashi", zh: "我", stJp: "私は日本人です。", stRead: "わたしはにほんじんです", stZh: "我是日本人。" },
-                { jp: "友達 (ともだち)", read: "ともだち", romaji: "tomodachi", zh: "朋友", stJp: "友達と映画を見ます。", stRead: "ともだちとえいがをみます", stZh: "和朋友看電影。" },
-                { jp: "先生 (せんせい)", read: "せんせい", romaji: "sensei", zh: "老師", stJp: "先生に質問します。", stRead: "せんせいにしつもんします", stZh: "向老師提問。" },
-                { jp: "学生 (がくせい)", read: "がくせい", romaji: "gakusei", zh: "學生", stJp: "彼は大学の学生です。", stRead: "かれだいがくのがくせいです", stZh: "他是大學生。" },
-                { jp: "父 (ちち)", read: "ちち", romaji: "chichi", zh: "父親(自稱)", stJp: "父は会社員です。", stRead: "ちちはかいしゃいんです", stZh: "我父親是公司職員。" },
-                { jp: "母 (はは)", read: "はは", romaji: "haha", zh: "母親(自稱)", stJp: "母は料理が得意です。", stRead: "はははりょうりがとくいです", stZh: "我母親擅長料理。" },
-                { jp: "兄 (あに)", read: "あに", romaji: "ani", zh: "哥哥(自稱)", stJp: "兄は東京に住んでいます。", stRead: "あにはとうきょうにすんでいます", stZh: "我哥哥住在東京。" },
-                { jp: "姉 (あね)", read: "あね", romaji: "ane", zh: "姐姐(自稱)", stJp: "姉は医者です。", stRead: "あねはいしゃです", stZh: "我姐姐是醫生。" },
-                { jp: "弟 (おとうと)", read: "おとうと", romaji: "otouto", zh: "弟弟", stJp: "弟はサッカーが好きです。", stRead: "おとうとはさっかーがすきです", stZh: "弟弟喜歡足球。" },
-                { jp: "妹 (いもうと)", read: "いもうと", romaji: "imouto", zh: "妹妹", stJp: "妹は学生です。", stRead: "いもうとはがくせいです", stZh: "妹妹是學生。" },
-                { jp: "子供 (こども)", read: "こども", romaji: "kodomo", zh: "小孩", stJp: "公園で子供が遊んでいます。", stRead: "こうえんでこどもがと遊んでいます", stZh: "小孩子正在公園玩耍。" },
-                { jp: "人 (ひと)", read: "ひと", romaji: "hito", zh: "人", stJp: "あそこに人がいます。", stRead: "あそこにひとがいます", stZh: "那裡有人。" },
-                { jp: "父親 (おとうさん)", read: "おとうさん", romaji: "otousan", zh: "父親(尊稱)", stJp: "お父さんはお元気ですか。", stRead: "おとうさんはおげんきですか", stZh: "令尊身體好嗎？" },
-                { jp: "母親 (おかあさん)", read: "おかあさん", romaji: "okaasan", zh: "母親(尊稱)", stJp: "お母さんに花を贈ります。", stRead: "おかあさんにはなをおくります", stZh: "送花給媽媽。" },
-                { jp: "家族 (かぞく)", read: "かぞく", romaji: "kazoku", zh: "家人", stJp: "私の家族は4人です。", stRead: "わたしかぞくはよにんです", stZh: "我的家人有四位。" },
-                { jp: "医者 (いしゃ)", read: "いしゃ", romaji: "isha", zh: "醫師", stJp: "兄は医者になりました。", stRead: "あにはいしゃになりました", stZh: "我哥哥成為了醫生。" },
-                { jp: "会社員 (かいしゃいん)", read: "かいしゃいん", romaji: "kaishain", zh: "公司職員", stJp: "彼はまじめな会社員です。", stRead: "かれはまじめなかいしゃいんです", stZh: "他是個認真的公司職員。" },
-                { jp: "警察官 (けいさつかん)", read: "けいさつかん", romaji: "keisatsukan", zh: "警察", stJp: "警察官に道を尋ねます。", stRead: "けいさつかんにみちをたずねます", stZh: "向警察問路。" },
-                { jp: "歌手 (かしゅ)", read: "かしゅ", romaji: "kashu", zh: "歌手", stJp: "彼女は有名な歌手です。", stRead: "かのじょはゆうめいなかしゅです", stZh: "她是著名的歌手。" },
-                { jp: "作家 (さっか)", read: "さっか", romaji: "sakka", zh: "作家", stJp: "夏目漱石は日本の作家です。", stRead: "なつめそうせきはにほんのさっかです", stZh: "夏目漱石是日本作家。" }
-            ]},
-            { id: "time", icon: "⏰", name: "時間、星期、月份與季節", items: [
-                { jp: "今日 (きょう)", read: "きょう", romaji: "kyou", zh: "今天", stJp: "今日はいい天気です。", stRead: "きょうはいいてんきです", stZh: "今天是好天氣。" },
-                { jp: "明日 (あした)", read: "あした", romaji: "ashita", zh: "明天", stJp: "明日は日曜日です。", stRead: "あしたはにちようびです", stZh: "明天是星期日。" },
-                { jp: "昨日 (きのう)", read: "きのう", romaji: "kinou", zh: "昨天", stJp: "昨日は雨でした。", stRead: "きのうはあめでした", stZh: "昨天下雨了。" },
-                { jp: "時間 (じかん)", read: "じかん", romaji: "jikan", zh: "時間", stJp: "時間がありません。", stRead: "じかんがありません", stZh: "沒有時間。" },
-                { jp: "今 (いま)", read: "いま", romaji: "ima", zh: "現在", stJp: "今何時ですか。", stRead: "いまなんじですか", stZh: "現在幾點？" },
-                { jp: "毎日 (まいにち)", read: "まいにち", romaji: "mainichi", zh: "每天", stJp: "毎日漢字を練習します。", stRead: "まいにちかんじをれんしゅうします", stZh: "每天練習漢字。" },
-                { jp: "月曜日 (げつようび)", read: "げつようび", romaji: "getsuyoubi", zh: "星期一", stJp: "月曜日から仕事です。", stRead: "げつようびからしごとです", stZh: "從星期一開始工作。" },
-                { jp: "火曜日 (かようび)", read: "かようび", romaji: "kayoubi", zh: "星期二", stJp: "火曜日に会議があります。", stRead: "かようびにかいぎがあります", stZh: "星期二有會議。" },
-                { jp: "水曜日 (すいようび)", read: "すいようび", romaji: "suiyoubi", zh: "星期三", stJp: "水曜日は図書館が休みです。", stRead: "すいようびはとしょかんがやすみです", stZh: "星期三圖書館休息。" },
-                { jp: "今年 (ことし)", read: "ことし", romaji: "kotoshi", zh: "今年", stJp: "今年は日本へ行きます。", stRead: "ことしはにほんへいきます", stZh: "今年要去日本。" },
-                { jp: "去年 (きょねん)", read: "きょねん", romaji: "kyonen", zh: "去年", stJp: "去年日本語を始めました。", stRead: "きょねんにほんごをはじめました", stZh: "去年開始學日文。" },
-                { jp: "来年 (らいねん)", read: "らいねん", romaji: "rainen", zh: "明年", stJp: "来年大学を卒業します。", stRead: "らいねんだいがくをそつぎょうします", stZh: "明年大學畢業。" },
-                { jp: "朝 (あさ)", read: "あさ", romaji: "asa", zh: "早上", stJp: "毎朝ジョギングをします。", stRead: "まいあさじょぎんぐをします", stZh: "每天早上慢跑。" },
-                { jp: "昼 (ひる)", read: "ひる", romaji: "hiru", zh: "白天", stJp: "昼は温かいです。", stRead: "ひるはあたたかいです", stZh: "白天很溫暖。" },
-                { jp: "晩 (ばん)", read: "ばん", romaji: "ban", zh: "晚上", stJp: "晩にテレビを見ます。", stRead: "ばんにてれびをみます", stZh: "晚上看電視。" }
-            ]},
-            { id: "verb", icon: "🚀", name: "核心高頻動詞 (N5 必備大集合)", items: [
-                { jp: "行く (いく)", read: "いく", romaji: "iku", zh: "去/前往", stJp: "明日東京へ行きます。", stRead: "あしたとうきょうへいきます", stZh: "明天去東京。" },
-                { jp: "来る (くる)", read: "くる", romaji: "kuru", zh: "來", stJp: "友人が家に来ました。", stRead: "ゆうじんがいえにきました", stZh: "朋友來家裡了。" },
-                { jp: "帰る (かえる)", read: "かえる", romaji: "kaeru", zh: "回去", stJp: "夕方うちに帰ります。", stRead: "ゆうがたうちにかえります", stZh: "傍晚回家。" },
-                { jp: "食べる (たべる)", read: "たべる", romaji: "taberu", zh: "吃", stJp: "果物を食べます。", stRead: "くだものをたべます", stZh: "吃水果。" },
-                { jp: "飲む (のむ)", read: "のむ", romaji: "nomu", zh: "喝", stJp: "水を一杯飲みます。", stRead: "みずをいっぱいいのみます", stZh: "喝一杯水。" },
-                { jp: "見る (みる)", read: "みる", romaji: "miru", zh: "看", stJp: "夜空の星を見ます。", stRead: "よぞらのほしをみます", stZh: "看夜空中的星星。" },
-                { jp: "聞く (きく)", read: "きく", romaji: "kiku", zh: "聽/問", stJp: "音楽を聞きます。", stRead: "おんがくをききます", stZh: "聽音樂。" },
-                { jp: "読む (よむ)", read: "よむ", romaji: "yomu", zh: "讀書", stJp: "毎日新聞を読みます。", stRead: "まいにちしんぶんをよみます", stZh: "每天看報紙。" },
-                { jp: "書く (かく)", read: "かく", romaji: "kaku", zh: "寫", stJp: "ノートに字を書きます。", stRead: "のーとにじをかきます", stZh: "在筆記本上寫字。" },
-                { jp: "買う (かう)", read: "かう", romaji: "kau", zh: "買", stJp: "スーパーで野菜を買います。", stRead: "すーぱーでやさいをかいます", stZh: "在超市買蔬菜。" },
-                { jp: "会う (あう)", read: "あう", romaji: "au", zh: "見面", stJp: "明日先生に会います。", stRead: "あしたせんせいにあいます", stZh: "明天跟老師見面。" },
-                { jp: "話す (はなす)", read: "はなす", romaji: "hanasu", zh: "說話", stJp: "日本語で話します。", stRead: "にほんごではなします", stZh: "用日文說話。" },
-                { jp: "寝る (ねる)", read: "ねる", romaji: "neru", zh: "睡覺", stJp: "11時に寝ます。", stRead: "じゅういちじにねます", stZh: "11點睡覺。" },
-                { jp: "起きる (おきる)", read: "おきる", romaji: "okiru", zh: "起床", stJp: "毎朝6時に起きます。", stRead: "まいあさろくじにおきます", stZh: "每天早上6點起床。" },
-                { jp: "勉強する (べんきょうする)", read: "べんきょうする", romaji: "benkyousuru", zh: "學習", stJp: "日本語を勉強します。", stRead: "にほんごをべんきょうします", stZh: "學習日文。" }
-            ]},
-            { id: "adj", icon: "✨", name: "形容詞（い形與な形）", items: [
-                { jp: "大きい (おおきい)", read: "おおきい", romaji: "ookii", zh: "大的", stJp: "これは大きい箱です。", stRead: "これはおおきいはこです", stZh: "這是大箱子。" },
-                { jp: "小さい (ちいさい)", read: "ちいさい", romaji: "chiisai", zh: "小的", stJp: "犬は小さい動物です。", stRead: "いぬはちいさいどうぶつです", stZh: "狗是小動物。" },
-                { jp: "美味しい (おいしい)", read: "おいしい", romaji: "oishii", zh: "好吃的", stJp: "この寿司は美味しいです。", stRead: "このすしはおいしいです", stZh: "這壽司很好吃。" },
-                { jp: "高い (たかい)", read: "たかい", romaji: "takai", zh: "高/貴的", stJp: "この時計は高いです。", stRead: "このとけいはたかいです", stZh: "這手錶很貴。" },
-                { jp: "安い (やすい)", read: "やすい", romaji: "yasui", zh: "便宜的", stJp: "この服は安いです。", stRead: "このふくはやすいです", stZh: "這衣服很便宜。" },
-                { jp: "新しい (あたらしい)", read: "あたらしい", romaji: "atarashii", zh: "新的", stJp: "新しい靴を買いました。", stRead: "あたらしいくつをかいました", stZh: "買了新鞋子。" },
-                { jp: "古い (ふるい)", read: "ふるい", romaji: "furui", zh: "舊的", stJp: "これは古いお寺です。", stRead: "これはふるいおてらです", stZh: "這是一座古老的寺廟。" },
-                { jp: "暑い (あつい)", read: "あつい", romaji: "atsui", zh: "熱的", stJp: "今日の夏は暑いです。", stRead: "きょうのなつはあついです", stZh: "今年的夏天很熱。" },
-                { jp: "寒い (さむい)", read: "さむい", romaji: "samui", zh: "冷的", stJp: "冬はとても寒いです。", stRead: "ふゆはとてもさむいです", stZh: "冬天非常冷。" },
-                { jp: "綺麗 (きれい)", read: "きれい", romaji: "kirei", zh: "漂亮/乾淨", stJp: "彼女は綺麗な人です。", stRead: "かのじょはきれいなひとです", stZh: "她是个漂亮的人。" },
-                { jp: "静か (しずか)", read: "しずか", romaji: "shizuka", zh: "安靜的", stJp: "夜の公園は静かです。", stRead: "よるのこうえんはしずかです", stZh: "夜晚的公園很安靜。" },
-                { jp: "元気 (げんき)", read: "げんき", romaji: "genki", zh: "有精神的", stJp: "祖父母は元気です。", stRead: "そふぼはげんきです", stZh: "爺爺奶奶很有精神。" },
-                { jp: "好き (すき)", read: "すき", romaji: "suki", zh: "喜歡的", stJp: "私は猫が好きです。", stRead: "わたしはねこがすきです", stZh: "我喜歡貓。" },
-                { jp: "嫌い (きらい)", read: "きらい", romaji: "kirai", zh: "討厭的", stJp: "野菜が嫌いです。", stRead: "やさいがきらいです", stZh: "討厭蔬菜。" },
-                { jp: "上手 (じょうず)", read: "じょうず", romaji: "jouzu", zh: "擅長的", stJp: "彼は絵が上手です。", stRead: "かれはえがじょうずです", stZh: "他很擅長畫畫。" }
-            ]},
-            { id: "nature", icon: "🌸", name: "自然、動物、物品與外來語", items: [
-                { jp: "犬 (いぬ)", read: "いぬ", romaji: "inu", zh: "狗", stJp: "庭で犬が走ります。", stRead: "にわでいぬがはしります", stZh: "狗在庭院裡跑步。" },
-                { jp: "猫 (ねこ)", read: "ねこ", romaji: "neko", zh: "貓", stJp: "猫が昼寝をしています。", stRead: "ねこがひるねをしています", stZh: "貓正在睡午覺。" },
-                { jp: "鳥 (とり)", read: "とり", romaji: "tori", zh: "鳥", stJp: "空で鳥が飛んでいます。", stRead: "そらでとりがとんでいます", stZh: "鳥在空中飛翔。" },
-                { jp: "花 (はな)", read: "はな", romaji: "hana", zh: "花", stJp: "赤い花をプレゼントします。", stRead: "あかいはなをぷれぜんとします", stZh: "送紅色的花當禮物。" },
-                { jp: "木 (き)", read: "き", romaji: "ki", zh: "樹木", stJp: "庭に大きな木があります。", stRead: "にわにおおきいきがあります", stZh: "庭院裡有大樹。" },
-                { jp: "山 (やま)", read: "やま", romaji: "yama", zh: "山", stJp: "週末に山に登ります。", stRead: "しゅうまつにやまにのぼります", stZh: "週末去爬山。" },
-                { jp: "海 (うみ)", read: "うみ", romaji: "umi", zh: "海", stJp: "夏に海で泳ぎます。", stRead: "なつにうみでおよぎます", stZh: "夏天在海裡游泳。" },
-                { jp: "雨 (あめ)", read: "あめ", romaji: "ame", zh: "雨", stJp: "午後から雨が降ります。", stRead: "ごごからあめがふります", stZh: "下午開始下雨。" },
-                { jp: "雪 (ゆき)", read: "ゆき", romaji: "yuki", zh: "雪", stJp: "北海道は雪が多いです。", stRead: "ほっかいどうはゆきがおおいです", stZh: "北海道雪很多。" },
-                { jp: "テレビ", read: "てれび", romaji: "terebi", zh: "電視", stJp: "夜テレビニュースを見ます。", stRead: "よるてれびにゅーすをみます", stZh: "晚上看電視新聞。" }
-            ]},
-            { id: "adverb", icon: "⚡", name: "副詞、代名詞與日常慣用語", items: [
-                { jp: "私 (わたし)", read: "わたし", romaji: "watashi", zh: "我", stJp: "私にお任せください。", stRead: "わたしにおまかせください", stZh: "請交給我吧。" },
-                { jp: "あなた", read: "あなた", romaji: "anata", zh: "你", stJp: "あなたはどう思いますか。", stRead: "あなたはどうおもいますか", stZh: "你是怎麼想的呢？" },
-                { jp: "これ", read: "これ", romaji: "kore", zh: "這個", stJp: "これはいくらですか。", stRead: "これはいくらですか", stZh: "這個多少錢？" },
-                { jp: "それ", read: "それ", romaji: "sore", zh: "那個", stJp: "それは私のペンです。", stRead: "それは私のぺんです", stZh: "那是我的筆。" },
-                { jp: "あれ", read: "あれ", romaji: "are", zh: "那遠處的", stJp: "あれは富士山です。", stRead: "あれはふじさんです", stZh: "那是富士山。" },
-                { jp: "ここ", read: "ここ", romaji: "koko", zh: "這裡", stJp: "ここは図書館です。", stRead: "ここはとしょかんです", stZh: "這裡是圖書館。" },
-                { jp: "そこ", read: "そこ", romaji: "soko", zh: "那裡", stJp: "そこに座ってください。", stRead: "そこにすわってください", stZh: "請坐在那裡。" },
-                { jp: "はい", read: "はい", romaji: "hai", zh: "是的", stJp: "はい、わかりました。", stRead: "はい、わかりました", stZh: "好的，我知道了。" },
-                { jp: "いいえ", read: "いいえ", romaji: "iie", zh: "不是", stJp: "いいえ、違います。", stRead: "いいえ、ちがいます", stZh: "不，不是這樣的。" },
-                { jp: "とても", read: "とても", romaji: "totemo", zh: "非常", stJp: "この映画はとても面白いです。", stRead: "このえいがはとてもおもしろいです", stZh: "這部電影非常有趣。" }
-            ]}
-        ];
-
         const allVocab = vocabCategories.flatMap(cat => cat.items);
 
         // 動態計算並顯示總單字量
-        document.getElementById('totalCategoryCount').innerText = `📊 目前資料庫共收錄 ${allVocab.length} 個 JLPT N5 核心單字（皆附帶真人例句），請選擇主題：`;
+        document.getElementById('totalCategoryCount').innerText = `📊 目前資料庫共收錄 ${allVocab.length} 個 JLPT N5 核心單字與例句，請選擇主題：`;
 
         // 語音播放函數
         function speak(text) {
@@ -552,7 +389,6 @@
                     <div class="vocab-zh">${item.zh}</div>
                     <div class="vocab-romaji">${item.romaji}</div>
                 `;
-                // 點擊卡片時，開啟彈跳視窗展示例句並朗讀單字
                 card.onclick = () => {
                     speak(item.read);
                     showWordModal(item);
@@ -585,7 +421,6 @@
             }
         }
 
-        // 點擊視窗外部也可以關閉
         window.onclick = function(event) {
             const modal = document.getElementById('wordModal');
             if (event.target === modal) {
@@ -593,13 +428,11 @@
             }
         }
 
-        // 從分類詳細頁返回主選單
         function backToMenu() {
             document.getElementById('category-detail-section').classList.remove('active');
             document.getElementById('main-menu-section').classList.add('active');
         }
 
-        // 切換主頁籤（選單 vs 隨機測驗）
         function switchMainTab(tabName) {
             document.querySelectorAll('.container > .section').forEach(sec => sec.classList.remove('active'));
             document.getElementById('tabMenuBtn').classList.remove('active');
@@ -615,7 +448,6 @@
             }
         }
 
-        // 測驗變數
         let currentScore = 0;
         let currentItem = {};
         let quizMode = 1;
@@ -685,7 +517,7 @@
                 btnElement.style.background = '#f8d7da';
                 allBtns.forEach(b => {
                     if (b.innerText === correctAns) {
-                        b.style.background = '#d4edda';
+                        b.style.background = '#c8e6c9';
                     }
                 });
             }
