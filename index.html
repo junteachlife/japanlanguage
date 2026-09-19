@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第一階段：日文 50 音互動學習網</title>
+    <title>第一階段：日文 50 音分行與雙向互動學習網</title>
     <style>
         :root {
             --primary-color: #ff5252;
@@ -50,7 +50,7 @@
         }
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             background: var(--card-bg);
             padding: 25px;
             border-radius: 12px;
@@ -62,8 +62,20 @@
         .section.active {
             display: block;
         }
-        /* 五十音表格樣式 */
-        .grid-table {
+        
+        /* 分行表格樣式 */
+        .row-group {
+            margin-bottom: 25px;
+        }
+        .row-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ffcccc;
+            padding-bottom: 5px;
+        }
+        .grid-row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
@@ -72,7 +84,7 @@
             background: #fff5f5;
             border: 2px solid #ffcccc;
             border-radius: 8px;
-            padding: 15px 5px;
+            padding: 12px 5px;
             text-align: center;
             cursor: pointer;
             transition: transform 0.2s, background 0.2s;
@@ -81,22 +93,23 @@
             background: #ffe6e6;
             transform: translateY(-3px);
         }
-        .kana-char {
-            font-size: 24px;
+        .kana-chars {
+            font-size: 20px;
             font-weight: bold;
             color: #d32f2f;
         }
         .kana-romaji {
             font-size: 12px;
             color: #666;
-            margin-top: 5px;
+            margin-top: 4px;
         }
+
         /* 測驗區樣式 */
         .quiz-box {
             text-align: center;
         }
         .quiz-question {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: bold;
             margin: 20px 0;
             color: var(--primary-color);
@@ -109,7 +122,7 @@
         }
         .option-btn {
             padding: 15px;
-            font-size: 18px;
+            font-size: 20px;
             border: 2px solid #ddd;
             border-radius: 8px;
             background: white;
@@ -142,33 +155,39 @@
             cursor: pointer;
             display: none;
         }
+
+        @media (max-width: 600px) {
+            .grid-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🌸 日文 50 音互動學習網</h1>
-        <p>點擊字卡聽發音，或切換到測驗區自我挑戰！</p>
+        <h1>🌸 日文 50 音分行與雙向互動學習網</h1>
+        <p>平片假名對照、分行練習，以及雙向隨機挑戰！</p>
     </header>
 
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('table')">📖 50音清音表</button>
-        <button class="tab-btn" onclick="switchTab('quiz')">✍️ 互動測驗挑戰</button>
+        <button class="tab-btn active" onclick="switchTab('table')">📖 50音分行對照表</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">✍️ 雙向互動測驗</button>
     </div>
 
     <div class="container">
-        <!-- 第一部分：50音表 -->
+        <!-- 第一部分：50音分行表 -->
         <div id="table-section" class="section active">
-            <h3>點擊下方字卡即可聆聽日語發音：</h3>
-            <div class="grid-table" id="kanaGrid"></div>
+            <h3>點擊字卡即可聆聽日語發音（格式：平假名 / 片假名）：</h3>
+            <div id="kanaRowsContainer"></div>
         </div>
 
-        <!-- 第二部分：測驗區 -->
+        <!-- 第二部分：雙向測驗區 -->
         <div id="quiz-section" class="section">
             <div class="quiz-box">
                 <div class="score-board">目前得分：<span id="score">0</span> 分</div>
-                <p>請問這個假名怎麼唸？</p>
-                <div class="quiz-question" id="quizQuestion">あ</div>
+                <div id="quizPrompt" style="font-size: 16px; color: #666;"></div>
+                <div class="quiz-question" id="quizQuestion">あ/ア</div>
                 <div class="options-grid" id="optionsGrid"></div>
                 <div class="feedback" id="feedback"></div>
                 <button class="next-btn" id="nextBtn" onclick="nextQuizQuestion()">下一題</button>
@@ -177,48 +196,85 @@
     </div>
 
     <script>
-        // 50音基礎資料（清音）
-        const kanaData = [
-            {h: "あ", r: "a"}, {h: "い", r: "i"}, {h: "う", r: "u"}, {h: "え", r: "e"}, {h: "お", r: "o"},
-            {h: "か", r: "ka"}, {h: "き", r: "ki"}, {h: "く", r: "ku"}, {h: "け", r: "ke"}, {h: "こ", r: "ko"},
-            {h: "さ", r: "sa"}, {h: "し", r: "shi"}, {h: "す", r: "su"}, {h: "せ", r: "se"}, {h: "そ", r: "so"},
-            {h: "た", r: "ta"}, {h: "ち", r: "chi"}, {h: "つ", r: "tsu"}, {h: "て", r: "te"}, {h: "と", r: "to"},
-            {h: "な", r: "na"}, {h: "に", r: "ni"}, {h: "ぬ", r: "nu"}, {h: "ね", r: "ne"}, {h: "の", r: "no"},
-            {h: "は", r: "ha"}, {h: "ひ", r: "hi"}, {h: "ふ", r: "fu"}, {h: "へ", r: "he"}, {h: "ほ", r: "ho"},
-            {h: "ま", r: "ma"}, {h: "み", r: "mi"}, {h: "む", r: "mu"}, {h: "め", r: "me"}, {h: "も", r: "mo"},
-            {h: "や", r: "ya"}, {h: "ゆ", r: "yu"}, {h: "よ", r: "yo"},
-            {h: "ら", r: "ra"}, {h: "り", r: "ri"}, {h: "る", r: "ru"}, {h: "れ", r: "re"}, {h: "ろ", r: "ro"},
-            {h: "わ", r: "wa"}, {h: "を", r: "wo"}, {h: "ん", r: "n"}
+        // 50音完整清音資料（包含行分類、平假名、片假名、羅馬拼音）
+        const kanaRows = [
+            { name: "あ行", items: [
+                {h: "あ", k: "ア", r: "a"}, {h: "い", k: "イ", r: "i"}, {h: "う", k: "ウ", r: "u"}, {h: "え", k: "エ", r: "e"}, {h: "お", k: "オ", r: "o"}
+            ]},
+            { name: "か行", items: [
+                {h: "か", k: "カ", r: "ka"}, {h: "き", k: "キ", r: "ki"}, {h: "く", k: "ク", r: "ku"}, {h: "け", k: "ケ", r: "ke"}, {h: "こ", k: "コ", r: "ko"}
+            ]},
+            { name: "さ行", items: [
+                {h: "さ", k: "サ", r: "sa"}, {h: "し", k: "シ", r: "shi"}, {h: "す", k: "ス", r: "su"}, {h: "せ", k: "セ", r: "se"}, {h: "そ", k: "ソ", r: "so"}
+            ]},
+            { name: "た行", items: [
+                {h: "た", k: "タ", r: "ta"}, {h: "ち", k: "チ", r: "chi"}, {h: "つ", k: "ツ", r: "tsu"}, {h: "て", k: "テ", r: "te"}, {h: "と", k: "ト", r: "to"}
+            ]},
+            { name: "な行", items: [
+                {h: "な", k: "ナ", r: "na"}, {h: "に", k: "ニ", r: "ni"}, {h: "ぬ", k: "ヌ", r: "nu"}, {h: "ね", k: "ネ", r: "ne"}, {h: "の", k: "ノ", r: "no"}
+            ]},
+            { name: "は行", items: [
+                {h: "は", k: "ハ", r: "ha"}, {h: "ひ", k: "ヒ", r: "hi"}, {h: "ふ", k: "フ", r: "fu"}, {h: "へ", k: "ヘ", r: "he"}, {h: "ほ", k: "ホ", r: "ho"}
+            ]},
+            { name: "ま行", items: [
+                {h: "ま", k: "マ", r: "ma"}, {h: "み", k: "ミ", r: "mi"}, {h: "む", k: "ム", r: "mu"}, {h: "め", k: "メ", r: "me"}, {h: "も", k: "モ", r: "mo"}
+            ]},
+            { name: "や行", items: [
+                {h: "や", k: "ヤ", r: "ya"}, {h: "ゆ", k: "ユ", r: "yu"}, {h: "よ", k: "ヨ", r: "yo"}
+            ]},
+            { name: "ら行", items: [
+                {h: "ら", k: "ラ", r: "ra"}, {h: "り", k: "リ", r: "ri"}, {h: "る", k: "ル", r: "ru"}, {h: "れ", k: "レ", r: "re"}, {h: "ろ", k: "ロ", r: "ro"}
+            ]},
+            { name: "わ行", items: [
+                {h: "わ", k: "ワ", r: "wa"}, {h: "を", k: "ヲ", r: "wo"}, {h: "ん", k: "ン", r: "n"}
+            ]}
         ];
+
+        // 扁平化資料方便測驗隨機選取
+        const allKana = kanaRows.flatMap(row => row.items);
 
         // 語音播放函數
         function speak(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // 停止上一個發音
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ja-JP'; // 設定為日語
-                utterance.rate = 0.9; // 稍微放慢語速，適合學習
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.9;
                 window.speechSynthesis.speak(utterance);
-            } else {
-                alert("您的瀏覽器不支援語音功能");
             }
         }
 
-        // 初始化 50音表格
-        const grid = document.getElementById('kanaGrid');
-        kanaData.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'kana-card';
-            card.innerHTML = `<div class="kana-char">${item.h}</div><div class="kana-romaji">${item.r}</div>`;
-            card.onclick = () => {
-                speak(item.h);
-                card.style.background = '#ffcccc';
-                setTimeout(() => card.style.background = '#fff5f5', 300);
-            };
-            grid.appendChild(card);
+        // 初始化分行表格
+        const container = document.getElementById('kanaRowsContainer');
+        kanaRows.forEach(row => {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'row-group';
+            
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'row-title';
+            titleDiv.innerText = row.name;
+            groupDiv.appendChild(titleDiv);
+
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'grid-row';
+
+            row.items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'kana-card';
+                card.innerHTML = `<div class="kana-chars">${item.h} / ${item.k}</div><div class="kana-romaji">${item.r}</div>`;
+                card.onclick = () => {
+                    speak(item.h);
+                    card.style.background = '#ffcccc';
+                    setTimeout(() => card.style.background = '#fff5f5', 300);
+                };
+                gridDiv.appendChild(card);
+            });
+
+            groupDiv.appendChild(gridDiv);
+            container.appendChild(groupDiv);
         });
 
-        // 切換頁籤功能
+        // 切換頁籤
         function switchTab(tabName) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -235,51 +291,71 @@
 
         // 測驗變數
         let currentScore = 0;
-        let currentCorrectAnswer = {};
+        let currentItem = {};
+        let quizMode = 1; // 1: 看假名選羅馬拼音, 2: 看羅馬拼音選假名
 
         // 隨機出題
         function nextQuizQuestion() {
             document.getElementById('feedback').innerText = '';
             document.getElementById('nextBtn').style.display = 'none';
 
-            // 隨機選一個題目
-            const randomIndex = Math.floor(Math.random() * kanaData.length);
-            currentCorrectAnswer = kanaData[randomIndex];
+            // 隨機選一個項目
+            currentItem = allKana[Math.floor(Math.random() * allKana.length)];
+            // 隨機決定題型 (1 或 2)
+            quizMode = Math.random() < 0.5 ? 1 : 2;
 
-            document.getElementById('quizQuestion').innerText = currentCorrectAnswer.h;
-            // 自動順便念出聲音提示（也可以拿掉這行讓純聽力挑戰）
-            speak(currentCorrectAnswer.h);
+            let questionText = "";
+            let promptText = "";
+            let correctAns = "";
+            let wrongPool = [];
 
-            // 產生 3 個錯誤選項 + 1 個正確選項
-            let options = [currentCorrectAnswer.r];
+            if (quizMode === 1) {
+                // 模式一：看平片假名找羅馬拼音
+                promptText = "請問這個假名的正確讀音（羅馬拼音）是？";
+                questionText = `${currentItem.h} / ${currentItem.k}`;
+                correctAns = currentItem.r;
+                wrongPool = allKana.map(i => i.r);
+            } else {
+                // 模式二：看發音/羅馬拼音找平片假名
+                promptText = "請問哪一個假名組合對應到這個讀音？";
+                questionText = `[ ${currentItem.r} ]`;
+                speak(currentItem.h); // 自動念出聲音提示
+                correctAns = `${currentItem.h} / ${currentItem.k}`;
+                wrongPool = allKana.map(i => `${i.h} / ${i.k}`);
+            }
+
+            document.getElementById('quizPrompt').innerText = promptText;
+            document.getElementById('quizQuestion').innerText = questionText;
+
+            // 產生 1 個正確 + 3 個錯誤選項
+            let options = [correctAns];
             while (options.length < 4) {
-                const randomWrong = kanaData[Math.floor(Math.random() * kanaData.length)].r;
+                const randomWrong = wrongPool[Math.floor(Math.random() * wrongPool.length)];
                 if (!options.includes(randomWrong)) {
                     options.push(randomWrong);
                 }
             }
-            // 打亂順序
             options.sort(() => Math.random() - 0.5);
 
-            // 渲染選項按鈕
+            // 渲染選項
             const optionsGrid = document.getElementById('optionsGrid');
             optionsGrid.innerHTML = '';
             options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                btn.onclick = () => checkAnswer(opt, btn);
+                btn.onclick = () => checkAnswer(opt, btn, correctAns);
                 optionsGrid.appendChild(btn);
             });
         }
 
         // 檢查答案
-        function checkAnswer(selectedOption, btnElement) {
+        function checkAnswer(selectedOption, btnElement, correctAns) {
             const allBtns = document.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.disabled = true); // 鎖定按鈕
+            allBtns.forEach(b => b.disabled = true);
 
             const feedback = document.getElementById('feedback');
-            if (selectedOption === currentCorrectAnswer.r) {
+            if (selectedOption === correctAns) {
                 feedback.style.color = 'green';
                 feedback.innerText = '⭕ 答對了！太棒了！';
                 currentScore += 10;
@@ -287,11 +363,10 @@
                 btnElement.style.background = '#d4edda';
             } else {
                 feedback.style.color = 'red';
-                feedback.innerText = `❌ 答錯了！正確答案是：${currentCorrectAnswer.r}`;
+                feedback.innerText = `❌ 答錯了！正確答案是：${correctAns}`;
                 btnElement.style.background = '#f8d7da';
-                // 找出正確按鈕標示出來
                 allBtns.forEach(b => {
-                    if (b.innerText === currentCorrectAnswer.r) {
+                    if (b.innerText === correctAns) {
                         b.style.background = '#d4edda';
                     }
                 });
