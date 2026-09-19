@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第六階段：JLPT N5 綜合模擬大考</title>
+    <title>第六階段：JLPT N5 綜合模擬大考（含題目回顧）</title>
     <style>
         :root {
             --primary-color: #c62828;
@@ -36,6 +36,7 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-sizing: border-box;
         }
         .question-box {
             font-size: 20px;
@@ -71,14 +72,19 @@
             font-weight: bold;
         }
         .result-box {
-            text-align: center;
             display: none;
+        }
+        .result-score-card {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
         }
         .result-score {
             font-size: 48px;
             font-weight: bold;
             color: var(--primary-color);
-            margin: 20px 0;
+            margin: 10px 0;
         }
         .restart-btn {
             padding: 12px 30px;
@@ -89,6 +95,8 @@
             border-radius: 6px;
             cursor: pointer;
             transition: 0.2s;
+            display: block;
+            margin: 20px auto 0 auto;
         }
         .restart-btn:hover {
             background-color: #b71c1c;
@@ -103,29 +111,71 @@
         .back-link:hover {
             text-decoration: underline;
         }
+
+        /* 題目回顧清單樣式 */
+        .review-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .review-item {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .review-item.correct {
+            border-left: 6px solid #4CAF50;
+            background: #f1f8e9;
+        }
+        .review-item.wrong {
+            border-left: 6px solid #f44336;
+            background: #ffebee;
+        }
+        .review-q {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .review-details {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
     <header>
         <h1>📝 第六階段：JLPT N5 綜合模擬大考</h1>
-        <p>檢驗你的日語學習成果，挑戰 N5 合格實力！</p>
+        <p>挑戰完畢後可檢視詳細的題目對錯與解答回顧！</p>
     </header>
 
     <div class="container">
-        <a href="index.html" class="back-link">⬅️ 返回課程首頁</a>
+        <a href="index.html" class="back-link">⬅️ 返回學習首頁</a>
 
+        <!-- 考試進行中畫面 -->
         <div id="examSection">
             <div class="progress-bar" id="progressBar">題目：1 / 10</div>
             <div class="question-box" id="questionBox">載入中...</div>
             <div class="options-grid" id="examOptions"></div>
         </div>
 
+        <!-- 考試結算與回顧畫面 -->
         <div class="result-box" id="resultSection">
-            <h2>🎉 測驗結算</h2>
-            <p>你的總得分為：</p>
-            <div class="result-score" id="finalScore">0 分</div>
-            <p id="resultComment" style="font-size: 18px; margin-bottom: 25px;"></p>
+            <div class="result-score-card">
+                <h2>🎉 模擬考成績結算</h2>
+                <p>你的總得分為：</p>
+                <div class="result-score" id="finalScore">0 分</div>
+                <p id="resultComment" style="font-size: 18px; margin-bottom: 10px;"></p>
+            </div>
+
+            <div class="review-title">📋 逐題詳細回顧</div>
+            <div id="reviewContainer"></div>
+
             <button class="restart-btn" onclick="restartExam()">重新挑戰模擬考</button>
         </div>
     </div>
@@ -186,6 +236,7 @@
 
         let currentIndex = 0;
         let score = 0;
+        let userAnswers = []; // 記錄使用者選擇的答案
 
         function loadQuestion() {
             if (currentIndex >= examQuestions.length) {
@@ -204,13 +255,19 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
-                btn.onclick = () => selectAnswer(idx, current.correct);
+                btn.onclick = () => selectAnswer(idx);
                 optionsGrid.appendChild(btn);
             });
         }
 
-        function selectAnswer(selectedIdx, correctIdx) {
-            if (selectedIdx === correctIdx) {
+        function selectAnswer(selectedIdx) {
+            // 儲存使用者的選擇
+            userAnswers.push({
+                questionObj: examQuestions[currentIndex],
+                selectedIndex: selectedIdx
+            });
+
+            if (selectedIdx === examQuestions[currentIndex].correct) {
                 score += 10;
             }
             currentIndex++;
@@ -228,14 +285,37 @@
             } else if (score >= 70) {
                 comment = "👍 表現很棒！已經具備相當好的日語基礎，再複習一下錯題就完美囉！";
             } else {
-                comment = "💡 還需要加油喔！建議回前面的「單字庫」與「文法導覽」多複習幾次。";
+                comment = "💡 還需要加油喔！請參閱下方的題目回顧，針對不熟悉的觀念再加強！";
             }
             document.getElementById('resultComment').innerText = comment;
+
+            // 產生逐題回顧清單
+            const reviewContainer = document.getElementById('reviewContainer');
+            reviewContainer.innerHTML = '';
+
+            userAnswers.forEach((ans, index) => {
+                const q = ans.questionObj;
+                const isCorrect = ans.selectedIndex === q.correct;
+                const userOptText = q.options[ans.selectedIndex];
+                const correctOptText = q.options[q.correct];
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `review-item ${isCorrect ? 'correct' : 'wrong'}`;
+                itemDiv.innerHTML = `
+                    <div class="review-q">第 ${index + 1} 題：${q.q}</div>
+                    <div class="review-details">
+                        你的選擇：<span style="font-weight:bold; color:${isCorrect ? '#2e7d32' : '#c62828'};">${String.fromCharCode(65 + ans.selectedIndex)}. ${userOptText}</span> ${isCorrect ? '⭕' : '❌'}<br>
+                        ${!isCorrect ? `正確解答：<span style="font-weight:bold; color:#2e7d32;">${String.fromCharCode(65 + q.correct)}.${correctOptText}</span><br>` : ''}
+                    </div>
+                `;
+                reviewContainer.appendChild(itemDiv);
+            });
         }
 
         function restartExam() {
             currentIndex = 0;
             score = 0;
+            userAnswers = [];
             document.getElementById('examSection').style.display = 'block';
             document.getElementById('resultSection').style.display = 'none';
             loadQuestion();
@@ -246,4 +326,3 @@
     </script>
 </body>
 </html>
-
