@@ -1,436 +1,4244 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第三階段：JLPT N5 核心文法與形變總攻略</title>
-    <style>
-        :root {
-            --primary-color: #00796b;
-            --bg-color: #e0f2f1;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .tab-btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            background-color: #b2dfdb;
-            color: #004d40;
-            transition: 0.3s;
-        }
-        .tab-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-        }
-        .section {
-            display: none;
-        }
-        .section.active {
-            display: block;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* 文法卡片樣式 */
-        .grammar-card {
-            background: #f1f8e9;
-            border-left: 6px solid #689f38;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-        }
-        .grammar-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #33691e;
-            margin-bottom: 8px;
-        }
-        .grammar-desc {
-            font-size: 15px;
-            color: #444;
-            margin-bottom: 12px;
-            line-height: 1.6;
-        }
-        .example-box {
-            background: #ffffff;
-            border: 1px solid #c5e1a5;
-            border-radius: 6px;
-            padding: 12px;
-            margin-top: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .example-box:hover {
-            background: #f9fbe7;
-        }
-        .ex-jp {
-            font-size: 17px;
-            font-weight: bold;
-            color: #2e7d32;
-        }
-        .ex-zh {
-            font-size: 14px;
-            color: #666;
-            margin-top: 4px;
-        }
-        .teacher-note {
-            background: #fffde7;
-            border: 1px dashed #fbc02d;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #f57f17;
-            line-height: 1.5;
-        }
+<title>第三階段：JLPT N5・N4 核心文法與形變學習中心</title>
 
-        /* 表格樣式 */
-        .rule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 12px;
-            font-size: 14px;
-            background: #fff;
-        }
-        .rule-table th, .rule-table td {
-            border: 1px solid #c5e1a5;
-            padding: 10px;
-            text-align: center;
-        }
-        .rule-table th {
-            background: #dcedc8;
-            color: #33691e;
-        }
+<style>
+:root{
+    --primary:#00796b;
+    --primary-dark:#004d40;
+    --primary-light:#e0f2f1;
 
-        /* 測驗區樣式 */
-        .quiz-box {
-            text-align: center;
-        }
-        .quiz-question {
-            font-size: 26px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: var(--primary-color);
-            line-height: 1.5;
-        }
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .option-btn {
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #b2dfdb;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .option-btn:hover {
-            background: #e0f2f1;
-            border-color: #00796b;
-        }
-        .score-board {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #555;
-        }
-        .feedback {
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .next-btn {
-            margin-top: 20px;
-            padding: 10px 25px;
-            font-size: 16px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
+    --n5:#43a047;
+    --n4:#ef6c00;
 
-        @media (max-width: 600px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    --bg:#eef7f6;
+    --card:#ffffff;
+    --text:#263238;
+    --muted:#687078;
+    --border:#d7e4e2;
+
+    --success:#2e7d32;
+    --danger:#c62828;
+    --warning:#f9a825;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans TC",
+        "Noto Sans JP",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    background:var(--bg);
+    color:var(--text);
+}
+
+/* ================================
+   頁首
+================================ */
+
+.hero{
+    background:
+        linear-gradient(
+            135deg,
+            #004d40,
+            #00796b,
+            #26a69a
+        );
+
+    color:white;
+    padding:28px 18px 34px;
+}
+
+.hero-inner{
+    max-width:1200px;
+    margin:auto;
+}
+
+.back-link{
+    display:inline-block;
+    color:white;
+    text-decoration:none;
+    font-weight:800;
+    margin-bottom:16px;
+}
+
+.hero h1{
+    margin:0 0 8px;
+    font-size:31px;
+}
+
+.hero p{
+    margin:0;
+    line-height:1.7;
+    opacity:.95;
+}
+
+/* ================================
+   主內容
+================================ */
+
+.wrapper{
+    max-width:1200px;
+    margin:22px auto;
+    padding:0 15px 40px;
+}
+
+/* ================================
+   儀表板
+================================ */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+    margin-bottom:18px;
+}
+
+.stat-card{
+    background:white;
+    border-radius:14px;
+    padding:17px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.stat-number{
+    margin-top:5px;
+    font-size:26px;
+    font-weight:900;
+    color:var(--primary);
+}
+
+/* ================================
+   進度
+================================ */
+
+.progress-panel{
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+    margin-bottom:18px;
+}
+
+.progress-row{
+    display:grid;
+    grid-template-columns:70px 1fr 65px;
+    align-items:center;
+    gap:10px;
+    margin:11px 0;
+}
+
+.progress-bg{
+    height:12px;
+    background:#e7eeee;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0;
+    background:linear-gradient(
+        90deg,
+        #00796b,
+        #4db6ac
+    );
+    transition:.3s;
+}
+
+/* ================================
+   主頁籤
+================================ */
+
+.main-tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.tab-btn{
+    border:0;
+    padding:11px 17px;
+    border-radius:25px;
+    background:#cfe5e2;
+    color:#004d40;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.tab-btn.active{
+    background:var(--primary);
+    color:white;
+}
+
+.panel{
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+/* ================================
+   篩選器
+================================ */
+
+.filters{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.filters input,
+.filters select{
+    width:100%;
+    border:1px solid #bdcfcc;
+    border-radius:9px;
+    padding:11px;
+    background:white;
+    font-size:15px;
+}
+
+/* ================================
+   分類
+================================ */
+
+.category-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.category-card{
+    border:1px solid #d5e4e1;
+    border-radius:13px;
+    padding:18px 10px;
+    text-align:center;
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff,
+            #f3faf8
+        );
+
+    transition:.2s;
+}
+
+.category-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 7px 18px rgba(0,121,107,.12);
+}
+
+.category-icon{
+    font-size:33px;
+}
+
+.category-title{
+    font-weight:900;
+    margin-top:7px;
+}
+
+.category-count{
+    color:#777;
+    font-size:13px;
+    margin-top:5px;
+}
+
+/* ================================
+   文法卡
+================================ */
+
+.grammar-grid{
+    display:grid;
+    gap:15px;
+}
+
+.grammar-card{
+    position:relative;
+
+    background:#f7fbf7;
+    border:1px solid #dbe8db;
+    border-left:6px solid #689f38;
+
+    border-radius:11px;
+    padding:18px;
+}
+
+.grammar-card.n4{
+    border-left-color:#ef6c00;
+    background:#fffaf4;
+}
+
+.level-badge{
+    display:inline-block;
+    color:white;
+    font-size:11px;
+    font-weight:900;
+    border-radius:15px;
+    padding:4px 8px;
+    margin-bottom:8px;
+}
+
+.level-N5{
+    background:var(--n5);
+}
+
+.level-N4{
+    background:var(--n4);
+}
+
+.grammar-title{
+    font-size:21px;
+    font-weight:900;
+    color:#33691e;
+}
+
+.grammar-card.n4 .grammar-title{
+    color:#e65100;
+}
+
+.pattern{
+    margin-top:9px;
+    padding:9px 11px;
+    background:white;
+    border-radius:7px;
+    border:1px solid #d9e6e3;
+    font-weight:800;
+    color:#00695c;
+}
+
+.grammar-desc{
+    margin-top:11px;
+    line-height:1.7;
+}
+
+.teacher-note{
+    margin-top:12px;
+    padding:11px;
+    border-radius:8px;
+    background:#fffde7;
+    border:1px dashed #fbc02d;
+    color:#795548;
+    line-height:1.7;
+}
+
+.warning-box{
+    margin-top:10px;
+    padding:11px;
+    border-radius:8px;
+    background:#fff3e0;
+    border-left:4px solid #fb8c00;
+    line-height:1.7;
+}
+
+/* ================================
+   例句
+================================ */
+
+.example-box{
+    margin-top:10px;
+    padding:13px;
+    background:white;
+    border:1px solid #c8e0db;
+    border-radius:8px;
+}
+
+.ex-jp{
+    font-size:17px;
+    font-weight:900;
+    color:#00695c;
+    line-height:1.7;
+}
+
+.ex-read{
+    color:#777;
+    font-size:13px;
+    margin-top:4px;
+    line-height:1.6;
+}
+
+.ex-zh{
+    color:#555;
+    margin-top:5px;
+}
+
+.audio-row{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-top:9px;
+}
+
+.audio-btn{
+    border:0;
+    background:#00796b;
+    color:white;
+    border-radius:7px;
+    padding:7px 11px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* ================================
+   表格
+================================ */
+
+.table-wrap{
+    width:100%;
+    overflow-x:auto;
+    margin-top:12px;
+}
+
+.rule-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+    background:white;
+}
+
+.rule-table th,
+.rule-table td{
+    border:1px solid #c8ddd9;
+    padding:9px;
+    text-align:center;
+    white-space:nowrap;
+}
+
+.rule-table th{
+    background:#dcedc8;
+    color:#33691e;
+}
+
+/* ================================
+   熟悉程度
+================================ */
+
+status-area{
+    display:block;
+}
+
+.status-row{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-top:13px;
+}
+
+.status-btn{
+    border:1px solid #ccc;
+    border-radius:7px;
+    background:white;
+    padding:8px 11px;
+    cursor:pointer;
+}
+
+.status-btn.selected{
+    background:#e0f2f1;
+    border-color:#00796b;
+    color:#00695c;
+    font-weight:900;
+}
+
+/* ================================
+   形變中心
+================================ */
+
+.conjugation-card{
+    background:#fafafa;
+    border:1px solid #ddd;
+    border-radius:11px;
+    padding:18px;
+    margin-bottom:18px;
+}
+
+.conjugation-card h3{
+    margin-top:0;
+    color:#00695c;
+}
+
+.rule-block{
+    padding:12px;
+    border-radius:8px;
+    background:#f1f8e9;
+    margin:9px 0;
+    line-height:1.8;
+}
+
+/* ================================
+   測驗
+================================ */
+
+.quiz-settings{
+    display:flex;
+    gap:9px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.quiz-settings select{
+    padding:9px;
+    border-radius:7px;
+    border:1px solid #bbb;
+}
+
+.start-btn{
+    border:0;
+    background:#00796b;
+    color:white;
+    border-radius:7px;
+    padding:9px 17px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.quiz-box{
+    text-align:center;
+}
+
+.score-board{
+    color:#555;
+    font-weight:800;
+    margin-bottom:13px;
+}
+
+.quiz-question{
+    font-size:25px;
+    font-weight:900;
+    line-height:1.6;
+    color:#00695c;
+    margin:18px 0;
+}
+
+.options-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    max-width:800px;
+    margin:20px auto;
+}
+
+.option-btn{
+    padding:14px;
+    border:2px solid #b2dfdb;
+    border-radius:9px;
+    background:white;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.option-btn:hover{
+    background:#e0f2f1;
+}
+
+.feedback{
+    margin-top:17px;
+    font-weight:900;
+    font-size:17px;
+}
+
+.explanation{
+    display:none;
+    max-width:750px;
+    margin:15px auto;
+    text-align:left;
+    background:#f7f9f9;
+    border-radius:9px;
+    padding:15px;
+    line-height:1.8;
+}
+
+.next-btn{
+    display:none;
+    border:0;
+    background:#43a047;
+    color:white;
+    border-radius:7px;
+    padding:10px 24px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* ================================
+   錯題
+================================ */
+
+.wrong-card{
+    border:1px solid #ddd;
+    border-left:5px solid #d32f2f;
+    border-radius:9px;
+    padding:14px;
+    margin-bottom:11px;
+    background:#fffafa;
+}
+
+.clear-btn{
+    border:0;
+    background:#607d8b;
+    color:white;
+    padding:8px 14px;
+    border-radius:7px;
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+.empty{
+    text-align:center;
+    color:#777;
+    padding:35px;
+}
+
+/* ================================
+   RWD
+================================ */
+
+@media(max-width:900px){
+
+    .dashboard{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .category-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .hero h1{
+        font-size:24px;
+    }
+
+    .wrapper{
+        padding:0 9px 30px;
+    }
+
+    .panel{
+        padding:14px;
+    }
+
+    .category-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .filters{
+        grid-template-columns:1fr;
+    }
+
+    .options-grid{
+        grid-template-columns:1fr;
+    }
+
+    .progress-row{
+        grid-template-columns:50px 1fr 55px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
-    <header>
-        <h1>🌱 第三階段：JLPT N5 核心文法與形變總攻略</h1>
-        <p>系統化掌握助詞、動詞三態變化與形容詞變形，點擊例句聽發音！</p>
-    </header>
+<header class="hero">
 
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('grammar')">📖 文法與形變導覽</button>
-        <button class="tab-btn" onclick="switchTab('quiz')">✍️ 文法與形變測驗</button>
-    </div>
+<div class="hero-inner">
 
-    <div class="container">
-        <a href="index.html" class="back-link">⬅️ 返回學習首頁</a>
+<a href="index.html" class="back-link">
+⬅️ 返回學習首頁
+</a>
 
-        <!-- 第一部分：文法總表導覽 -->
-        <div id="grammar-section" class="section active">
-            <div id="grammarContainer"></div>
-        </div>
+<h1>
+🌱 第三階段：JLPT N5・N4 核心文法與形變學習中心
+</h1>
 
-        <!-- 第二部分：文法測驗區 -->
-        <div id="quiz-section" class="section">
-            <div class="quiz-box">
-                <div class="score-board">目前得分：<span id="score">0</span> 分</div>
-                <div id="quizPrompt" style="font-size: 16px; color: #666;">請選出最適當的答案：</div>
-                <div class="quiz-question" id="quizQuestion"></div>
-                <div class="options-grid" id="optionsGrid"></div>
-                <div class="feedback" id="feedback"></div>
-                <button class="next-btn" id="nextBtn" onclick="nextQuizQuestion()">下一題</button>
-            </div>
-        </div>
-    </div>
+<p>
+從 N5 基礎句型、助詞與動詞變化開始，
+一路進入 N4 普通形、條件、推測、授受與進階句型。
+每個文法都搭配老師解說、例句、發音與錯題詳解。
+</p>
 
-    <script>
-        // N5 核心文法與形變完整資料庫
-        const grammarData = [
-            {
-                title: "1. 主題提示助詞「は (wa)」",
-                desc: "用來標示一句話的主題（也就是「關於……」）。注意寫成「は」，但發音要念作「wa」。",
-                note: "💡 老師解說：把它想成中文的「至於……」或「說到……」，是用來把對話焦點鎖定在某個主體上。",
-                examples: [
-                    { jp: "私は学生です。", read: "わたしはがくせいです", zh: "我是學生。" },
-                    { jp: "今日は日曜日です。", read: "きょうはにちようびです", zh: "今天是星期日。" }
-                ]
-            },
-            {
-                title: "2. 受詞助詞「を (o/wo)」",
-                desc: "用在動作的對象（受詞）後面，表示這個動作直接作用在什麼東西上面。",
-                note: "💡 老師解說：吃『什麼』、喝『什麼』、看『什麼』，那個『什麼』後面就要加「を」。",
-                examples: [
-                    { jp: "りんごを食べます。", read: "りんごをたべます", zh: "吃蘋果。" },
-                    { jp: "日本語を勉強します。", read: "にほんごをべんきょうします", zh: "學習日文。" }
-                ]
-            },
-            {
-                title: "3. 場所與時間助詞「に (ni)」",
-                desc: "表示移動行為的目的地（去哪裡），或是動作發生的時間點。",
-                note: "💡 老師解說：去學校（学校に行く）、6點起床（6時に起きる），具體時間點和目的地用「に」。",
-                examples: [
-                    { jp: "学校に行きます。", read: "がっこうにいきます", zh: "去學校。" },
-                    { jp: "6時に起きます。", read: "ろくじにおきます", zh: "6點起床。" }
-                ]
-            },
-            {
-                title: "4. 工具與發生場所助詞「で (de)」",
-                desc: "表示進行某個動作時所使用的「工具/手段」，或是動作發生的「場所（餐廳、學校等）」。",
-                note: "💡 老師解說：搭公車（バスで行く）、在圖書館讀書（図書館で勉強する），有「場所」或「工具」就用「で」。",
-                examples: [
-                    { jp: "バスで会社に行きます。", read: "ばすでかいしゃにいきます", zh: "搭公車去公司。" },
-                    { jp: "図書館で本を読みます。", read: "としょかんでほんをよみます", zh: "在圖書館看書。" }
-                ]
-            },
-            {
-                title: "5. 動詞三態變化總覽（ます形 / ない形 / た形）",
-                desc: "N5 動詞基本包含禮貌肯定（ます）、否定（ない）與過去（た/ました）。",
-                note: "💡 老師解說：注意第三類不規則動詞（する、来る）以及第一類動詞的音便（如：飲む ➔ 飲んだ）。",
-                tableHtml: `
-                    <table class="rule-table">
-                        <tr><th>動詞原形</th><th>中文意思</th><th>禮貌肯定 (ます)</th><th>否定形 (ない)</th><th>過去肯定 (ました)</th></tr>
-                        <tr><td>行く (いく)</td><td>去</td><td>行きます</td><td>行かない</td><td>行きました</td></tr>
-                        <tr><td>食べる</td><td>吃</td><td>食べます</td><td>食べない</td><td>食べました</td></tr>
-                        <tr><td>飲む (のむ)</td><td>喝</td><td>飲みます</td><td>飲まない</td><td>飲みました</td></tr>
-                        <tr><td>する (特殊)</td><td>做</td><td>します</td><td>しない</td><td>しました</td></tr>
-                        <tr><td>来る (くる)</td><td>來</td><td>来ます</td><td>来ない</td><td>来ました</td></tr>
-                    </table>
-                `,
-                examples: [
-                    { jp: "明日、東京へ行きます。", read: "あした、とうきょうへいきます", zh: "明天要去東京。" },
-                    { jp: "昨日は肉を食べませんでした。", read: "きのうはにくをたべませんでした", zh: "昨天沒有吃肉。" }
-                ]
-            },
-            {
-                title: "6. 形容詞變化（い形容詞 vs な形容詞）",
-                desc: "形容詞用來修飾名詞或作為結尾述語。い形容詞與な形容詞的否定、過去形變化完全不同！",
-                note: "💡 老師解說：<br>1. <b>い形容詞</b>：去「い」加「くない（否定）」、加「かった（過去）」。<br>2. <b>な形容詞</b>：直接接「ではありません（否定）」、改「でした（過去）」。",
-                tableHtml: `
-                    <table class="rule-table">
-                        <tr><th>形容詞種類</th><th>原形 (肯定)</th><th>否定形 (不是...)</th><th>過去形 (當時...)</th></tr>
-                        <tr><td>い形容詞</td><td>おいしい (好吃)</td><td>おいしくない</td><td>おいしかった</td></tr>
-                        <tr><td>な形容詞</td><td>きれい (漂亮)</td><td>きれいではありません</td><td>きれいでした</td></tr>
-                    </table>
-                `,
-                examples: [
-                    { jp: "このラーメンは美味しくないです。", read: "このらーめんはおいしくないです", zh: "這個拉麵不好吃。" },
-                    { jp: "昨日の映画は面白かったです。", read: "きのうのえいがはおもしろかったです", zh: "昨天的電影很有趣。" },
-                    { jp: "この町は静かでした。", read: "このまちはしずかでした", zh: "這個城鎮以前很安靜。" }
-                ]
-            }
-        ];
+</div>
 
-        // 語音播放
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ja-JP';
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
+</header>
 
-        // 渲染文法導覽頁面
-        const container = document.getElementById('grammarContainer');
-        grammarData.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'grammar-card';
-            
-            let exHtml = '';
-            if (item.examples) {
-                item.examples.forEach(ex => {
-                    exHtml += `
-                        <div class="example-box" onclick="speak('${ex.read}')">
-                            <div class="ex-jp">🔊 ${ex.jp}</div>
-                            <div class="ex-zh">${ex.zh}</div>
-                        </div>
-                    `;
-                });
-            }
+<main class="wrapper">
 
-            card.innerHTML = `
-                <div class="grammar-title">${item.title}</div>
-                <div class="grammar-desc">${item.desc}</div>
-                <div class="teacher-note">${item.note}</div>
-                ${item.tableHtml || ''}
-                ${exHtml}
-            `;
-            container.appendChild(card);
+<!-- 儀表板 -->
+
+<div class="dashboard">
+
+<div class="stat-card">
+<div class="stat-label">📖 文法項目</div>
+<div class="stat-number" id="totalGrammar">0</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">🌱 N5</div>
+<div class="stat-number" id="n5Count">0</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">🚀 N4</div>
+<div class="stat-number" id="n4Count">0</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">😊 已熟悉</div>
+<div class="stat-number" id="masteredCount">0</div>
+</div>
+
+</div>
+
+<!-- 進度 -->
+
+<div class="progress-panel">
+
+<strong>📊 我的文法學習進度</strong>
+
+<div class="progress-row">
+<span>N5</span>
+
+<div class="progress-bg">
+<div class="progress-bar" id="n5Progress"></div>
+</div>
+
+<span id="n5ProgressText">0%</span>
+</div>
+
+<div class="progress-row">
+<span>N4</span>
+
+<div class="progress-bg">
+<div class="progress-bar" id="n4Progress"></div>
+</div>
+
+<span id="n4ProgressText">0%</span>
+</div>
+
+</div>
+
+<!-- 主選單 -->
+
+<div class="main-tabs">
+
+<button class="tab-btn active"
+data-tab="grammar"
+onclick="switchTab('grammar',this)">
+📖 文法學習
+</button>
+
+<button class="tab-btn"
+data-tab="conjugation"
+onclick="switchTab('conjugation',this)">
+🔄 形變總表
+</button>
+
+<button class="tab-btn"
+data-tab="quiz"
+onclick="switchTab('quiz',this)">
+✍️ 文法測驗
+</button>
+
+<button class="tab-btn"
+data-tab="wrong"
+onclick="switchTab('wrong',this)">
+⭐ 我的錯題
+</button>
+
+</div>
+
+<div class="panel">
+
+<!-- =========================================
+     文法學習
+========================================= -->
+
+<section
+id="grammar-section"
+class="section active">
+
+<div class="filters">
+
+<input
+type="search"
+id="grammarSearch"
+placeholder="🔎 搜尋：て形、と思います、助詞、條件……"
+oninput="renderGrammarCategories()">
+
+<select
+id="levelFilter"
+onchange="renderGrammarCategories()">
+
+<option value="ALL">
+全部級別
+</option>
+
+<option value="N5">
+🌱 N5
+</option>
+
+<option value="N4">
+🚀 N4
+</option>
+
+</select>
+
+<select
+id="statusFilter"
+onchange="renderGrammarCategories()">
+
+<option value="ALL">
+全部學習狀態
+</option>
+
+<option value="new">
+未學習
+</option>
+
+<option value="learning">
+學習中
+</option>
+
+<option value="mastered">
+已熟悉
+</option>
+
+</select>
+
+</div>
+
+<div id="categoryView">
+
+<h3 id="grammarSummary"></h3>
+
+<div
+id="categoryGrid"
+class="category-grid">
+</div>
+
+</div>
+
+<div
+id="grammarDetailView"
+style="display:none;">
+
+<button
+class="clear-btn"
+onclick="backToCategories()">
+⬅️ 返回文法分類
+</button>
+
+<h2 id="grammarDetailTitle"></h2>
+
+<div
+id="grammarContainer"
+class="grammar-grid">
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================
+     形變總表
+========================================= -->
+
+<section
+id="conjugation-section"
+class="section">
+
+<h2>🔄 N5・N4 動詞與形容詞形變中心</h2>
+
+<p>
+N4 文法大量使用「普通形」，
+所以這裡不是只背 ます形，而是把各種變化連在一起理解。
+</p>
+
+<div class="conjugation-card">
+
+<h3>① 丁寧形 ↔ 普通形</h3>
+
+<div class="table-wrap">
+
+<table class="rule-table">
+
+<tr>
+<th>時態</th>
+<th>丁寧形</th>
+<th>普通形</th>
+</tr>
+
+<tr>
+<td>現在肯定</td>
+<td>行きます</td>
+<td>行く</td>
+</tr>
+
+<tr>
+<td>現在否定</td>
+<td>行きません</td>
+<td>行かない</td>
+</tr>
+
+<tr>
+<td>過去肯定</td>
+<td>行きました</td>
+<td>行った</td>
+</tr>
+
+<tr>
+<td>過去否定</td>
+<td>行きませんでした</td>
+<td>行かなかった</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="teacher-note">
+💡 N4 很多句型，例如
+「～と思います」「～かもしれません」
+前面都會大量使用普通形。
+所以普通形是從 N5 進入 N4 的重要橋樑。
+</div>
+
+</div>
+
+<div class="conjugation-card">
+
+<h3>② 五段動詞：て形／た形</h3>
+
+<div class="rule-block">
+<b>う・つ・る → って／った</b><br>
+買う → 買って → 買った<br>
+待つ → 待って → 待った<br>
+帰る → 帰って → 帰った
+</div>
+
+<div class="rule-block">
+<b>む・ぶ・ぬ → んで／んだ</b><br>
+飲む → 飲んで → 飲んだ<br>
+遊ぶ → 遊んで → 遊んだ<br>
+死ぬ → 死んで → 死んだ
+</div>
+
+<div class="rule-block">
+<b>く → いて／いた</b><br>
+書く → 書いて → 書いた
+</div>
+
+<div class="rule-block">
+<b>ぐ → いで／いだ</b><br>
+泳ぐ → 泳いで → 泳いだ
+</div>
+
+<div class="rule-block">
+<b>す → して／した</b><br>
+話す → 話して → 話した
+</div>
+
+<div class="warning-box">
+⚠️ 特別注意：<b>行く</b> 不變成「行いて」，
+而是 <b>行って／行った</b>。
+</div>
+
+</div>
+
+<div class="conjugation-card">
+
+<h3>③ 一段動詞</h3>
+
+<div class="rule-block">
+基本方法：去掉最後的「る」再接需要的形式。<br><br>
+
+食べる → 食べます<br>
+食べる → 食べない<br>
+食べる → 食べて<br>
+食べる → 食べた<br><br>
+
+見る → 見ます<br>
+見る → 見ない<br>
+見る → 見て<br>
+見る → 見た
+</div>
+
+</div>
+
+<div class="conjugation-card">
+
+<h3>④ 不規則動詞</h3>
+
+<div class="table-wrap">
+
+<table class="rule-table">
+
+<tr>
+<th>原形</th>
+<th>ます形</th>
+<th>ない形</th>
+<th>て形</th>
+<th>た形</th>
+</tr>
+
+<tr>
+<td>する</td>
+<td>します</td>
+<td>しない</td>
+<td>して</td>
+<td>した</td>
+</tr>
+
+<tr>
+<td>来る</td>
+<td>来ます</td>
+<td>来ない</td>
+<td>来て</td>
+<td>来た</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="conjugation-card">
+
+<h3>⑤ い形容詞</h3>
+
+<div class="table-wrap">
+
+<table class="rule-table">
+
+<tr>
+<th>形式</th>
+<th>高い</th>
+</tr>
+
+<tr>
+<td>現在肯定</td>
+<td>高い</td>
+</tr>
+
+<tr>
+<td>現在否定</td>
+<td>高くない</td>
+</tr>
+
+<tr>
+<td>過去肯定</td>
+<td>高かった</td>
+</tr>
+
+<tr>
+<td>過去否定</td>
+<td>高くなかった</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="warning-box">
+⚠️ 「いい」是特殊變化：<br>
+いい → よくない → よかった → よくなかった
+</div>
+
+</div>
+
+<div class="conjugation-card">
+
+<h3>⑥ な形容詞與名詞</h3>
+
+<div class="table-wrap">
+
+<table class="rule-table">
+
+<tr>
+<th>形式</th>
+<th>静か</th>
+<th>学生</th>
+</tr>
+
+<tr>
+<td>現在肯定</td>
+<td>静かだ</td>
+<td>学生だ</td>
+</tr>
+
+<tr>
+<td>現在否定</td>
+<td>静かではない</td>
+<td>学生ではない</td>
+</tr>
+
+<tr>
+<td>過去肯定</td>
+<td>静かだった</td>
+<td>学生だった</td>
+</tr>
+
+<tr>
+<td>過去否定</td>
+<td>静かではなかった</td>
+<td>学生ではなかった</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================
+     測驗
+========================================= -->
+
+<section
+id="quiz-section"
+class="section">
+
+<div class="quiz-settings">
+
+<select id="quizLevel">
+
+<option value="ALL">
+N5＋N4
+</option>
+
+<option value="N5">
+只測 N5
+</option>
+
+<option value="N4">
+只測 N4
+</option>
+
+</select>
+
+<select id="quizCategory">
+
+<option value="ALL">
+全部題型
+</option>
+
+<option value="particle">
+助詞
+</option>
+
+<option value="conjugation">
+形變
+</option>
+
+<option value="pattern">
+句型
+</option>
+
+<option value="condition">
+條件
+</option>
+
+</select>
+
+<button
+class="start-btn"
+onclick="startQuiz()">
+開始／重新測驗
+</button>
+
+</div>
+
+<div class="quiz-box">
+
+<div class="score-board">
+
+得分：
+<span id="score">0</span>
+
+｜
+答對：
+<span id="correctCount">0</span>
+
+｜
+答錯：
+<span id="wrongCount">0</span>
+
+</div>
+
+<div
+id="quizPrompt"
+style="color:#666;">
+請選擇級別與題型後開始。
+</div>
+
+<div
+id="quizQuestion"
+class="quiz-question">
+🎌
+</div>
+
+<div
+id="optionsGrid"
+class="options-grid">
+</div>
+
+<div
+id="feedback"
+class="feedback">
+</div>
+
+<div
+id="explanation"
+class="explanation">
+</div>
+
+<button
+id="nextBtn"
+class="next-btn"
+onclick="nextQuizQuestion()">
+下一題 ➜
+</button>
+
+</div>
+
+</section>
+
+<!-- =========================================
+     錯題
+========================================= -->
+
+<section
+id="wrong-section"
+class="section">
+
+<h2>⭐ 我的文法錯題</h2>
+
+<p>
+答錯的文法題會自動保留在這台裝置中，
+方便之後重新複習。
+</p>
+
+<button
+class="clear-btn"
+onclick="clearWrongQuestions()">
+清除全部錯題
+</button>
+
+<div id="wrongContainer"></div>
+
+</section>
+
+</div>
+
+</main>
+
+<script>
+
+/* ============================================================
+   文法資料庫
+============================================================ */
+
+const grammarCategories=[
+
+{
+id:"basic",
+icon:"🌱",
+name:"基本句型",
+items:[
+
+{
+id:"n5-basic-01",
+level:"N5",
+title:"～です",
+pattern:"名詞 ＋ です",
+desc:"最基本的禮貌判斷句，用來表示「是……」。",
+note:"💡 初學日文時，可以先把「です」理解成禮貌語氣的「是」。",
+warning:"「です」本身不等於中文所有情況下的「是」，但在初學階段可以先用這個概念理解名詞句。",
+examples:[
+{
+jp:"私は学生です。",
+read:"わたしはがくせいです",
+zh:"我是學生。"
+},
+{
+jp:"今日は月曜日です。",
+read:"きょうはげつようびです",
+zh:"今天是星期一。"
+}
+]
+},
+
+{
+id:"n5-basic-02",
+level:"N5",
+title:"～ではありません",
+pattern:"名詞 ＋ ではありません",
+desc:"名詞句的禮貌否定，用來表示「不是……」。",
+note:"💡 口語中也常聽到「じゃありません」，但學習基本句型時先掌握「ではありません」。",
+examples:[
+{
+jp:"私は先生ではありません。",
+read:"わたしはせんせいではありません",
+zh:"我不是老師。"
+}
+]
+},
+
+{
+id:"n5-basic-03",
+level:"N5",
+title:"～ですか",
+pattern:"句子 ＋ か",
+desc:"在禮貌句尾加「か」，形成疑問句。",
+note:"💡 日文書寫中，即使沒有問號，只要句尾有「か」也可以表示疑問。",
+examples:[
+{
+jp:"あなたは学生ですか。",
+read:"あなたはがくせいですか",
+zh:"你是學生嗎？"
+}
+]
+}
+
+]},
+
+{
+id:"particle",
+icon:"🧩",
+name:"助詞",
+items:[
+
+{
+id:"n5-particle-01",
+level:"N5",
+title:"主題助詞「は」",
+pattern:"名詞 ＋ は",
+desc:"標示句子的主題，可以理解成「說到……」「至於……」。",
+note:"💡 寫成「は」，當助詞使用時讀作「わ」。",
+examples:[
+{
+jp:"私は台湾人です。",
+read:"わたしはたいわんじんです",
+zh:"我是台灣人。"
+}
+]
+},
+
+{
+id:"n5-particle-02",
+level:"N5",
+title:"受詞助詞「を」",
+pattern:"名詞 ＋ を ＋ 動詞",
+desc:"表示動作直接作用的對象。",
+note:"💡 吃什麼、喝什麼、看什麼，那個東西後面常接「を」。",
+examples:[
+{
+jp:"パンを食べます。",
+read:"ぱんをたべます",
+zh:"吃麵包。"
+}
+]
+},
+
+{
+id:"n5-particle-03",
+level:"N5",
+title:"目的地／時間助詞「に」",
+pattern:"時間／目的地 ＋ に",
+desc:"表示特定時間點、移動目的地、存在的位置等。",
+note:"💡 「七時に起きる」是時間點；「学校に行く」是移動目的地。",
+examples:[
+{
+jp:"七時に起きます。",
+read:"しちじにおきます",
+zh:"七點起床。"
+},
+{
+jp:"学校に行きます。",
+read:"がっこうにいきます",
+zh:"去學校。"
+}
+]
+},
+
+{
+id:"n5-particle-04",
+level:"N5",
+title:"動作場所／手段助詞「で」",
+pattern:"場所／工具 ＋ で",
+desc:"表示動作發生的場所，或完成動作所使用的工具、交通方式。",
+note:"💡 「在哪裡做事情」通常用「で」；「去哪裡」通常用「に／へ」。",
+warning:"❌ 学校に勉強します。　⭕ 学校で勉強します。",
+examples:[
+{
+jp:"図書館で勉強します。",
+read:"としょかんでべんきょうします",
+zh:"在圖書館讀書。"
+},
+{
+jp:"バスで学校へ行きます。",
+read:"ばすでがっこうへいきます",
+zh:"搭公車去學校。"
+}
+]
+},
+
+{
+id:"n5-particle-05",
+level:"N5",
+title:"主語助詞「が」",
+pattern:"名詞 ＋ が",
+desc:"常用來標示主語、新資訊，以及喜好、能力、存在等句型中的對象。",
+note:"💡 「は」和「が」不能永遠直接互換。初學時先掌握常見固定句型。",
+examples:[
+{
+jp:"猫がいます。",
+read:"ねこがいます",
+zh:"有一隻貓。"
+},
+{
+jp:"私は日本語が好きです。",
+read:"わたしはにほんごがすきです",
+zh:"我喜歡日文。"
+}
+]
+},
+
+{
+id:"n5-particle-06",
+level:"N5",
+title:"方向助詞「へ」",
+pattern:"場所 ＋ へ ＋ 移動動詞",
+desc:"表示移動方向，常和「行く、来る、帰る」一起使用。",
+note:"💡 助詞「へ」寫作へ，但念作「え」。",
+examples:[
+{
+jp:"日本へ行きます。",
+read:"にほんへいきます",
+zh:"去日本。"
+}
+]
+},
+
+{
+id:"n5-particle-07",
+level:"N5",
+title:"一起／引用的「と」",
+pattern:"人 ＋ と ／ A と B",
+desc:"可表示「和某人一起」，也可以連接完整列舉的名詞。",
+examples:[
+{
+jp:"友達と映画を見ます。",
+read:"ともだちとえいがをみます",
+zh:"和朋友一起看電影。"
+}
+]
+},
+
+{
+id:"n5-particle-08",
+level:"N5",
+title:"～から／～まで",
+pattern:"起點 ＋ から ／ 終點 ＋ まで",
+desc:"「から」表示起點，「まで」表示終點。",
+examples:[
+{
+jp:"学校は八時から四時までです。",
+read:"がっこうははちじからよじまでです",
+zh:"學校從八點到四點。"
+}
+]
+}
+
+]},
+
+{
+id:"existence",
+icon:"📍",
+name:"存在・位置",
+items:[
+
+{
+id:"n5-exist-01",
+level:"N5",
+title:"あります／います",
+pattern:"無生命 → あります　有生命 → います",
+desc:"表示人、動物或物品的存在。",
+note:"💡 人與動物通常使用「います」，物品與植物等一般使用「あります」。",
+examples:[
+{
+jp:"机の上に本があります。",
+read:"つくえのうえにほんがあります",
+zh:"桌上有一本書。"
+},
+{
+jp:"教室に先生がいます。",
+read:"きょうしつにせんせいがいます",
+zh:"教室裡有老師。"
+}
+]
+}
+
+]},
+
+{
+id:"verb",
+icon:"🚀",
+name:"動詞・て形",
+items:[
+
+{
+id:"n5-verb-01",
+level:"N5",
+title:"～ます／ません／ました／ませんでした",
+pattern:"動詞ます形",
+desc:"N5 最基本的禮貌動詞時態。",
+note:"💡 先熟悉四種基本組合：現在肯定、現在否定、過去肯定、過去否定。",
+examples:[
+{
+jp:"毎日日本語を勉強します。",
+read:"まいにちにほんごをべんきょうします",
+zh:"每天學日文。"
+},
+{
+jp:"昨日は勉強しませんでした。",
+read:"きのうはべんきょうしませんでした",
+zh:"昨天沒有讀書。"
+}
+]
+},
+
+{
+id:"n5-verb-02",
+level:"N5",
+title:"～てください",
+pattern:"動詞て形 ＋ ください",
+desc:"用來禮貌地請對方做某件事。",
+examples:[
+{
+jp:"ここに名前を書いてください。",
+read:"ここになまえをかいてください",
+zh:"請在這裡寫名字。"
+}
+]
+},
+
+{
+id:"n5-verb-03",
+level:"N5",
+title:"～てもいいです",
+pattern:"動詞て形 ＋ もいいです",
+desc:"表示允許：「可以……」。",
+examples:[
+{
+jp:"ここで写真を撮ってもいいです。",
+read:"ここでしゃしんをとってもいいです",
+zh:"可以在這裡拍照。"
+}
+]
+},
+
+{
+id:"n5-verb-04",
+level:"N5",
+title:"～てはいけません",
+pattern:"動詞て形 ＋ はいけません",
+desc:"表示禁止：「不可以……」。",
+examples:[
+{
+jp:"ここでタバコを吸ってはいけません。",
+read:"ここでたばこをすってはいけません",
+zh:"不可以在這裡抽菸。"
+}
+]
+},
+
+{
+id:"n5-verb-05",
+level:"N5",
+title:"～ています",
+pattern:"動詞て形 ＋ います",
+desc:"可以表示正在進行的動作，也可以表示持續的狀態。",
+note:"💡 「今、食べています」是正在吃；「東京に住んでいます」則是居住狀態。",
+examples:[
+{
+jp:"今、本を読んでいます。",
+read:"いまほんをよんでいます",
+zh:"現在正在看書。"
+},
+{
+jp:"東京に住んでいます。",
+read:"とうきょうにすんでいます",
+zh:"住在東京。"
+}
+]
+}
+
+]},
+
+{
+id:"desire",
+icon:"💗",
+name:"願望・邀約・能力",
+items:[
+
+{
+id:"n5-desire-01",
+level:"N5",
+title:"～たいです",
+pattern:"動詞ます形去ます ＋ たいです",
+desc:"表示說話者想做某件事。",
+examples:[
+{
+jp:"日本へ行きたいです。",
+read:"にほんへいきたいです",
+zh:"我想去日本。"
+}
+]
+},
+
+{
+id:"n5-desire-02",
+level:"N5",
+title:"～がほしいです",
+pattern:"名詞 ＋ がほしいです",
+desc:"表示想要某個東西。",
+examples:[
+{
+jp:"新しい自転車がほしいです。",
+read:"あたらしいじてんしゃがほしいです",
+zh:"我想要新的腳踏車。"
+}
+]
+},
+
+{
+id:"n5-desire-03",
+level:"N5",
+title:"～ませんか",
+pattern:"動詞ます形 ＋ ませんか",
+desc:"用來邀請對方：「要不要一起……？」",
+examples:[
+{
+jp:"一緒に映画を見ませんか。",
+read:"いっしょにえいがをみませんか",
+zh:"要不要一起看電影？"
+}
+]
+},
+
+{
+id:"n5-desire-04",
+level:"N5",
+title:"～ましょう",
+pattern:"動詞ます形 ＋ ましょう",
+desc:"表示提議：「一起……吧」。",
+examples:[
+{
+jp:"一緒に帰りましょう。",
+read:"いっしょにかえりましょう",
+zh:"一起回去吧。"
+}
+]
+},
+
+{
+id:"n5-desire-05",
+level:"N5",
+title:"～ことができます",
+pattern:"動詞辭書形 ＋ ことができます",
+desc:"表示能力或可能：「能夠……」。",
+examples:[
+{
+jp:"私は日本語を話すことができます。",
+read:"わたしはにほんごをはなすことができます",
+zh:"我會說日文。"
+}
+]
+}
+
+]},
+
+{
+id:"experience",
+icon:"🕒",
+name:"經驗・順序",
+items:[
+
+{
+id:"n5-exp-01",
+level:"N5",
+title:"～たことがあります",
+pattern:"動詞た形 ＋ ことがあります",
+desc:"表示過去曾經有過某種經驗。",
+examples:[
+{
+jp:"日本へ行ったことがあります。",
+read:"にほんへいったことがあります",
+zh:"曾經去過日本。"
+}
+]
+},
+
+{
+id:"n5-exp-02",
+level:"N5",
+title:"～前に",
+pattern:"動詞辭書形 ＋ 前に",
+desc:"表示「做某件事情之前」。",
+examples:[
+{
+jp:"寝る前に歯を磨きます。",
+read:"ねるまえにはをみがきます",
+zh:"睡覺前刷牙。"
+}
+]
+},
+
+{
+id:"n5-exp-03",
+level:"N5",
+title:"～てから",
+pattern:"動詞て形 ＋ から",
+desc:"表示完成前一個動作後，再進行下一個動作。",
+examples:[
+{
+jp:"ご飯を食べてから勉強します。",
+read:"ごはんをたべてからべんきょうします",
+zh:"吃完飯後再讀書。"
+}
+]
+}
+
+]},
+
+{
+id:"plain",
+icon:"🔄",
+name:"普通形・引用",
+items:[
+
+{
+id:"n4-plain-01",
+level:"N4",
+title:"～と思います",
+pattern:"普通形 ＋ と思います",
+desc:"表示說話者的想法、判斷或推測：「我想……」「我認為……」。",
+note:"💡 這是 N4 很重要的句型。動詞前面通常改成普通形。",
+warning:"❌ 日本へ行きますと思います。　⭕ 日本へ行くと思います。",
+examples:[
+{
+jp:"明日は雨が降ると思います。",
+read:"あしたはあめがふるとおもいます",
+zh:"我想明天會下雨。"
+},
+{
+jp:"この問題は難しいと思います。",
+read:"このもんだいはむずかしいとおもいます",
+zh:"我覺得這個問題很難。"
+}
+]
+},
+
+{
+id:"n4-plain-02",
+level:"N4",
+title:"～と言います",
+pattern:"普通形／引用內容 ＋ と言います",
+desc:"表示說話、引用：「說……」。",
+examples:[
+{
+jp:"先生は明日テストがあると言いました。",
+read:"せんせいはあしたてすとがあるといいました",
+zh:"老師說明天有考試。"
+}
+]
+}
+
+]},
+
+{
+id:"plan",
+icon:"📅",
+name:"計畫・義務・建議",
+items:[
+
+{
+id:"n4-plan-01",
+level:"N4",
+title:"～つもりです",
+pattern:"辭書形／ない形 ＋ つもりです",
+desc:"表示已經有某種打算。",
+examples:[
+{
+jp:"来年、日本へ留学するつもりです。",
+read:"らいねんにほんへりゅうがくするつもりです",
+zh:"打算明年去日本留學。"
+}
+]
+},
+
+{
+id:"n4-plan-02",
+level:"N4",
+title:"～予定です",
+pattern:"動詞辭書形／名詞の ＋ 予定です",
+desc:"表示已安排或預定的行程。",
+examples:[
+{
+jp:"来週、大阪へ行く予定です。",
+read:"らいしゅうおおさかへいくよていです",
+zh:"預定下星期去大阪。"
+}
+]
+},
+
+{
+id:"n4-plan-03",
+level:"N4",
+title:"～たほうがいいです",
+pattern:"動詞た形 ＋ ほうがいいです",
+desc:"表示建議：「最好……」。",
+examples:[
+{
+jp:"早く寝たほうがいいです。",
+read:"はやくねたほうがいいです",
+zh:"最好早點睡。"
+}
+]
+},
+
+{
+id:"n4-plan-04",
+level:"N4",
+title:"～ないほうがいいです",
+pattern:"動詞ない形 ＋ ほうがいいです",
+desc:"表示「最好不要……」。",
+examples:[
+{
+jp:"夜遅くコーヒーを飲まないほうがいいです。",
+read:"よるおそくこーひーをのまないほうがいいです",
+zh:"晚上太晚最好不要喝咖啡。"
+}
+]
+},
+
+{
+id:"n4-plan-05",
+level:"N4",
+title:"～なければなりません",
+pattern:"動詞ない形 → なければなりません",
+desc:"表示義務：「必須……」「不得不……」。",
+note:"💡 例如「行かない」去掉「ない」，變成「行かなければなりません」。",
+examples:[
+{
+jp:"明日は早く起きなければなりません。",
+read:"あしたははやくおきなければなりません",
+zh:"明天必須早起。"
+}
+]
+},
+
+{
+id:"n4-plan-06",
+level:"N4",
+title:"～なくてもいいです",
+pattern:"動詞ない形 → なくてもいいです",
+desc:"表示沒有必要做某事：「不必……」。",
+examples:[
+{
+jp:"明日は学校へ行かなくてもいいです。",
+read:"あしたはがっこうへいかなくてもいいです",
+zh:"明天不用去學校。"
+}
+]
+}
+
+]},
+
+{
+id:"guess",
+icon:"🔮",
+name:"推測・樣態",
+items:[
+
+{
+id:"n4-guess-01",
+level:"N4",
+title:"～かもしれません",
+pattern:"普通形 ＋ かもしれません",
+desc:"表示可能性：「也許……」「可能……」。",
+examples:[
+{
+jp:"明日は雪が降るかもしれません。",
+read:"あしたはゆきがふるかもしれません",
+zh:"明天也許會下雪。"
+}
+]
+},
+
+{
+id:"n4-guess-02",
+level:"N4",
+title:"～でしょう",
+pattern:"普通形 ＋ でしょう",
+desc:"表示推測，語氣通常比直接斷定柔和。",
+examples:[
+{
+jp:"明日は晴れるでしょう。",
+read:"あしたははれるでしょう",
+zh:"明天大概會放晴吧。"
+}
+]
+},
+
+{
+id:"n4-guess-03",
+level:"N4",
+title:"～そうです（樣態）",
+pattern:"動詞ます形去ます／形容詞語幹 ＋ そうです",
+desc:"根據眼前看到的情況判斷「看起來好像……」。",
+note:"💡 「おいしそう」＝看起來很好吃。",
+examples:[
+{
+jp:"このケーキはおいしそうです。",
+read:"このけーきはおいしそうです",
+zh:"這個蛋糕看起來很好吃。"
+}
+]
+},
+
+{
+id:"n4-guess-04",
+level:"N4",
+title:"～そうです（傳聞）",
+pattern:"普通形 ＋ そうです",
+desc:"表示從別人或其他來源聽來的消息：「聽說……」。",
+note:"💡 樣態「そう」和傳聞「そう」接續方式不同，是 N4 常見辨析。",
+examples:[
+{
+jp:"天気予報によると、明日は雨だそうです。",
+read:"てんきよほうによるとあしたはあめだそうです",
+zh:"根據天氣預報，聽說明天會下雨。"
+}
+]
+}
+
+]},
+
+{
+id:"condition",
+icon:"🌦️",
+name:"條件・原因",
+items:[
+
+{
+id:"n4-condition-01",
+level:"N4",
+title:"～たら",
+pattern:"た形 ＋ ら",
+desc:"可表示「如果……」或「……之後」。",
+examples:[
+{
+jp:"雨が降ったら、家にいます。",
+read:"あめがふったらいえにいます",
+zh:"如果下雨，我就待在家。"
+}
+]
+},
+
+{
+id:"n4-condition-02",
+level:"N4",
+title:"～なら",
+pattern:"普通形／名詞 ＋ なら",
+desc:"常用於根據對方提供的資訊提出判斷或建議。",
+examples:[
+{
+jp:"日本へ行くなら、京都にも行ってください。",
+read:"にほんへいくならきょうとにもいってください",
+zh:"如果要去日本，也請去京都看看。"
+}
+]
+},
+
+{
+id:"n4-condition-03",
+level:"N4",
+title:"～ば",
+pattern:"假定形 ＋ ば",
+desc:"表示條件：「如果……的話」。",
+examples:[
+{
+jp:"時間があれば、一緒に行きましょう。",
+read:"じかんがあればいっしょにいきましょう",
+zh:"如果有時間，一起去吧。"
+}
+]
+},
+
+{
+id:"n4-condition-04",
+level:"N4",
+title:"～と",
+pattern:"辭書形 ＋ と",
+desc:"表示某條件一成立，就自然或必然出現後面的結果。",
+examples:[
+{
+jp:"春になると、桜が咲きます。",
+read:"はるになるとさくらがさきます",
+zh:"一到春天，櫻花就會開。"
+}
+]
+},
+
+{
+id:"n4-condition-05",
+level:"N4",
+title:"～ので",
+pattern:"普通形 ＋ ので",
+desc:"表示原因理由。通常比「から」語氣柔和。",
+examples:[
+{
+jp:"雨が降っているので、出かけません。",
+read:"あめがふっているのででかけません",
+zh:"因為正在下雨，所以不出門。"
+}
+]
+},
+
+{
+id:"n4-condition-06",
+level:"N4",
+title:"～のに",
+pattern:"普通形 ＋ のに",
+desc:"表示與預期相反：「雖然……卻……」。",
+examples:[
+{
+jp:"たくさん勉強したのに、試験に落ちました。",
+read:"たくさんべんきょうしたのにしけんにおちました",
+zh:"明明讀了很多書，考試卻沒通過。"
+}
+]
+}
+
+]},
+
+{
+id:"action",
+icon:"🛠️",
+name:"N4 動作表現",
+items:[
+
+{
+id:"n4-action-01",
+level:"N4",
+title:"～ながら",
+pattern:"動詞ます形去ます ＋ ながら",
+desc:"表示同一個人同時進行兩個動作：「一邊……一邊……」。",
+examples:[
+{
+jp:"音楽を聞きながら勉強します。",
+read:"おんがくをききながらべんきょうします",
+zh:"一邊聽音樂一邊讀書。"
+}
+]
+},
+
+{
+id:"n4-action-02",
+level:"N4",
+title:"～たり～たりします",
+pattern:"動詞た形＋り、動詞た形＋りします",
+desc:"列舉幾個代表性的動作：「做做……、做做……之類」。",
+examples:[
+{
+jp:"日曜日は本を読んだり、映画を見たりします。",
+read:"にちようびはほんをよんだりえいがをみたりします",
+zh:"星期日會看看書、看看電影之類。"
+}
+]
+},
+
+{
+id:"n4-action-03",
+level:"N4",
+title:"～てみます",
+pattern:"動詞て形 ＋ みます",
+desc:"表示試著做某件事。",
+examples:[
+{
+jp:"この料理を食べてみます。",
+read:"このりょうりをたべてみます",
+zh:"我試著吃吃看這道料理。"
+}
+]
+},
+
+{
+id:"n4-action-04",
+level:"N4",
+title:"～てしまいます",
+pattern:"動詞て形 ＋ しまいます",
+desc:"可以表示事情完全做完，也可表示遺憾、不小心發生。",
+examples:[
+{
+jp:"財布をなくしてしまいました。",
+read:"さいふをなくしてしまいました",
+zh:"不小心把錢包弄丟了。"
+}
+]
+},
+
+{
+id:"n4-action-05",
+level:"N4",
+title:"～ておきます",
+pattern:"動詞て形 ＋ おきます",
+desc:"表示為了之後的事情事先做好準備。",
+examples:[
+{
+jp:"旅行の前にホテルを予約しておきます。",
+read:"りょこうのまえにほてるをよやくしておきます",
+zh:"旅行前先把飯店預約好。"
+}
+]
+},
+
+{
+id:"n4-action-06",
+level:"N4",
+title:"～やすい／～にくい",
+pattern:"動詞ます形去ます ＋ やすい／にくい",
+desc:"表示某動作容易做或難以做。",
+examples:[
+{
+jp:"この本は読みやすいです。",
+read:"このほんはよみやすいです",
+zh:"這本書很容易閱讀。"
+},
+{
+jp:"この漢字は覚えにくいです。",
+read:"このかんじはおぼえにくいです",
+zh:"這個漢字很難記。"
+}
+]
+},
+
+{
+id:"n4-action-07",
+level:"N4",
+title:"～すぎます",
+pattern:"動詞ます形去ます／形容詞語幹 ＋ すぎます",
+desc:"表示程度過度：「太……」。",
+examples:[
+{
+jp:"昨日は食べすぎました。",
+read:"きのうはたべすぎました",
+zh:"昨天吃太多了。"
+}
+]
+}
+
+]},
+
+{
+id:"change",
+icon:"🌿",
+name:"變化・決定",
+items:[
+
+{
+id:"n4-change-01",
+level:"N4",
+title:"～ようになります",
+pattern:"辭書形／ない形 ＋ ようになります",
+desc:"表示能力、習慣或狀態逐漸發生變化。",
+examples:[
+{
+jp:"日本語が話せるようになりました。",
+read:"にほんごがはなせるようになりました",
+zh:"變得會說日文了。"
+}
+]
+},
+
+{
+id:"n4-change-02",
+level:"N4",
+title:"～ようにします",
+pattern:"辭書形／ない形 ＋ ようにします",
+desc:"表示有意識地努力養成或避免某種行為。",
+examples:[
+{
+jp:"毎日日本語を読むようにしています。",
+read:"まいにちにほんごをよむようにしています",
+zh:"我盡量養成每天閱讀日文的習慣。"
+}
+]
+},
+
+{
+id:"n4-change-03",
+level:"N4",
+title:"～ことにします",
+pattern:"動詞辭書形／ない形 ＋ ことにします",
+desc:"表示說話者自己做出決定。",
+examples:[
+{
+jp:"今年、日本へ行くことにしました。",
+read:"ことしにほんへいくことにしました",
+zh:"我決定今年去日本。"
+}
+]
+},
+
+{
+id:"n4-change-04",
+level:"N4",
+title:"～ことになります",
+pattern:"動詞辭書形／ない形 ＋ ことになります",
+desc:"表示由外在因素、規定或他人決定某件事情。",
+examples:[
+{
+jp:"来月、大阪へ転勤することになりました。",
+read:"らいげつおおさかへてんきんすることになりました",
+zh:"已決定下個月調職到大阪。"
+}
+]
+}
+
+]},
+
+{
+id:"giving",
+icon:"🎁",
+name:"授受表現",
+items:[
+
+{
+id:"n4-give-01",
+level:"N4",
+title:"～てあげます",
+pattern:"動詞て形 ＋ あげます",
+desc:"表示我方或某人為別人做某件事。",
+examples:[
+{
+jp:"私は妹に宿題を教えてあげました。",
+read:"わたしはいもうとにしゅくだいをおしえてあげました",
+zh:"我教妹妹寫作業。"
+}
+]
+},
+
+{
+id:"n4-give-02",
+level:"N4",
+title:"～てくれます",
+pattern:"動詞て形 ＋ くれます",
+desc:"表示別人為我或我方的人做某件事情。",
+examples:[
+{
+jp:"友達が駅まで送ってくれました。",
+read:"ともだちがえきまでおくってくれました",
+zh:"朋友送我到車站。"
+}
+]
+},
+
+{
+id:"n4-give-03",
+level:"N4",
+title:"～てもらいます",
+pattern:"人に ＋ 動詞て形 ＋ もらいます",
+desc:"表示接受別人替自己做某件事情。",
+examples:[
+{
+jp:"先生に作文を直してもらいました。",
+read:"せんせいにさくぶんをなおしてもらいました",
+zh:"請老師幫我修改了作文。"
+}
+]
+}
+
+]}
+
+];
+
+
+/* ============================================================
+   整理全部文法
+============================================================ */
+
+const allGrammar=[];
+
+grammarCategories.forEach(category=>{
+
+    category.items.forEach(item=>{
+
+        allGrammar.push({
+            ...item,
+            categoryId:category.id,
+            categoryName:category.name,
+            categoryIcon:category.icon
         });
 
-        // 切換頁籤
-        function switchTab(tabName) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            if (tabName === 'grammar') {
-                document.getElementById('grammar-section').classList.add('active');
-                event.target.classList.add('active');
-            } else {
-                document.getElementById('quiz-section').classList.add('active');
-                event.target.classList.add('active');
-                nextQuizQuestion();
+    });
+
+});
+
+
+/* ============================================================
+   測驗題庫
+============================================================ */
+
+const quizQuestions=[
+
+{
+id:"q001",
+level:"N5",
+category:"particle",
+
+q:"私は学生（　）です。",
+
+correct:"です",
+
+options:[
+"です",
+"ます",
+"あります",
+"います"
+],
+
+explain:
+"名詞「学生」後面使用「です」，形成最基本的名詞判斷句。",
+
+example:
+"私は学生です。",
+
+exampleRead:
+"わたしはがくせいです",
+
+exampleZh:
+"我是學生。"
+},
+
+{
+id:"q002",
+level:"N5",
+category:"particle",
+
+q:"りんご（　）食べます。",
+
+correct:"を",
+
+options:[
+"を",
+"に",
+"で",
+"へ"
+],
+
+explain:
+"「りんご」是「食べます」直接作用的對象，所以使用受詞助詞「を」。",
+
+example:
+"りんごを食べます。",
+
+exampleRead:
+"りんごをたべます",
+
+exampleZh:
+"吃蘋果。"
+},
+
+{
+id:"q003",
+level:"N5",
+category:"particle",
+
+q:"図書館（　）本を読みます。",
+
+correct:"で",
+
+options:[
+"で",
+"に",
+"を",
+"へ"
+],
+
+explain:
+"「読む」是在圖書館進行的動作，因此動作發生場所使用「で」。",
+
+example:
+"図書館で本を読みます。",
+
+exampleRead:
+"としょかんでほんをよみます",
+
+exampleZh:
+"在圖書館看書。"
+},
+
+{
+id:"q004",
+level:"N5",
+category:"particle",
+
+q:"七時（　）起きます。",
+
+correct:"に",
+
+options:[
+"に",
+"で",
+"を",
+"と"
+],
+
+explain:
+"七時是明確的時間點，因此使用時間助詞「に」。",
+
+example:
+"毎朝七時に起きます。",
+
+exampleRead:
+"まいあさしちじにおきます",
+
+exampleZh:
+"每天早上七點起床。"
+},
+
+{
+id:"q005",
+level:"N5",
+category:"conjugation",
+
+q:"「飲む」的て形是哪一個？",
+
+correct:"飲んで",
+
+options:[
+"飲んで",
+"飲って",
+"飲いて",
+"飲みて"
+],
+
+explain:
+"五段動詞「む・ぶ・ぬ」結尾變て形時，要變成「んで」。所以「飲む → 飲んで」。",
+
+example:
+"水を飲んでください。",
+
+exampleRead:
+"みずをのんでください",
+
+exampleZh:
+"請喝水。"
+},
+
+{
+id:"q006",
+level:"N5",
+category:"conjugation",
+
+q:"「行く」的て形是哪一個？",
+
+correct:"行って",
+
+options:[
+"行って",
+"行いて",
+"行きて",
+"行んで"
+],
+
+explain:
+"「行く」是て形的重要例外。雖然一般「く→いて」，但是「行く→行って」。",
+
+example:
+"学校へ行ってください。",
+
+exampleRead:
+"がっこうへいってください",
+
+exampleZh:
+"請去學校。"
+},
+
+{
+id:"q007",
+level:"N5",
+category:"conjugation",
+
+q:"「食べる」的ない形是哪一個？",
+
+correct:"食べない",
+
+options:[
+"食べない",
+"食べらない",
+"食べなく",
+"食べません"
+],
+
+explain:
+"「食べる」是一段動詞，去掉最後的「る」再加「ない」，所以是「食べない」。",
+
+example:
+"朝ご飯を食べない日もあります。",
+
+exampleRead:
+"あさごはんをたべないひもあります",
+
+exampleZh:
+"有時也有不吃早餐的日子。"
+},
+
+{
+id:"q008",
+level:"N5",
+category:"conjugation",
+
+q:"「高い」的普通形過去否定是哪一個？",
+
+correct:"高くなかった",
+
+options:[
+"高くなかった",
+"高いなかった",
+"高くないかった",
+"高ではなかった"
+],
+
+explain:
+"い形容詞的過去否定為「去い＋くなかった」。所以「高い→高くなかった」。",
+
+example:
+"このかばんは高くなかったです。",
+
+exampleRead:
+"このかばんはたかくなかったです",
+
+exampleZh:
+"這個包包不貴。"
+},
+
+{
+id:"q009",
+level:"N4",
+category:"pattern",
+
+q:"「我想明天會下雨」最適當的是？",
+
+correct:"明日は雨が降ると思います。",
+
+options:[
+"明日は雨が降ると思います。",
+"明日は雨が降りますと思います。",
+"明日は雨が降ってと思います。",
+"明日は雨が降りと思います。"
+],
+
+explain:
+"「～と思います」前面基本上接普通形。「降ります」的普通形是「降る」。",
+
+example:
+"明日は雨が降ると思います。",
+
+exampleRead:
+"あしたはあめがふるとおもいます",
+
+exampleZh:
+"我想明天會下雨。"
+},
+
+{
+id:"q010",
+level:"N4",
+category:"pattern",
+
+q:"明日は早く起き（　）。＝明天必須早起。",
+
+correct:"なければなりません",
+
+options:[
+"なければなりません",
+"なくてもいいです",
+"たほうがいいです",
+"てみます"
+],
+
+explain:
+"「～なければなりません」表示義務，也就是「必須……」。",
+
+example:
+"明日は早く起きなければなりません。",
+
+exampleRead:
+"あしたははやくおきなければなりません",
+
+exampleZh:
+"明天必須早起。"
+},
+
+{
+id:"q011",
+level:"N4",
+category:"pattern",
+
+q:"「最好早點睡」最適當的是？",
+
+correct:"早く寝たほうがいいです。",
+
+options:[
+"早く寝たほうがいいです。",
+"早く寝るつもりです。",
+"早く寝なくてもいいです。",
+"早く寝てみます。"
+],
+
+explain:
+"「た形＋ほうがいい」用來給對方建議，表示「最好……」。",
+
+example:
+"今日は早く寝たほうがいいです。",
+
+exampleRead:
+"きょうははやくねたほうがいいです",
+
+exampleZh:
+"今天最好早點睡。"
+},
+
+{
+id:"q012",
+level:"N4",
+category:"pattern",
+
+q:"財布をなくして（　）。＝不小心把錢包弄丟了。",
+
+correct:"しまいました",
+
+options:[
+"しまいました",
+"おきました",
+"みました",
+"ありました"
+],
+
+explain:
+"「～てしまう」除了表示完成，也常用來表達遺憾或不小心發生的事情。",
+
+example:
+"財布をなくしてしまいました。",
+
+exampleRead:
+"さいふをなくしてしまいました",
+
+exampleZh:
+"不小心把錢包弄丟了。"
+},
+
+{
+id:"q013",
+level:"N4",
+category:"condition",
+
+q:"雨が降っ（　）、家にいます。＝如果下雨，我就待在家。",
+
+correct:"たら",
+
+options:[
+"たら",
+"ながら",
+"ので",
+"まで"
+],
+
+explain:
+"「た形＋ら」可以表示假設條件。「降る→降った→降ったら」。",
+
+example:
+"雨が降ったら、家にいます。",
+
+exampleRead:
+"あめがふったらいえにいます",
+
+exampleZh:
+"如果下雨，我就待在家。"
+},
+
+{
+id:"q014",
+level:"N4",
+category:"condition",
+
+q:"春になる（　）、桜が咲きます。",
+
+correct:"と",
+
+options:[
+"と",
+"を",
+"ながら",
+"しか"
+],
+
+explain:
+"「～と」常用於自然規律、必然結果。一到春天，櫻花就會開。",
+
+example:
+"春になると、桜が咲きます。",
+
+exampleRead:
+"はるになるとさくらがさきます",
+
+exampleZh:
+"一到春天，櫻花就會開。"
+},
+
+{
+id:"q015",
+level:"N4",
+category:"pattern",
+
+q:"音楽を聞き（　）勉強します。＝一邊聽音樂一邊讀書。",
+
+correct:"ながら",
+
+options:[
+"ながら",
+"たら",
+"ので",
+"まで"
+],
+
+explain:
+"「動詞ます形去ます＋ながら」表示同一主體一邊做A、一邊做B。「聞きます→聞き＋ながら」。",
+
+example:
+"音楽を聞きながら勉強します。",
+
+exampleRead:
+"おんがくをききながらべんきょうします",
+
+exampleZh:
+"一邊聽音樂一邊讀書。"
+},
+
+{
+id:"q016",
+level:"N4",
+category:"pattern",
+
+q:"旅行の前にホテルを予約して（　）。＝事先把飯店預約好。",
+
+correct:"おきます",
+
+options:[
+"おきます",
+"みます",
+"しまいます",
+"あります"
+],
+
+explain:
+"「～ておく」表示為了之後的事情，事先做好準備。",
+
+example:
+"旅行の前にホテルを予約しておきます。",
+
+exampleRead:
+"りょこうのまえにほてるをよやくしておきます",
+
+exampleZh:
+"旅行前先把飯店預約好。"
+},
+
+{
+id:"q017",
+level:"N4",
+category:"pattern",
+
+q:"「這本書很容易閱讀」最適當的是？",
+
+correct:"この本は読みやすいです。",
+
+options:[
+"この本は読みやすいです。",
+"この本は読んでやすいです。",
+"この本は読むやすいです。",
+"この本は読みすぎます。"
+],
+
+explain:
+"「ます形去ます＋やすい」表示容易做某件事。「読みます→読み＋やすい」。",
+
+example:
+"この本は読みやすいです。",
+
+exampleRead:
+"このほんはよみやすいです",
+
+exampleZh:
+"這本書很容易閱讀。"
+},
+
+{
+id:"q018",
+level:"N4",
+category:"pattern",
+
+q:"日本語が話せる（　）なりました。＝變得會說日文了。",
+
+correct:"ように",
+
+options:[
+"ように",
+"ために",
+"そうに",
+"ことに"
+],
+
+explain:
+"「～ようになる」表示能力、習慣或狀態發生變化。",
+
+example:
+"日本語が話せるようになりました。",
+
+exampleRead:
+"にほんごがはなせるようになりました",
+
+exampleZh:
+"變得會說日文了。"
+}
+
+];
+
+
+/* ============================================================
+   localStorage
+============================================================ */
+
+function getProgress(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                "jlptGrammarProgress"
+            ) || "{}"
+        );
+
+    }catch{
+
+        return {};
+
+    }
+
+}
+
+function saveProgress(data){
+
+    localStorage.setItem(
+        "jlptGrammarProgress",
+        JSON.stringify(data)
+    );
+
+}
+
+function getWrongQuestions(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                "jlptGrammarWrong"
+            ) || "[]"
+        );
+
+    }catch{
+
+        return [];
+
+    }
+
+}
+
+function saveWrongQuestions(data){
+
+    localStorage.setItem(
+        "jlptGrammarWrong",
+        JSON.stringify(
+            [...new Set(data)]
+        )
+    );
+
+}
+
+
+/* ============================================================
+   語音
+============================================================ */
+
+function speak(text,rate=.9){
+
+    if(!("speechSynthesis" in window)){
+
+        alert(
+            "目前瀏覽器不支援語音朗讀功能。"
+        );
+
+        return;
+
+    }
+
+    speechSynthesis.cancel();
+
+    const utterance=
+        new SpeechSynthesisUtterance(text);
+
+    utterance.lang="ja-JP";
+    utterance.rate=rate;
+
+    const voices=
+        speechSynthesis.getVoices();
+
+    const japaneseVoice=
+        voices.find(
+            voice=>
+                voice.lang &&
+                voice.lang
+                    .toLowerCase()
+                    .startsWith("ja")
+        );
+
+    if(japaneseVoice){
+
+        utterance.voice=
+            japaneseVoice;
+
+    }
+
+    speechSynthesis.speak(
+        utterance
+    );
+
+}
+
+
+/* ============================================================
+   主頁籤
+============================================================ */
+
+function switchTab(tabName,button){
+
+    document
+        .querySelectorAll(".section")
+        .forEach(
+            section=>
+                section.classList.remove(
+                    "active"
+                )
+        );
+
+    document
+        .querySelectorAll(".tab-btn")
+        .forEach(
+            btn=>
+                btn.classList.remove(
+                    "active"
+                )
+        );
+
+    document
+        .getElementById(
+            tabName+"-section"
+        )
+        .classList.add("active");
+
+    button.classList.add("active");
+
+    if(tabName==="wrong"){
+
+        renderWrongQuestions();
+
+    }
+
+}
+
+
+/* ============================================================
+   儀表板
+============================================================ */
+
+function updateDashboard(){
+
+    const progress=
+        getProgress();
+
+    const n5=
+        allGrammar.filter(
+            item=>item.level==="N5"
+        );
+
+    const n4=
+        allGrammar.filter(
+            item=>item.level==="N4"
+        );
+
+    const mastered=
+        allGrammar.filter(
+            item=>
+                progress[item.id]
+                ==="mastered"
+        );
+
+    document
+        .getElementById(
+            "totalGrammar"
+        )
+        .textContent=
+            allGrammar.length;
+
+    document
+        .getElementById(
+            "n5Count"
+        )
+        .textContent=
+            n5.length;
+
+    document
+        .getElementById(
+            "n4Count"
+        )
+        .textContent=
+            n4.length;
+
+    document
+        .getElementById(
+            "masteredCount"
+        )
+        .textContent=
+            mastered.length;
+
+
+    const n5Mastered=
+        n5.filter(
+            item=>
+                progress[item.id]
+                ==="mastered"
+        ).length;
+
+    const n4Mastered=
+        n4.filter(
+            item=>
+                progress[item.id]
+                ==="mastered"
+        ).length;
+
+
+    const n5Percent=
+        n5.length
+        ? Math.round(
+            n5Mastered /
+            n5.length *
+            100
+        )
+        : 0;
+
+    const n4Percent=
+        n4.length
+        ? Math.round(
+            n4Mastered /
+            n4.length *
+            100
+        )
+        : 0;
+
+
+    document
+        .getElementById(
+            "n5Progress"
+        )
+        .style.width=
+            n5Percent+"%";
+
+    document
+        .getElementById(
+            "n4Progress"
+        )
+        .style.width=
+            n4Percent+"%";
+
+
+    document
+        .getElementById(
+            "n5ProgressText"
+        )
+        .textContent=
+            n5Percent+"%";
+
+    document
+        .getElementById(
+            "n4ProgressText"
+        )
+        .textContent=
+            n4Percent+"%";
+
+}
+
+
+/* ============================================================
+   搜尋／篩選
+============================================================ */
+
+function normalize(text){
+
+    return String(
+        text || ""
+    )
+    .toLowerCase()
+    .trim();
+
+}
+
+function getFilteredGrammar(items){
+
+    const search=
+        normalize(
+            document
+                .getElementById(
+                    "grammarSearch"
+                )
+                .value
+        );
+
+    const level=
+        document
+            .getElementById(
+                "levelFilter"
+            )
+            .value;
+
+    const status=
+        document
+            .getElementById(
+                "statusFilter"
+            )
+            .value;
+
+    const progress=
+        getProgress();
+
+
+    return items.filter(item=>{
+
+        const searchable=
+            normalize([
+                item.title,
+                item.pattern,
+                item.desc,
+                item.note || "",
+                item.warning || "",
+                item.categoryName
+            ].join(" "));
+
+
+        const matchSearch=
+            !search ||
+            searchable.includes(
+                search
+            );
+
+        const matchLevel=
+            level==="ALL" ||
+            item.level===level;
+
+
+        let matchStatus=true;
+
+        if(status!=="ALL"){
+
+            if(status==="new"){
+
+                matchStatus=
+                    !progress[item.id];
+
+            }else{
+
+                matchStatus=
+                    progress[item.id]
+                    ===status;
+
             }
+
         }
 
-        // 測驗題庫（包含助詞與形變）
-        const quizQuestions = [
-            { q: "私 (　　) 学生です。", correct: "は", options: ["は", "を", "に", "で"], hint: "標示主題「我」" },
-            { q: "りんご (　　) 食べます。", correct: "を", options: ["は", "を", "が", "で"], hint: "標示動作的受詞「蘋果」" },
-            { q: "学校 (　　) 行きます。", correct: "に", options: ["を", "に", "と", "の"], hint: "標示移動目的地「學校」" },
-            { q: "食べる (たべる) 的否定形 (ない形) 是？", correct: "食べない", options: ["食べない", "食べません", "食べた", "食べたくない"], hint: "一段動詞去掉る加ない" },
-            { q: "飲む (のむ) 的禮貌形 (ます形) 是？", correct: "飲みます", options: ["飲むます", "飲みます", "飲まます", "飲んだ"], hint: "五段動詞 u 段改 i 段加ます" },
-            { q: "い形容詞「おいしい」的過去形是？", correct: "おいしかった", options: ["おいしかった", "おいしかったです", "おいしくない", "おいしかったです"], hint: "去い加かった" },
-            { q: "な形容詞「きれい」的否定形是？", correct: "きれいではありません", options: ["きれいじゃない", "きれいではありません", "きれいくない", "きれいくなかった"], hint: "な形容詞否定接ではありません" }
+
+        return (
+            matchSearch &&
+            matchLevel &&
+            matchStatus
+        );
+
+    });
+
+}
+
+
+/* ============================================================
+   分類首頁
+============================================================ */
+
+function renderGrammarCategories(){
+
+    document
+        .getElementById(
+            "categoryView"
+        )
+        .style.display=
+            "block";
+
+    document
+        .getElementById(
+            "grammarDetailView"
+        )
+        .style.display=
+            "none";
+
+
+    const grid=
+        document
+            .getElementById(
+                "categoryGrid"
+            );
+
+    grid.innerHTML="";
+
+    let total=0;
+
+
+    grammarCategories
+        .forEach(category=>{
+
+            const categoryItems=
+                allGrammar.filter(
+                    item=>
+                        item.categoryId
+                        ===category.id
+                );
+
+            const filtered=
+                getFilteredGrammar(
+                    categoryItems
+                );
+
+            if(!filtered.length){
+                return;
+            }
+
+            total+=
+                filtered.length;
+
+
+            const n5=
+                filtered.filter(
+                    item=>
+                        item.level==="N5"
+                ).length;
+
+            const n4=
+                filtered.filter(
+                    item=>
+                        item.level==="N4"
+                ).length;
+
+
+            const card=
+                document.createElement(
+                    "div"
+                );
+
+            card.className=
+                "category-card";
+
+
+            card.innerHTML=`
+
+                <div class="category-icon">
+                    ${category.icon}
+                </div>
+
+                <div class="category-title">
+                    ${category.name}
+                </div>
+
+                <div class="category-count">
+
+                    ${filtered.length}
+                    個文法
+
+                    ${
+                        n5
+                        ? `・N5 ${n5}`
+                        : ""
+                    }
+
+                    ${
+                        n4
+                        ? `・N4 ${n4}`
+                        : ""
+                    }
+
+                </div>
+
+            `;
+
+
+            card.onclick=
+                ()=>openCategory(
+                    category.id
+                );
+
+
+            grid.appendChild(
+                card
+            );
+
+        });
+
+
+    document
+        .getElementById(
+            "grammarSummary"
+        )
+        .textContent=
+            `📚 目前條件共有 ${total} 個文法項目`;
+
+
+    if(!total){
+
+        grid.innerHTML=`
+            <div class="empty">
+                找不到符合條件的文法。
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* ============================================================
+   打開分類
+============================================================ */
+
+function openCategory(categoryId){
+
+    const category=
+        grammarCategories.find(
+            item=>
+                item.id===categoryId
+        );
+
+    if(!category){
+        return;
+    }
+
+
+    const items=
+        getFilteredGrammar(
+            allGrammar.filter(
+                item=>
+                    item.categoryId
+                    ===categoryId
+            )
+        );
+
+
+    document
+        .getElementById(
+            "categoryView"
+        )
+        .style.display=
+            "none";
+
+    document
+        .getElementById(
+            "grammarDetailView"
+        )
+        .style.display=
+            "block";
+
+
+    document
+        .getElementById(
+            "grammarDetailTitle"
+        )
+        .textContent=
+            `${category.icon} ${category.name}（${items.length}）`;
+
+
+    renderGrammarCards(
+        items
+    );
+
+}
+
+
+/* ============================================================
+   返回分類
+============================================================ */
+
+function backToCategories(){
+
+    renderGrammarCategories();
+
+}
+
+
+/* ============================================================
+   文法卡
+============================================================ */
+
+function renderGrammarCards(items){
+
+    const container=
+        document
+            .getElementById(
+                "grammarContainer"
+            );
+
+    container.innerHTML="";
+
+    const progress=
+        getProgress();
+
+
+    items.forEach(item=>{
+
+        const card=
+            document.createElement(
+                "div"
+            );
+
+        card.className=
+            "grammar-card " +
+            (
+                item.level==="N4"
+                ? "n4"
+                : ""
+            );
+
+
+        let examplesHTML="";
+
+
+        item.examples
+            .forEach(
+                (example,index)=>{
+
+                    const encoded=
+                        encodeURIComponent(
+                            example.read
+                            ||example.jp
+                        );
+
+                    examplesHTML+=`
+
+                    <div class="example-box">
+
+                        <div class="ex-jp">
+                            ${example.jp}
+                        </div>
+
+                        <div class="ex-read">
+                            ${example.read}
+                        </div>
+
+                        <div class="ex-zh">
+                            ${example.zh}
+                        </div>
+
+                        <div class="audio-row">
+
+                            <button
+                            class="audio-btn"
+                            onclick="speak(decodeURIComponent('${encoded}'),.9)">
+                            🔊 正常
+                            </button>
+
+                            <button
+                            class="audio-btn"
+                            onclick="speak(decodeURIComponent('${encoded}'),.7)">
+                            🐢 慢速
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    `;
+
+                }
+            );
+
+
+        const currentStatus=
+            progress[item.id];
+
+
+        card.innerHTML=`
+
+            <span
+            class="level-badge
+            level-${item.level}">
+                ${item.level}
+            </span>
+
+            <div class="grammar-title">
+                ${item.title}
+            </div>
+
+            <div class="pattern">
+                🔧 接續：
+                ${item.pattern}
+            </div>
+
+            <div class="grammar-desc">
+                ${item.desc}
+            </div>
+
+            ${
+                item.note
+                ? `
+                <div class="teacher-note">
+                    ${item.note}
+                </div>
+                `
+                : ""
+            }
+
+            ${
+                item.warning
+                ? `
+                <div class="warning-box">
+                    ⚠️ ${item.warning}
+                </div>
+                `
+                : ""
+            }
+
+            ${examplesHTML}
+
+            <div class="status-row">
+
+                <button
+                class="status-btn
+                ${
+                    currentStatus==="new"
+                    ?"selected"
+                    :""
+                }"
+                onclick="setGrammarStatus('${item.id}','new')">
+                😵 不會
+                </button>
+
+                <button
+                class="status-btn
+                ${
+                    currentStatus==="learning"
+                    ?"selected"
+                    :""
+                }"
+                onclick="setGrammarStatus('${item.id}','learning')">
+                🤔 有印象
+                </button>
+
+                <button
+                class="status-btn
+                ${
+                    currentStatus==="mastered"
+                    ?"selected"
+                    :""
+                }"
+                onclick="setGrammarStatus('${item.id}','mastered')">
+                😊 熟悉
+                </button>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+/* ============================================================
+   熟悉程度
+============================================================ */
+
+function setGrammarStatus(
+    id,
+    status
+){
+
+    const progress=
+        getProgress();
+
+    progress[id]=status;
+
+    saveProgress(
+        progress
+    );
+
+    updateDashboard();
+
+
+    const item=
+        allGrammar.find(
+            grammar=>
+                grammar.id===id
+        );
+
+    if(item){
+
+        openCategory(
+            item.categoryId
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   測驗
+============================================================ */
+
+let quizScore=0;
+let quizCorrect=0;
+let quizWrong=0;
+let currentQuestion=null;
+let lastQuestionId=null;
+
+
+function startQuiz(){
+
+    quizScore=0;
+    quizCorrect=0;
+    quizWrong=0;
+    lastQuestionId=null;
+
+    updateQuizScore();
+
+    nextQuizQuestion();
+
+}
+
+
+function updateQuizScore(){
+
+    document
+        .getElementById(
+            "score"
+        )
+        .textContent=
+            quizScore;
+
+    document
+        .getElementById(
+            "correctCount"
+        )
+        .textContent=
+            quizCorrect;
+
+    document
+        .getElementById(
+            "wrongCount"
+        )
+        .textContent=
+            quizWrong;
+
+}
+
+
+function shuffle(array){
+
+    const result=[
+        ...array
+    ];
+
+    for(
+        let i=result.length-1;
+        i>0;
+        i--
+    ){
+
+        const j=
+            Math.floor(
+                Math.random()*
+                (i+1)
+            );
+
+        [
+            result[i],
+            result[j]
+        ]=[
+            result[j],
+            result[i]
         ];
 
-        let currentScore = 0;
-        let activeQuiz = {};
+    }
 
-        function nextQuizQuestion() {
-            document.getElementById('feedback').innerText = '';
-            document.getElementById('nextBtn').style.display = 'none';
+    return result;
 
-            activeQuiz = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+}
 
-            document.getElementById('quizQuestion').innerHTML = `請選出正確答案：<br><span style="color:#00796b;">${activeQuiz.q}</span><br><span style="font-size:14px; color:#666;">💡 提示：${activeQuiz.hint}</span>`;
 
-            let options = [...activeQuiz.options];
-            options.sort(() => Math.random() - 0.5);
+function nextQuizQuestion(){
 
-            const optionsGrid = document.getElementById('optionsGrid');
-            optionsGrid.innerHTML = '';
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(opt, btn, activeQuiz.correct);
-                optionsGrid.appendChild(btn);
-            });
-        }
+    const level=
+        document
+            .getElementById(
+                "quizLevel"
+            )
+            .value;
 
-        function checkAnswer(selectedOption, btnElement, correctAns) {
-            const allBtns = document.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.disabled = true);
+    const category=
+        document
+            .getElementById(
+                "quizCategory"
+            )
+            .value;
 
-            const feedback = document.getElementById('feedback');
-            if (selectedOption === correctAns) {
-                feedback.style.color = '#00796b';
-                feedback.innerText = '⭕ 答對了！形變觀念非常清楚！';
-                currentScore += 10;
-                document.getElementById('score').innerText = currentScore;
-                btnElement.style.background = '#b2dfdb';
-            } else {
-                feedback.style.color = '#d32f2f';
-                feedback.innerText = `❌ 答錯囉！正確答案是：【 ${correctAns} 】`;
-                btnElement.style.background = '#ffebee';
-                allBtns.forEach(b => {
-                    if (b.innerText === correctAns) {
-                        b.style.background = '#b2dfdb';
-                    }
-                });
+
+    let pool=
+        quizQuestions.filter(
+            question=>
+                (
+                    level==="ALL" ||
+                    question.level===level
+                )
+                &&
+                (
+                    category==="ALL" ||
+                    question.category
+                    ===category
+                )
+        );
+
+
+    if(!pool.length){
+
+        document
+            .getElementById(
+                "quizQuestion"
+            )
+            .textContent=
+                "目前這個分類還沒有題目。";
+
+        document
+            .getElementById(
+                "optionsGrid"
+            )
+            .innerHTML="";
+
+        return;
+
+    }
+
+
+    const differentPool=
+        pool.filter(
+            question=>
+                question.id
+                !==lastQuestionId
+        );
+
+
+    if(differentPool.length){
+
+        pool=
+            differentPool;
+
+    }
+
+
+    currentQuestion=
+        pool[
+            Math.floor(
+                Math.random()*
+                pool.length
+            )
+        ];
+
+
+    lastQuestionId=
+        currentQuestion.id;
+
+
+    document
+        .getElementById(
+            "quizPrompt"
+        )
+        .textContent=
+            `${currentQuestion.level}｜請選出最適當的答案`;
+
+
+    document
+        .getElementById(
+            "quizQuestion"
+        )
+        .textContent=
+            currentQuestion.q;
+
+
+    document
+        .getElementById(
+            "feedback"
+        )
+        .textContent="";
+
+
+    document
+        .getElementById(
+            "explanation"
+        )
+        .style.display=
+            "none";
+
+
+    document
+        .getElementById(
+            "nextBtn"
+        )
+        .style.display=
+            "none";
+
+
+    const optionsGrid=
+        document
+            .getElementById(
+                "optionsGrid"
+            );
+
+    optionsGrid.innerHTML="";
+
+
+    shuffle(
+        currentQuestion.options
+    )
+    .forEach(option=>{
+
+        const button=
+            document.createElement(
+                "button"
+            );
+
+        button.className=
+            "option-btn";
+
+        button.textContent=
+            option;
+
+        button.onclick=
+            ()=>checkAnswer(
+                option,
+                button
+            );
+
+        optionsGrid.appendChild(
+            button
+        );
+
+    });
+
+}
+
+
+/* ============================================================
+   判斷答案＋詳解
+============================================================ */
+
+function checkAnswer(
+    selected,
+    selectedButton
+){
+
+    const buttons=
+        document
+            .querySelectorAll(
+                ".option-btn"
+            );
+
+    buttons.forEach(
+        button=>
+            button.disabled=true
+    );
+
+
+    const correct=
+        selected===
+        currentQuestion.correct;
+
+
+    const feedback=
+        document
+            .getElementById(
+                "feedback"
+            );
+
+
+    if(correct){
+
+        quizScore+=10;
+        quizCorrect++;
+
+        feedback.style.color=
+            "#2e7d32";
+
+        feedback.textContent=
+            "⭕ 答對了！";
+
+        selectedButton.style.background=
+            "#dcedc8";
+
+        selectedButton.style.borderColor=
+            "#7cb342";
+
+    }else{
+
+        quizWrong++;
+
+        feedback.style.color=
+            "#c62828";
+
+        feedback.textContent=
+            `❌ 答錯了。正確答案：${currentQuestion.correct}`;
+
+
+        selectedButton.style.background=
+            "#ffcdd2";
+
+        selectedButton.style.borderColor=
+            "#e57373";
+
+
+        buttons.forEach(button=>{
+
+            if(
+                button.textContent
+                ===currentQuestion.correct
+            ){
+
+                button.style.background=
+                    "#dcedc8";
+
+                button.style.borderColor=
+                    "#7cb342";
+
             }
-            document.getElementById('nextBtn').style.display = 'inline-block';
+
+        });
+
+
+        const wrong=
+            getWrongQuestions();
+
+        if(
+            !wrong.includes(
+                currentQuestion.id
+            )
+        ){
+
+            wrong.push(
+                currentQuestion.id
+            );
+
+            saveWrongQuestions(
+                wrong
+            );
+
         }
-    </script>
+
+    }
+
+
+    updateQuizScore();
+
+
+    const explanation=
+        document
+            .getElementById(
+                "explanation"
+            );
+
+
+    const encodedExample=
+        encodeURIComponent(
+            currentQuestion.exampleRead
+            ||
+            currentQuestion.example
+        );
+
+
+    explanation.innerHTML=`
+
+        <strong>
+        📘 老師詳解
+        </strong>
+
+        <br><br>
+
+        ${currentQuestion.explain}
+
+        <hr
+        style="
+        border:0;
+        border-top:1px solid #ddd;
+        margin:12px 0;
+        ">
+
+        <strong>
+        ${currentQuestion.example}
+        </strong>
+
+        <br>
+
+        <span style="color:#777;">
+        ${currentQuestion.exampleRead}
+        </span>
+
+        <br>
+
+        ${currentQuestion.exampleZh}
+
+        <br><br>
+
+        <button
+        class="audio-btn"
+        onclick="speak(decodeURIComponent('${encodedExample}'),.9)">
+        🔊 聽例句
+        </button>
+
+        <button
+        class="audio-btn"
+        onclick="speak(decodeURIComponent('${encodedExample}'),.7)">
+        🐢 慢速
+        </button>
+
+    `;
+
+
+    explanation.style.display=
+        "block";
+
+
+    document
+        .getElementById(
+            "nextBtn"
+        )
+        .style.display=
+            "inline-block";
+
+}
+
+
+/* ============================================================
+   錯題
+============================================================ */
+
+function renderWrongQuestions(){
+
+    const ids=
+        getWrongQuestions();
+
+    const container=
+        document
+            .getElementById(
+                "wrongContainer"
+            );
+
+    container.innerHTML="";
+
+
+    if(!ids.length){
+
+        container.innerHTML=`
+
+            <div class="empty">
+
+                🎉 目前沒有錯題！<br>
+                繼續保持。
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    ids.forEach(id=>{
+
+        const question=
+            quizQuestions.find(
+                item=>
+                    item.id===id
+            );
+
+        if(!question){
+            return;
+        }
+
+
+        const card=
+            document.createElement(
+                "div"
+            );
+
+        card.className=
+            "wrong-card";
+
+
+        card.innerHTML=`
+
+            <span
+            class="level-badge
+            level-${question.level}">
+
+                ${question.level}
+
+            </span>
+
+            <div
+            style="
+            font-weight:900;
+            font-size:17px;
+            margin-bottom:7px;
+            ">
+
+                ${question.q}
+
+            </div>
+
+            <div>
+
+                ⭕ 正確答案：
+                <b>
+                ${question.correct}
+                </b>
+
+            </div>
+
+            <div
+            style="
+            margin-top:7px;
+            line-height:1.7;
+            color:#555;
+            ">
+
+                ${question.explain}
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+function clearWrongQuestions(){
+
+    if(
+        !confirm(
+            "確定要清除全部文法錯題紀錄嗎？"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    saveWrongQuestions(
+        []
+    );
+
+    renderWrongQuestions();
+
+}
+
+
+/* ============================================================
+   初始化
+============================================================ */
+
+function initialize(){
+
+    updateDashboard();
+
+    renderGrammarCategories();
+
+}
+
+initialize();
+
+</script>
+
 </body>
 </html>
