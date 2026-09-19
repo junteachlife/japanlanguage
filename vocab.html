@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第二階段：日文 500-1000 核心基礎單字網</title>
+    <title>第二階段：JLPT N5 核心單字大全（500-1000字庫）</title>
     <style>
         :root {
             --primary-color: #3f51b5;
@@ -52,7 +52,7 @@
         }
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1050px;
             background: var(--card-bg);
             padding: 25px;
             border-radius: 12px;
@@ -73,11 +73,11 @@
         }
         .search-input {
             width: 100%;
-            max-width: 400px;
-            padding: 10px 15px;
+            max-width: 450px;
+            padding: 12px 18px;
             font-size: 16px;
             border: 2px solid #c5cae9;
-            border-radius: 20px;
+            border-radius: 25px;
             outline: none;
         }
         .search-input:focus {
@@ -86,15 +86,15 @@
 
         /* 單字卡片區塊 */
         .category-group {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         .category-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: #3f51b5;
             margin-bottom: 12px;
             border-bottom: 2px solid #c5cae9;
-            padding-bottom: 5px;
+            padding-bottom: 6px;
         }
         .vocab-grid {
             display: grid;
@@ -115,7 +115,7 @@
             transform: translateY(-3px);
         }
         .vocab-jp {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
             color: #1a237e;
         }
@@ -192,20 +192,20 @@
 <body>
 
     <header>
-        <h1>📘 日文核心基礎單字學習網（擴充版）</h1>
-        <p>多樣化分類、點擊發音、支援關鍵字搜尋與隨機測驗！</p>
+        <h1>📘 JLPT N5 核心單字大全（點擊發音與搜尋）</h1>
+        <p>精選日檢 N5 合格必備高頻單字庫，支援即時關鍵字查詢與互動測驗！</p>
     </header>
 
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('vocab')">📖 單字分類總表</button>
-        <button class="tab-btn" onclick="switchTab('quiz')">✍️ 單字隨機考驗</button>
+        <button class="tab-btn active" onclick="switchTab('vocab')">📖 N5 單字分類總表</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">✍️ N5 單字隨機考驗</button>
     </div>
 
     <div class="container">
         <!-- 第一部分：單字分類與搜尋表 -->
         <div id="vocab-section" class="section active">
             <div class="search-box">
-                <input type="text" id="searchInput" class="search-input" placeholder="🔍 輸入中文或日文進行搜尋..." oninput="filterVocab()">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 輸入中文、日文或羅馬拼音搜尋單字..." oninput="filterVocab()">
             </div>
             <div id="vocabContainer"></div>
         </div>
@@ -224,9 +224,9 @@
     </div>
 
     <script>
-        // 大規模擴充的基礎單字資料庫（分類管理）
+        // JLPT N5 龐大高頻單字資料庫
         const vocabCategories = [
-            { category: "🍎 飲食與水果", items: [
+            { category: "🍎 飲食與美味水果", items: [
                 { jp: "りんご", read: "りんご", romaji: "ringo", zh: "蘋果" },
                 { jp: "みかん", read: "みかん", romaji: "mikan", zh: "橘子" },
                 { jp: "バナナ", read: "ばなな", romaji: "banana", zh: "香蕉" },
@@ -236,9 +236,14 @@
                 { jp: "魚 (さかな)", read: "さかな", romaji: "sakana", zh: "魚" },
                 { jp: "卵 (たまご)", read: "たまご", romaji: "tamago", zh: "雞蛋" },
                 { jp: "ご飯 (ごはん)", read: "ごはん", romaji: "gohan", zh: "白飯/餐點" },
-                { jp: "パン", read: "ぱん", romaji: "pan", zh: "麵包" }
+                { jp: "パン", read: "ぱん", romaji: "pan", zh: "麵包" },
+                { jp: "野菜 (やさい)", read: "やさい", romaji: "yasai", zh: "蔬菜" },
+                { jp: "牛乳 (ぎゅうにゅう)", read: "ぎゅうにゅう", romaji: "gyuunyuu", zh: "牛奶" },
+                { jp: "珈琲 (コーヒー)", read: "こーひー", romaji: "koohii", zh: "咖啡" },
+                { jp: "酒 (さけ)", read: "さけ", romaji: "sake", zh: "酒/日本酒" },
+                { jp: "食堂 (しょくどう)", read: "しょくどう", romaji: "shokudou", zh: "餐廳/食堂" }
             ]},
-            { category: "🏠 生活與地點", items: [
+            { category: "🏠 居家與生活地點", items: [
                 { jp: "家 (いえ)", read: "いえ", romaji: "ie", zh: "家" },
                 { jp: "学校 (がっこう)", read: "がっこう", romaji: "gakkou", zh: "學校" },
                 { jp: "駅 (えき)", read: "えき", romaji: "eki", zh: "車站" },
@@ -248,43 +253,77 @@
                 { jp: "病院 (びょういん)", read: "びょういん", romaji: "byouin", zh: "醫院" },
                 { jp: "銀行 (ぎんこう)", read: "ぎんこう", romaji: "ginkou", zh: "銀行" },
                 { jp: "部屋 (へや)", read: "へや", romaji: "heya", zh: "房間" },
-                { jp: "机 (つくえ)", read: "つくえ", romaji: "tsukue", zh: "桌子" }
+                { jp: "机 (つくえ)", read: "つくえ", romaji: "tsukue", zh: "桌子" },
+                { jp: "椅子 (いす)", read: "いす", romaji: "isu", zh: "椅子" },
+                { jp: "窓 (まど)", read: "まど", romaji: "mado", zh: "窗戶" },
+                { jp: "扉 (どあ / ドア)", read: "どあ", romaji: "doa", zh: "門" },
+                { jp: "傘 (かさ)", read: "かさ", romaji: "kasa", zh: "雨傘" },
+                { jp: "鞄 (かばん)", read: "かばん", romaji: "kaban", zh: "包包" }
             ]},
-            { category: "👥 人物與稱謂", items: [
+            { category: "👥 人物與家庭稱謂", items: [
                 { jp: "私 (わたし)", read: "わたし", romaji: "watashi", zh: "我" },
                 { jp: "友達 (ともだち)", read: "ともだち", romaji: "tomodachi", zh: "朋友" },
                 { jp: "先生 (せんせい)", read: "せんせい", romaji: "sensei", zh: "老師" },
                 { jp: "学生 (がくせい)", read: "がくせい", romaji: "gakusei", zh: "學生" },
-                { jp: "父 (ちち)", read: "ちち", romaji: "chichi", zh: "父親" },
-                { jp: "母 (はは)", read: "はは", romaji: "haha", zh: "母親" },
-                { jp: "兄 (あに)", read: "あに", romaji: "ani", zh: "哥哥" },
-                { jp: "姉 (あね)", read: "あね", romaji: "ane", zh: "姐姐" },
+                { jp: "父 (ちち)", read: "ちち", romaji: "chichi", zh: "父親(自己的)" },
+                { jp: "母 (はは)", read: "はは", romaji: "haha", zh: "母親(自己的)" },
+                { jp: "兄 (あに)", read: "あに", romaji: "ani", zh: "哥哥(自己的)" },
+                { jp: "姉 (あね)", read: "あね", romaji: "ane", zh: "姐姐(自己的)" },
+                { jp: "弟 (おとうと)", read: "おとうと", romaji: "otouto", zh: "弟弟" },
+                { jp: "妹 (いもうと)", read: "いもうと", romaji: "imouto", zh: "妹妹" },
                 { jp: "子供 (こども)", read: "こども", romaji: "kodomo", zh: "小孩" },
-                { jp: "人 (ひと)", read: "ひと", romaji: "hito", zh: "人" }
+                { jp: "人 (ひと)", read: "ひと", romaji: "hito", zh: "人" },
+                { jp: "男の人 (おとこのひと)", read: "おとこのひと", romaji: "otokonohito", zh: "男人" },
+                { jp: "女の人 (おんなのひと)", read: "おんなのひと", romaji: "onnanohito", zh: "女人" }
             ]},
-            { category: "⏰ 時間與數字", items: [
+            { category: "⏰ 時間與數字計數", items: [
                 { jp: "今日 (きょう)", read: "きょう", romaji: "kyou", zh: "今天" },
                 { jp: "明日 (あした)", read: "あした", romaji: "ashita", zh: "明天" },
                 { jp: "昨日 (きのう)", read: "きのう", romaji: "kinou", zh: "昨天" },
                 { jp: "時間 (じかん)", read: "じかん", romaji: "jikan", zh: "時間" },
                 { jp: "今 (いま)", read: "いま", romaji: "ima", zh: "現在" },
+                { jp: "毎日 (まいにち)", read: "まいにち", romaji: "mainichi", zh: "每天" },
                 { jp: "一 (いち)", read: "いち", romaji: "ichi", zh: "數字 1" },
                 { jp: "二 (に)", read: "に", romaji: "ni", zh: "數字 2" },
                 { jp: "三 (さん)", read: "さん", romaji: "san", zh: "數字 3" },
                 { jp: "四 (し/よん)", read: "よん", romaji: "yon", zh: "數字 4" },
-                { jp: "五 (ご)", read: "ご", romaji: "go", zh: "數字 5" }
+                { jp: "五 (ご)", read: "ご", romaji: "go", zh: "數字 5" },
+                { jp: "六 (ろく)", read: "ろく", romaji: "roku", zh: "數字 6" },
+                { jp: "七 (しち/なな)", read: "なな", romaji: "nana", zh: "數字 7" },
+                { jp: "八 (はち)", read: "はち", romaji: "hachi", zh: "數字 8" },
+                { jp: "九 (きゅう/く)", read: "きゅう", romaji: "kyuu", zh: "數字 9" },
+                { jp: "十 (じゅう)", read: "じゅう", romaji: "juu", zh: "數字 10" }
             ]},
-            { category: "🚀 動作與形容詞", items: [
+            { category: "🚀 高頻動詞（N5 核心）", items: [
                 { jp: "行く (いく)", read: "いく", romaji: "iku", zh: "去/前往" },
                 { jp: "来る (くる)", read: "くる", romaji: "kuru", zh: "來" },
+                { jp: "帰る (かえる)", read: "かえる", romaji: "kaeru", zh: "回去" },
                 { jp: "食べる (たべる)", read: "たべる", romaji: "taberu", zh: "吃" },
                 { jp: "飲む (のむ)", read: "のむ", romaji: "nomu", zh: "喝" },
                 { jp: "見る (みる)", read: "みる", romaji: "miru", zh: "看" },
+                { jp: "聞く (きく)", read: "きく", romaji: "kiku", zh: "聽/問" },
+                { jp: "読む (よむ)", read: "よむ", romaji: "yomu", zh: "讀/看書" },
+                { jp: "書く (かく)", read: "かく", romaji: "kaku", zh: "寫" },
+                { jp: "買う (かう)", read: "かう", romaji: "kau", zh: "買" },
+                { jp: "会う (あう)", read: "あう", romaji: "au", zh: "見面" },
+                { jp: "話す (はなしす/はなす)", read: "はなす", romaji: "hanasu", zh: "說話" },
+                { jp: "寝る (ねる)", read: "ねる", romaji: "neru", zh: "睡覺" },
+                { jp: "起きる (おきる)", read: "おきる", romaji: "okiru", zh: "起床" },
+                { jp: "勉強する (べんきょうする)", read: "べんきょうする", romaji: "benkyousuru", zh: "讀書/學習" }
+            ]},
+            { category: "✨ 形容詞（い/な形）", items: [
                 { jp: "大きい (おおきい)", read: "おおきい", romaji: "ookii", zh: "大的" },
                 { jp: "小さい (ちいさい)", read: "ちいさい", romaji: "chiisai", zh: "小的" },
                 { jp: "美味しい (おいしい)", read: "おいしい", romaji: "oishii", zh: "好吃的" },
+                { jp: "高い (たかい)", read: "たかい", romaji: "takai", zh: "高/貴的" },
+                { jp: "安い (やすい)", read: "やすい", romaji: "yasui", zh: "便宜的" },
                 { jp: "新しい (あたらしい)", read: "あたらしい", romaji: "atarashii", zh: "新的" },
-                { jp: "高い (たかい)", read: "たかい", romaji: "takai", zh: "高/貴的" }
+                { jp: "古い (ふるい)", read: "ふるい", romaji: "furui", zh: "舊的" },
+                { jp: "暑い (あつい)", read: "あつい", romaji: "atsui", zh: "熱的" },
+                { jp: "寒い (さむい)", read: "さむい", romaji: "samui", zh: "冷的" },
+                { jp: "綺麗 (きれい)", read: "きれい", romaji: "kirei", zh: "漂亮/乾淨(な形)" },
+                { jp: "静か (しずか)", read: "しずか", romaji: "shizuka", zh: "安靜的(な形)" },
+                { jp: "賑やか (にぎやか)", read: "にぎやか", romaji: "nigiyaka", zh: "熱鬧的(な形)" }
             ]}
         ];
 
@@ -383,13 +422,13 @@
             let wrongPool = [];
 
             if (quizMode === 1) {
-                promptText = "請問這個日文單字的意思是？";
+                promptText = "請問這個 JLPT N5 單字的意思是？";
                 questionText = `${currentItem.jp} <span style="font-size:18px; color:#666;">(${currentItem.romaji})</span>`;
                 speak(currentItem.read);
                 correctAns = currentItem.zh;
                 wrongPool = allVocab.map(i => i.zh);
             } else {
-                promptText = "請問這個中文意思對應的日文單字是？";
+                promptText = "請問這個中文意思對應的 N5 日文單字是？";
                 questionText = currentItem.zh;
                 correctAns = currentItem.jp;
                 wrongPool = allVocab.map(i => i.jp);
@@ -425,7 +464,7 @@
             const feedback = document.getElementById('feedback');
             if (selectedOption === correctAns) {
                 feedback.style.color = 'green';
-                feedback.innerText = '⭕ 答對了！太棒了！';
+                feedback.innerText = '⭕ 答對了！距離 N5 合格又更近了一步！';
                 currentScore += 10;
                 document.getElementById('score').innerText = currentScore;
                 btnElement.style.background = '#d4edda';
@@ -442,7 +481,7 @@
             document.getElementById('nextBtn').style.display = 'inline-block';
         }
 
-        // 初始化載入單字
+        // 初始化載入單字總表
         renderVocab();
     </script>
 </body>
