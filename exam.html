@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第六階段：JLPT N5 綜合模擬大考</title>
+    <style>
+        :root {
+            --primary-color: #c62828;
+            --bg-color: #ffebee;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .question-box {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #b71c1c;
+            line-height: 1.6;
+        }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .option-btn {
+            padding: 15px;
+            font-size: 17px;
+            border: 2px solid #ffcdd2;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+        }
+        .option-btn:hover {
+            background: #ffebee;
+            border-color: var(--primary-color);
+        }
+        .progress-bar {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .result-box {
+            text-align: center;
+            display: none;
+        }
+        .result-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+        .restart-btn {
+            padding: 12px 30px;
+            font-size: 18px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .restart-btn:hover {
+            background-color: #b71c1c;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #c62828;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📝 第六階段：JLPT N5 綜合模擬大考</h1>
+        <p>檢驗你的日語學習成果，挑戰 N5 合格實力！</p>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-link">⬅️ 返回課程首頁</a>
+
+        <div id="examSection">
+            <div class="progress-bar" id="progressBar">題目：1 / 10</div>
+            <div class="question-box" id="questionBox">載入中...</div>
+            <div class="options-grid" id="examOptions"></div>
+        </div>
+
+        <div class="result-box" id="resultSection">
+            <h2>🎉 測驗結算</h2>
+            <p>你的總得分為：</p>
+            <div class="result-score" id="finalScore">0 分</div>
+            <p id="resultComment" style="font-size: 18px; margin-bottom: 25px;"></p>
+            <button class="restart-btn" onclick="restartExam()">重新挑戰模擬考</button>
+        </div>
+    </div>
+
+    <script>
+        const examQuestions = [
+            {
+                q: "問題 1：私の母は (　　) です。",
+                options: ["医者 (いしゃ)", "本 (ほん)", "車 (くるま)", "水 (みず)"],
+                correct: 0
+            },
+            {
+                q: "問題 2：毎日、日本語を (　　) します。",
+                options: ["勉強 (べんきょう)", "食べる", "飲む", "寝る"],
+                correct: 0
+            },
+            {
+                q: "問題 3：きのう、デパートで新しい靴を (　　)ました。",
+                options: ["買いました", "書きました", "聞きました", "見ました"],
+                correct: 0
+            },
+            {
+                q: "問題 4：この部屋は静か (　　) です。",
+                options: ["な", "い", "の", "だ"],
+                correct: 0
+            },
+            {
+                q: "問題 5：机の上に本が (　　) 冊あります。",
+                options: ["三", "三つ", "三人", "三日"],
+                correct: 0
+            },
+            {
+                q: "問題 6：私 (　　) 日本人です。",
+                options: ["は", "を", "に", "で"],
+                correct: 0
+            },
+            {
+                q: "問題 7：スーパーで野菜を (　　) 買います。",
+                options: ["たくさん", "あまり", "ぜんぜん", "すこし"],
+                correct: 0
+            },
+            {
+                q: "問題 8：今、何時 (　　) か。",
+                options: ["です", "か", "ね", "よ"],
+                correct: 1
+            },
+            {
+                q: "問題 9：あそこは (　　) 公園です。",
+                options: ["きれいな", "きれいい", "きれいなだ", "きれいだ"],
+                correct: 0
+            },
+            {
+                q: "問題 10：駅 (　　) 友達を待ちます。",
+                options: ["で", "に", "を", "は"],
+                correct: 0
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            if (currentIndex >= examQuestions.length) {
+                showResult();
+                return;
+            }
+
+            const current = examQuestions[currentIndex];
+            document.getElementById('progressBar').innerText = `題目：${currentIndex + 1} / ${examQuestions.length}`;
+            document.getElementById('questionBox').innerText = current.q;
+
+            const optionsGrid = document.getElementById('examOptions');
+            optionsGrid.innerHTML = '';
+            
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.onclick = () => selectAnswer(idx, current.correct);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIdx, correctIdx) {
+            if (selectedIdx === correctIdx) {
+                score += 10;
+            }
+            currentIndex++;
+            loadQuestion();
+        }
+
+        function showResult() {
+            document.getElementById('examSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('finalScore').innerText = `${score} 分`;
+
+            let comment = "";
+            if (score >= 90) {
+                comment = "🏆 太神了！N5 實力非常扎實，可以直接挑戰 N4 了！";
+            } else if (score >= 70) {
+                comment = "👍 表現很棒！已經具備相當好的日語基礎，再複習一下錯題就完美囉！";
+            } else {
+                comment = "💡 還需要加油喔！建議回前面的「單字庫」與「文法導覽」多複習幾次。";
+            }
+            document.getElementById('resultComment').innerText = comment;
+        }
+
+        function restartExam() {
+            currentIndex = 0;
+            score = 0;
+            document.getElementById('examSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            loadQuestion();
+        }
+
+        // 初始化載入
+        loadQuestion();
+    </script>
+</body>
+</html>
+
