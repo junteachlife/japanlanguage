@@ -1,366 +1,72 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第四階段：JLPT N5 實用生活與旅遊片語網</title>
-    <style>
-        :root {
-            --primary-color: #d81b60;
-            --bg-color: #fce4ec;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .tab-btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            background-color: #f8bbd0;
-            color: #880e4f;
-            transition: 0.3s;
-        }
-        .tab-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .section {
-            display: none;
-        }
-        .section.active {
-            display: block;
-        }
-        
-        /* 片語分類卡片 */
-        .category-group {
-            margin-bottom: 30px;
-        }
-        .category-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ad1457;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #f8bbd0;
-            padding-bottom: 5px;
-        }
-        .phrase-card {
-            background: #fff0f5;
-            border-left: 6px solid #ec407a;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-        }
-        .phrase-card:hover {
-            background: #fce4ec;
-            transform: translateY(-2px);
-        }
-        .phrase-jp {
-            font-size: 19px;
-            font-weight: bold;
-            color: #880e4f;
-        }
-        .phrase-romaji {
-            font-size: 13px;
-            color: #666;
-            margin-top: 2px;
-        }
-        .phrase-zh {
-            font-size: 15px;
-            color: #444;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-        .phrase-tip {
-            font-size: 13px;
-            color: #ad1457;
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        /* 測驗區樣式 */
-        .quiz-box {
-            text-align: center;
-        }
-        .quiz-question {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: var(--primary-color);
-            line-height: 1.5;
-        }
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .option-btn {
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #f8bbd0;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .option-btn:hover {
-            background: #fce4ec;
-            border-color: #d81b60;
-        }
-        .score-board {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #555;
-        }
-        .feedback {
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .next-btn {
-            margin-top: 20px;
-            padding: 10px 25px;
-            font-size: 16px;
-            background-color: #d81b60;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-
-        @media (max-width: 600px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-<div style="margin-bottom: 15px; text-align: left; width: 100%; max-width: 1150px;">
-    <a href="index.html" style="text-decoration: none; color: #3f51b5; font-weight: bold;">⬅️ 返回學習首頁</a>
-</div>
-
-    <header>
-        <h1>🗣️ 第四階段：實用生活與旅遊片語網</h1>
-        <p>掌握日本旅遊、購物、餐飲與日常社交最實用的高頻情境對話！</p>
-    </header>
-
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('phrases')">📖 情境片語總表</button>
-        <button class="tab-btn" onclick="switchTab('quiz')">✍️ 情境實戰考驗</button>
-    </div>
-
-    <div class="container">
-        <!-- 第一部分：片語總表 -->
-        <div id="phrases-section" class="section active">
-            <h3>點擊任一片語卡片即可聆聽標準日語發音：</h3>
-            <div id="phrasesContainer"></div>
-        </div>
-
-        <!-- 第二部分：片語測驗區 -->
-        <div id="quiz-section" class="section">
-            <div class="quiz-box">
-                <div class="score-board">目前得分：<span id="score">0</span> 分</div>
-                <div id="quizPrompt" style="font-size: 16px; color: #666;">請問當遇到以下情境時，應該說哪一句日文？</div>
-                <div class="quiz-question" id="quizQuestion"></div>
-                <div class="options-grid" id="optionsGrid"></div>
-                <div class="feedback" id="feedback"></div>
-                <button class="next-btn" id="nextBtn" onclick="nextQuizQuestion()">下一題</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // 實境生活與旅遊片語資料庫
-        const phraseCategories = [
-            {
-                category: "🛍️ 購物與結帳篇 (Shopping)",
-                items: [
-                    { jp: "いくらですか。", read: "いくらですか", romaji: "ikura desu ka", zh: "請問多少錢？", tip: "買東西時最實用的一句話！" },
-                    { jp: "これをください。", read: "これをください", romaji: "kore o kudasai", zh: "請給我這個。", tip: "指著商品時可以直接這樣說。" },
-                    { jp: "袋は要りますか。", read: "ふくろはいりますか", romaji: "fukuro wa irimasu ka", zh: "需要塑膠袋嗎？", tip: "店員常問的句子，回答「はい（要）」或「いいえ（不用）」" },
-                    { jp: "カードは使えますか。", read: "かーどはつかえますか", romaji: "kaado wa tsukaemasu ka", zh: "可以用信用卡嗎？", tip: "結帳時確認支付方式。" }
-                ]
-            },
-            {
-                category: "🍜 餐廳點餐與美食篇 (Dining)",
-                items: [
-                    { jp: "すみません、注文お願いします。", read: "すみません、ちゅうもんおねがいします", romaji: "sumimasen, chumon onegai shimasu", zh: "不好意思，我要點餐。", tip: "在日本餐廳呼叫服務生時使用。" },
-                    { jp: "おすすめは何ですか。", read: "おすすめはなんですか", romaji: "osusume wa nan desu ka", zh: "推薦什麼呢？", tip: "不知道吃什麼時問店員最好。" },
-                    { jp: "美味しかったです。ご馳走様でした。", read: "おいしかったです。ごちそうさまでした", romaji: "oishikatta desu. gochisousama deshita", zh: "很好吃。多謝款待。", tip: "吃飽結帳離開時對店員說的禮貌用語。" },
-                    { jp: "水をお願いします。", read: "みずをおねがいします", romaji: "mizu o onegai shimasu", zh: "請給我水。", tip: "請求提供開水時使用。" }
-                ]
-            },
-            {
-                category: "🗺️ 問路與交通篇 (Travel & Directions)",
-                items: [
-                    { jp: "すみません、駅はどこですか。", read: "すみません、えきはどこですか", romaji: "sumimasen, eki wa doko desu ka", zh: "不好意思，車站在哪裡？", tip: "問路時的標準句型：～はどこですか。" },
-                    { jp: "切符売り場はどこですか。", read: "きっぷうりばはどこですか", romaji: "kippu uriba wa doko desu ka", zh: "售票處在哪裡？", tip: "搭地鐵或電車時尋找買票口。" },
-                    { jp: "英語が話せますか。", read: "えいごがはなせますか", romaji: "eigo ga hanasemasu ka", zh: "你會說英文嗎？", tip: "溝通困難時尋求協助。" }
-                ]
-            },
-            {
-                category: "🤝 日常社交與禮貌篇 (Social)",
-                items: [
-                    { jp: "おはようございます。", read: "おはようございます", romaji: "ohayou gozaimasu", zh: "早安。", tip: "上午見面的問候語。" },
-                    { jp: "ありがとうございます。", read: "ありがとうございます", romaji: "arigatou gozaimasu", zh: "非常感謝。", tip: "最基本的道謝禮貌。" },
-                    { jp: "すみません。", read: "すみません", romaji: "sumimasen", zh: "不好意思 / 謝謝。", tip: "在日本身兼道歉、感謝與引起注意的多功能用語。" },
-                    { jp: "失礼します。", read: "しつれいします", romaji: "shitsurei shimasu", zh: "告辭了 / 失禮了。", tip: "進出房間或掛電話時使用。" }
-                ]
-            }
-        ];
-
-        const allPhrases = phraseCategories.flatMap(cat => cat.items);
-
-        // 語音播放
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ja-JP';
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // 渲染片語總表
-        const container = document.getElementById('phrasesContainer');
-        phraseCategories.forEach(cat => {
-            const groupDiv = document.createElement('div');
-            groupDiv.className = 'category-group';
-            
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'category-title';
-            titleDiv.innerText = cat.category;
-            groupDiv.appendChild(titleDiv);
-
-            cat.items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'phrase-card';
-                card.innerHTML = `
-                    <div class="phrase-jp">🔊 ${item.jp}</div>
-                    <div class="phrase-romaji">${item.romaji}</div>
-                    <div class="phrase-zh">${item.zh}</div>
-                    <div class="phrase-tip">💡 老師提醒：${item.tip}</div>
-                `;
-                card.onclick = () => speak(item.read);
-                groupDiv.appendChild(card);
-            });
-
-            container.appendChild(groupDiv);
-        });
-
-        // 切換頁籤
-        function switchTab(tabName) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            if (tabName === 'phrases') {
-                document.getElementById('phrases-section').classList.add('active');
-                event.target.classList.add('active');
-            } else {
-                document.getElementById('quiz-section').classList.add('active');
-                event.target.classList.add('active');
-                nextQuizQuestion();
-            }
-        }
-
-        let currentScore = 0;
-        let currentQuiz = {};
-
-        function nextQuizQuestion() {
-            document.getElementById('feedback').innerText = '';
-            document.getElementById('nextBtn').style.display = 'none';
-
-            currentQuiz = allPhrases[Math.floor(Math.random() * allPhrases.length)];
-            speak(currentQuiz.read); // 測驗時自動朗讀正確日文
-
-            document.getElementById('quizQuestion').innerText = `情境：「 ${currentQuiz.zh} 」`;
-
-            // 產生選項（1個對，3個錯）
-            let options = [currentQuiz.jp];
-            while (options.length < 4) {
-                const randomWrong = allPhrases[Math.floor(Math.random() * allPhrases.length)].jp;
-                if (!options.includes(randomWrong)) {
-                    options.push(randomWrong);
-                }
-            }
-            options.sort(() => Math.random() - 0.5);
-
-            const optionsGrid = document.getElementById('optionsGrid');
-            optionsGrid.innerHTML = '';
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(opt, btn, currentQuiz.jp);
-                optionsGrid.appendChild(btn);
-            });
-        }
-
-        function checkAnswer(selectedOption, btnElement, correctAns) {
-            const allBtns = document.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.disabled = true);
-
-            const feedback = document.getElementById('feedback');
-            if (selectedOption === correctAns) {
-                feedback.style.color = '#880e4f';
-                feedback.innerText = '⭕ 答對了！實境應用能力滿分！';
-                currentScore += 10;
-                document.getElementById('score').innerText = currentScore;
-                btnElement.style.background = '#f8bbd0';
-            } else {
-                feedback.style.color = '#c2185b';
-                feedback.innerText = `❌ 答錯囉！正確答案是：【 ${correctAns} 】`;
-                btnElement.style.background = '#ffebee';
-                allBtns.forEach(b => {
-                    if (b.innerText === correctAns) {
-                        b.style.background = '#f8bbd0';
-                    }
-                });
-            }
-            document.getElementById('nextBtn').style.display = 'inline-block';
-        }
-    </script>
-</body>
-</html>
-
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第四階段：JLPT N5・N4 實用生活與旅遊片語中心</title>
+<style>
+:root{--primary:#d81b60;--dark:#880e4f;--light:#fce4ec;--card:#fff;--text:#333;--muted:#6b6b6b;--border:#f3bfd2;}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Noto Sans JP",Arial,sans-serif;background:#fff5f8;color:var(--text)}
+.hero{background:linear-gradient(135deg,#880e4f,#d81b60,#ec407a);color:white;padding:28px 18px 34px} .hero-inner{max-width:1150px;margin:auto}
+.back{color:white;text-decoration:none;font-weight:800;display:inline-block;margin-bottom:14px} h1{margin:0 0 8px;font-size:30px} .hero p{margin:0;line-height:1.7}
+.wrap{max-width:1150px;margin:20px auto;padding:0 14px 40px} .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:white;border-radius:14px;padding:16px;box-shadow:0 4px 15px #0000000d} .stat small{color:#777} .num{font-size:26px;font-weight:900;color:var(--primary);margin-top:4px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px} .tab{border:0;border-radius:22px;padding:11px 16px;background:#f8bbd0;color:#880e4f;font-weight:800;cursor:pointer} .tab.active{background:var(--primary);color:white}
+.panel{background:white;border-radius:15px;padding:20px;box-shadow:0 5px 18px #0000000d} .section{display:none} .section.active{display:block}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:9px;margin-bottom:16px} input,select{width:100%;padding:11px;border:1px solid #e5b8c8;border-radius:9px;background:white;font-size:15px}
+.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px} .cat{border:1px solid #f1cad8;border-radius:13px;padding:16px 9px;text-align:center;cursor:pointer;background:linear-gradient(145deg,#fff,#fff4f8)} .cat:hover{transform:translateY(-2px);box-shadow:0 5px 14px #d81b601a}
+.cat-icon{font-size:30px} .cat-title{font-weight:900;margin-top:6px} .cat-count{font-size:12px;color:#777;margin-top:4px}
+.back-cat,.clear-btn,.start-btn,.audio-btn,.next-btn{border:0;border-radius:8px;padding:9px 13px;cursor:pointer;font-weight:800} .back-cat,.clear-btn{background:#607d8b;color:white} .start-btn,.audio-btn,.next-btn{background:var(--primary);color:white}
+.phrase-grid{display:grid;gap:14px} .phrase-card{border:1px solid #f0c7d6;border-left:6px solid #ec407a;border-radius:12px;padding:17px;background:#fff8fb}
+.phrase-jp{font-size:21px;font-weight:900;color:#880e4f;line-height:1.6} .read{font-size:14px;color:#777;margin-top:3px} .zh{font-size:16px;font-weight:800;margin-top:7px}
+.teacher{margin-top:10px;background:#fff8e1;border:1px dashed #f6bf26;border-radius:8px;padding:10px;line-height:1.7;color:#6d4c41}
+.explain{margin-top:9px;background:#f7f7f7;border-radius:8px;padding:10px;line-height:1.7} .variation{margin-top:9px;background:#fce4ec;border-radius:8px;padding:10px;line-height:1.7}
+.audio-row,.status-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px} .audio-btn.slow{background:#ad1457} .status-btn{border:1px solid #ddd;background:white;border-radius:7px;padding:7px 10px;cursor:pointer} .status-btn.selected{background:#fce4ec;border-color:#d81b60;color:#880e4f;font-weight:900}
+.quiz-settings{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:18px} .quiz-box{text-align:center} .quiz-question{font-size:25px;font-weight:900;color:#ad1457;line-height:1.6;margin:18px 0}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;max-width:850px;margin:auto} .option{padding:14px;border:2px solid #f8bbd0;border-radius:9px;background:white;font-size:16px;cursor:pointer} .option:hover{background:#fff0f5}
+.feedback{font-size:18px;font-weight:900;margin-top:16px} .quiz-explain{display:none;text-align:left;max-width:800px;margin:14px auto;background:#fff8fb;border:1px solid #f3c2d3;border-radius:10px;padding:15px;line-height:1.8}
+.next-btn{display:none;margin-top:12px} .wrong-card{border:1px solid #ddd;border-left:5px solid #d32f2f;border-radius:9px;padding:14px;margin:10px 0;background:#fffafa} .empty{text-align:center;color:#777;padding:30px}
+@media(max-width:850px){.dashboard{grid-template-columns:repeat(2,1fr)}.category-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){h1{font-size:24px}.panel{padding:13px}.filters{grid-template-columns:1fr}.category-grid{grid-template-columns:repeat(2,1fr)}.options{grid-template-columns:1fr}}
+</style>
+</head><body>
+<header class="hero"><div class="hero-inner"><a class="back" href="index.html">⬅️ 返回學習首頁</a><h1>🗣️ 第四階段：JLPT N5・N4 實用生活與旅遊片語中心</h1><p>不是只背一句話，而是學會「什麼時候說、句子怎麼拆、還能怎麼替換」。收錄日本旅遊與日常生活高頻情境，搭配發音、老師講解、熟悉度與實戰測驗。</p></div></header>
+<main class="wrap">
+<div class="dashboard"><div class="stat"><small>📖 片語總數</small><div class="num" id="total">0</div></div><div class="stat"><small>🗂️ 情境分類</small><div class="num" id="catCount">0</div></div><div class="stat"><small>😊 已熟悉</small><div class="num" id="mastered">0</div></div><div class="stat"><small>⭐ 錯題</small><div class="num" id="wrongCount">0</div></div></div>
+<div class="tabs"><button class="tab active" data-tab="learn">📖 情境片語</button><button class="tab" data-tab="quiz">✍️ 情境實戰</button><button class="tab" data-tab="wrong">⭐ 我的錯題</button></div>
+<div class="panel">
+<section id="learn-section" class="section active">
+<div class="filters"><input id="search" type="search" placeholder="🔎 搜尋日文、中文、羅馬字、情境…" oninput="renderCategories()"><select id="catFilter" onchange="renderCategories()"><option value="ALL">全部情境</option></select><select id="statusFilter" onchange="renderCategories()"><option value="ALL">全部熟悉度</option><option value="new">未學習</option><option value="learning">學習中</option><option value="mastered">已熟悉</option></select></div>
+<div id="categoryView"><h3 id="summary"></h3><div id="categoryGrid" class="category-grid"></div></div>
+<div id="detailView" style="display:none"><button class="back-cat" onclick="renderCategories()">⬅️ 返回情境分類</button><h2 id="detailTitle"></h2><div id="phraseContainer" class="phrase-grid"></div></div>
+</section>
+<section id="quiz-section" class="section"><div class="quiz-settings"><select id="quizCat"><option value="ALL">全部情境</option></select><select id="quizMode"><option value="zh-jp">中文 → 選日文</option><option value="jp-zh">日文 → 選中文</option><option value="listen">🔊 聽力 → 選中文</option></select><button class="start-btn" onclick="startQuiz()">開始／重新測驗</button></div><div class="quiz-box"><div>得分：<b id="score">0</b> ｜答對：<b id="correct">0</b> ｜答錯：<b id="wrong">0</b></div><div id="quizPrompt" style="margin-top:12px;color:#777">選擇模式後開始。</div><div id="quizQuestion" class="quiz-question">🎌</div><div id="options" class="options"></div><div id="feedback" class="feedback"></div><div id="quizExplain" class="quiz-explain"></div><button id="nextBtn" class="next-btn" onclick="nextQuestion()">下一題 ➜</button></div></section>
+<section id="wrong-section" class="section"><h2>⭐ 我的片語錯題</h2><p>答錯的題目會保留在這台裝置，方便集中複習。</p><button class="clear-btn" onclick="clearWrong()">清除全部錯題</button><div id="wrongContainer"></div></section>
+</div></main>
+<script>
+const rawCategories=[["shopping", "🛍️ 購物與結帳", "Shopping", [["いくらですか。", "いくらですか", "ikura desu ka", "請問多少錢？", "詢問商品價格最基本的說法。", "「いくら」＝多少錢；「ですか」把句子變成禮貌疑問句。", "値段はいくらですか。", "請問價格是多少？"], ["これをください。", "これをください", "kore o kudasai", "請給我這個。", "指著商品購買時非常實用。", "「これ」＝這個；「を」標示受詞；「ください」＝請給我。", "それをください。", "請給我那個。"], ["これを見せてください。", "これをみせてください", "kore o misete kudasai", "請讓我看看這個。", "商品放在櫃台或展示櫃時可使用。", "「見せる」＝給人看；「見せてください」＝請讓我看。", "あれを見せてください。", "請讓我看看那個。"], ["試着してもいいですか。", "しちゃくしてもいいですか", "shichaku shite mo ii desu ka", "可以試穿嗎？", "服飾店常用。", "「～てもいいですか」＝可以～嗎；「試着する」＝試穿。", "この服を試着してもいいですか。", "可以試穿這件衣服嗎？"], ["もっと大きいサイズはありますか。", "もっとおおきいさいずはありますか", "motto ookii saizu wa arimasu ka", "有更大的尺寸嗎？", "尺寸不合時詢問店員。", "「もっと」＝更；「大きいサイズ」＝較大的尺寸；「ありますか」＝有嗎。", "もっと小さいサイズはありますか。", "有更小的尺寸嗎？"], ["ほかの色はありますか。", "ほかのいろはありますか", "hoka no iro wa arimasu ka", "有其他顏色嗎？", "挑選衣服、包包等都適用。", "「ほかの」＝其他的；「色」＝顏色。", "黒はありますか。", "有黑色嗎？"], ["カードは使えますか。", "かーどはつかえますか", "kaado wa tsukaemasu ka", "可以刷卡嗎？", "結帳前確認支付方式。", "「使える」是「使う」的可能形，表示能使用。", "電子マネーは使えますか。", "可以使用電子支付嗎？"], ["カードで払えますか。", "かーどではらえますか", "kaado de haraemasu ka", "可以用信用卡付款嗎？", "餐廳、商店、飯店都實用。", "「で」表示手段；「払える」＝能付款。", "現金で払えますか。", "可以付現嗎？"], ["袋をお願いします。", "ふくろをおねがいします", "fukuro o onegai shimasu", "請給我袋子。", "需要購物袋時使用。", "「～をお願いします」可禮貌請求某物。", "大きい袋をお願いします。", "請給我大袋子。"], ["レシートをください。", "れしーとをください", "reshiito o kudasai", "請給我收據。", "結帳後需要收據時使用。", "「レシート」＝收據；「ください」＝請給我。", "領収書をください。", "請給我收據／領收書。"]]], ["restaurant", "🍜 餐廳與點餐", "Dining", [["二人です。", "ふたりです", "futari desu", "兩位。", "進餐廳時回答店員人數。", "人數有特殊讀法：「一人＝ひとり、二人＝ふたり」。", "三人です。", "三位。"], ["予約していません。", "よやくしていません", "yoyaku shite imasen", "我沒有預約。", "被問是否有預約時使用。", "「予約する」＝預約；「～ていません」表示目前沒有做／未處於該狀態。", "予約しています。", "我有預約。"], ["メニューをお願いします。", "めにゅーをおねがいします", "menyuu o onegai shimasu", "請給我菜單。", "需要菜單時使用。", "「～をお願いします」是很實用的禮貌請求句型。", "英語のメニューをお願いします。", "請給我英文菜單。"], ["おすすめは何ですか。", "おすすめはなんですか", "osusume wa nan desu ka", "推薦什麼呢？", "不知道點什麼時詢問店員。", "「おすすめ」＝推薦；「何ですか」＝是什麼？", "今日のおすすめは何ですか。", "今天推薦什麼？"], ["これを一つお願いします。", "これをひとつおねがいします", "kore o hitotsu onegai shimasu", "這個請給我一份。", "指著菜單點餐很方便。", "「一つ」是通用數量詞；「お願いします」使語氣更禮貌。", "これを二つお願いします。", "這個請給我兩份。"], ["注文をお願いします。", "ちゅうもんをおねがいします", "chuumon o onegai shimasu", "我要點餐。", "準備好點餐時呼叫店員。", "「注文」＝點餐／訂購；前面常先說「すみません」。", "すみません、注文をお願いします。", "不好意思，我要點餐。"], ["水をお願いします。", "みずをおねがいします", "mizu o onegai shimasu", "請給我水。", "請店員提供水時使用。", "「水」讀作「みず」。", "お茶をお願いします。", "請給我茶。"], ["これは辛いですか。", "これはからいですか", "kore wa karai desu ka", "這個會辣嗎？", "不吃辣時先確認。", "「辛い」＝辣的；句尾「か」表示疑問。", "あまり辛くない料理はありますか。", "有不太辣的料理嗎？"], ["肉は入っていますか。", "にくははいっていますか", "niku wa haitte imasu ka", "裡面有肉嗎？", "確認料理成分。", "「入っています」表示某物包含／在裡面。", "卵は入っていますか。", "裡面有蛋嗎？"], ["お会計をお願いします。", "おかいけいをおねがいします", "okaikei o onegai shimasu", "麻煩結帳。", "用餐完畢最常用的結帳句。", "「お会計」＝結帳；也常說「お勘定」。", "別々に払えますか。", "可以分開付款嗎？"], ["ごちそうさまでした。", "ごちそうさまでした", "gochisousama deshita", "多謝款待。", "吃完飯離開時的自然禮貌用語。", "這是日本飲食文化中常見的餐後招呼。", "とてもおいしかったです。", "非常好吃。"]]], ["convenience", "🏪 便利商店", "Convenience Store", [["温めてください。", "あたためてください", "atatamete kudasai", "請幫我加熱。", "買便當、熟食時使用。", "「温める」＝加熱；て形＋ください＝請～。", "これを温めてください。", "請幫我加熱這個。"], ["温めなくて大丈夫です。", "あたためなくてだいじょうぶです", "atatamenakute daijoubu desu", "不用加熱沒關係。", "不需要店員加熱時回答。", "「～なくて大丈夫」在口語中可表示不用做也沒關係。", "そのままで大丈夫です。", "保持原樣就可以。"], ["箸をください。", "はしをください", "hashi o kudasai", "請給我筷子。", "買便當、泡麵時常用。", "「箸」＝筷子；注意發音 はし。", "スプーンをください。", "請給我湯匙。"], ["袋はいりません。", "ふくろはいりません", "fukuro wa irimasen", "不需要袋子。", "拒絕購物袋的簡潔說法。", "「要る」＝需要；「いりません」＝不需要。", "レシートはいりません。", "不需要收據。"], ["ここで食べてもいいですか。", "ここでたべてもいいですか", "koko de tabete mo ii desu ka", "可以在這裡吃嗎？", "有內用區時可詢問。", "「～てもいいですか」＝可以～嗎。", "ここで飲んでもいいですか。", "可以在這裡喝嗎？"], ["ATMはどこですか。", "えーてぃーえむはどこですか", "eetiiemu wa doko desu ka", "ATM在哪裡？", "便利商店找提款機時使用。", "「～はどこですか」是詢問地點的基本句型。", "トイレはどこですか。", "洗手間在哪裡？"]]], ["transport", "🚉 電車・地鐵・車站", "Train & Station", [["新宿までお願いします。", "しんじゅくまでおねがいします", "shinjuku made onegai shimasu", "麻煩到新宿。", "買票或搭計程車都可延伸使用。", "「まで」表示終點：到～為止。", "東京駅までお願いします。", "麻煩到東京車站。"], ["この電車は東京駅に行きますか。", "このでんしゃはとうきょうえきにいきますか", "kono densha wa toukyou-eki ni ikimasu ka", "這班電車會到東京站嗎？", "上車前確認方向。", "「この電車」＝這班電車；「～に行きますか」＝會去～嗎。", "この電車は京都に行きますか。", "這班電車會到京都嗎？"], ["何番線ですか。", "なんばんせんですか", "nanbansen desu ka", "是第幾月台？", "找乘車月台時非常實用。", "「番線」是車站月台／乘車線編號的常見說法。", "大阪行きは何番線ですか。", "往大阪是第幾月台？"], ["次の電車は何時ですか。", "つぎのでんしゃはなんじですか", "tsugi no densha wa nanji desu ka", "下一班電車幾點？", "查詢下一班車時間。", "「次の」＝下一個；「何時」＝幾點。", "最終電車は何時ですか。", "末班車幾點？"], ["どこで乗り換えますか。", "どこでのりかえますか", "doko de norikaemasu ka", "要在哪裡轉車？", "需要轉乘時詢問。", "「乗り換える」＝轉乘；「どこで」＝在哪裡進行動作。", "新宿で乗り換えます。", "在新宿轉車。"], ["切符売り場はどこですか。", "きっぷうりばはどこですか", "kippu uriba wa doko desu ka", "售票處在哪裡？", "尋找售票窗口。", "「売り場」＝販售處；「切符」＝車票。", "券売機はどこですか。", "售票機在哪裡？"], ["ICカードは使えますか。", "あいしーかーどはつかえますか", "aishii kaado wa tsukaemasu ka", "可以使用IC卡嗎？", "確認交通卡是否可用。", "「使えます」＝可以使用。", "このバスでICカードは使えますか。", "這班公車可以用IC卡嗎？"], ["この席は空いていますか。", "このせきはあいていますか", "kono seki wa aite imasu ka", "這個位子有人嗎／是空的嗎？", "不確定座位能否坐時使用。", "「空いている」表示空著、沒有被使用。", "ここに座ってもいいですか。", "可以坐這裡嗎？"]]], ["directions", "🗺️ 問路與方向", "Directions", [["すみません、駅はどこですか。", "すみません、えきはどこですか", "sumimasen, eki wa doko desu ka", "不好意思，車站在哪裡？", "問路時先用「すみません」引起注意。", "「～はどこですか」＝～在哪裡？", "コンビニはどこですか。", "便利商店在哪裡？"], ["ここから遠いですか。", "ここからとおいですか", "koko kara tooi desu ka", "離這裡遠嗎？", "確認距離。", "「ここから」＝從這裡；「遠い」＝遠。", "ここから近いですか。", "離這裡近嗎？"], ["歩いて何分ぐらいですか。", "あるいてなんぷんぐらいですか", "aruite nanpun gurai desu ka", "走路大約幾分鐘？", "問步行時間。", "「歩いて」＝用走的；「ぐらい」＝大約。", "駅まで歩いて十分ぐらいです。", "走到車站大約十分鐘。"], ["まっすぐ行ってください。", "まっすぐいってください", "massugu itte kudasai", "請直走。", "聽懂別人指路也很重要。", "「まっすぐ」＝直直地；「行ってください」＝請走。", "この道をまっすぐ行ってください。", "請沿這條路直走。"], ["右に曲がってください。", "みぎにまがってください", "migi ni magatte kudasai", "請右轉。", "常見指路句。", "「右」＝右邊；「曲がる」＝轉彎。", "左に曲がってください。", "請左轉。"], ["道に迷いました。", "みちにまよいました", "michi ni mayoimashita", "我迷路了。", "真的找不到路時很實用。", "「道に迷う」是「迷路」的固定說法。", "駅へ行きたいですが、道に迷いました。", "我想去車站，但迷路了。"]]], ["hotel", "🏨 飯店住宿", "Hotel", [["予約しています。", "よやくしています", "yoyaku shite imasu", "我有預約。", "辦理入住時第一句就能用。", "「予約しています」表示已有預約。", "張の名前で予約しています。", "我是用張這個名字預約的。"], ["チェックインをお願いします。", "ちぇっくいんをおねがいします", "chekkuin o onegai shimasu", "麻煩辦理入住。", "抵達飯店櫃台使用。", "外來語「チェックイン」＋「お願いします」。", "チェックアウトをお願いします。", "麻煩辦理退房。"], ["朝食は何時からですか。", "ちょうしょくはなんじからですか", "choushoku wa nanji kara desu ka", "早餐幾點開始？", "確認早餐供應時間。", "「何時から」＝從幾點開始。", "朝食は何時までですか。", "早餐供應到幾點？"], ["Wi-Fiはありますか。", "わいふぁいはありますか", "waifai wa arimasu ka", "有Wi-Fi嗎？", "住宿時常見問題。", "無生命物的存在通常用「あります」。", "Wi-Fiのパスワードは何ですか。", "Wi-Fi密碼是什麼？"], ["荷物を預かってもらえますか。", "にもつをあずかってもらえますか", "nimotsu o azukatte moraemasu ka", "可以幫我寄放行李嗎？", "入住前或退房後寄放行李。", "「～てもらえますか」是禮貌請求對方替自己做某事。", "チェックアウト後、荷物を預かってもらえますか。", "退房後可以幫我寄放行李嗎？"], ["部屋の鍵をなくしました。", "へやのかぎをなくしました", "heya no kagi o nakushimashita", "我把房間鑰匙弄丟了。", "房卡或鑰匙遺失時使用。", "「なくす」＝弄丟；過去式「なくしました」。", "カードキーが使えません。", "房卡不能使用。"], ["タオルをもう一枚お願いします。", "たおるをもういちまいおねがいします", "taoru o mou ichimai onegai shimasu", "請再給我一條毛巾。", "需要追加備品時使用。", "「もう一枚」＝再一張／一片；毛巾可用「枚」計數。", "枕をもう一つお願いします。", "請再給我一個枕頭。"]]], ["airport", "✈️ 機場與行李", "Airport", [["チェックインカウンターはどこですか。", "ちぇっくいんかうんたーはどこですか", "chekkuin kauntaa wa doko desu ka", "報到櫃台在哪裡？", "機場找航空公司櫃台。", "地點詢問句型「～はどこですか」。", "出発ロビーはどこですか。", "出境大廳在哪裡？"], ["この荷物を預けたいです。", "このにもつをあずけたいです", "kono nimotsu o azuketai desu", "我想托運這件行李。", "航空公司櫃台常用。", "「預ける」＝寄放／托運；「～たい」＝想要～。", "このスーツケースを預けたいです。", "我想托運這個行李箱。"], ["機内持ち込みできますか。", "きないもちこみできますか", "kinai mochikomi dekimasu ka", "可以帶上飛機嗎？", "確認手提行李。", "「機内持ち込み」＝攜入機艙；「できますか」＝可以嗎。", "これは機内持ち込みできますか。", "這個可以帶上飛機嗎？"], ["搭乗口はどこですか。", "とうじょうぐちはどこですか", "toujouguchi wa doko desu ka", "登機門在哪裡？", "過安檢後找登機門。", "「搭乗口」＝登機口。", "十二番の搭乗口はどこですか。", "12號登機門在哪裡？"], ["何時に搭乗しますか。", "なんじにとうじょうしますか", "nanji ni toujou shimasu ka", "幾點登機？", "確認登機時間。", "明確時間點常搭配助詞「に」。", "搭乗は何時からですか。", "幾點開始登機？"], ["荷物が出てきません。", "にもつがでてきません", "nimotsu ga dete kimasen", "我的行李沒有出來。", "行李轉盤找不到托運行李時。", "「出てくる」＝出現／出來；否定「出てきません」。", "スーツケースが見つかりません。", "找不到我的行李箱。"]]], ["taxi", "🚕 計程車", "Taxi", [["ここまでお願いします。", "ここまでおねがいします", "koko made onegai shimasu", "麻煩到這裡。", "把地圖或地址給司機看時使用。", "「ここまで」＝到這裡。", "このホテルまでお願いします。", "麻煩到這間飯店。"], ["この住所までお願いします。", "このじゅうしょまでおねがいします", "kono juusho made onegai shimasu", "麻煩到這個地址。", "直接出示地址最方便。", "「住所」＝地址；「まで」＝到～。", "駅までお願いします。", "麻煩到車站。"], ["ここで止めてください。", "ここでとめてください", "koko de tomete kudasai", "請停在這裡。", "接近目的地時使用。", "「止める」＝使車停下；て形＋ください＝請～。", "あそこで止めてください。", "請停在那裡。"], ["どのくらいかかりますか。", "どのくらいかかりますか", "dono kurai kakarimasu ka", "大概要多久／多少錢？", "依上下文可問所需時間或費用。", "「かかる」可表示花費時間或金錢。", "駅までどのくらいかかりますか。", "到車站大概要多久？"], ["クレジットカードで払えますか。", "くれじっとかーどではらえますか", "kurejitto kaado de haraemasu ka", "可以刷信用卡嗎？", "下車前確認付款方式。", "「で」表示手段；「払えますか」＝可以付款嗎。", "現金で払います。", "我付現。"]]], ["cafe", "☕ 咖啡店", "Cafe", [["コーヒーを一つお願いします。", "こーひーをひとつおねがいします", "koohii o hitotsu onegai shimasu", "請給我一杯咖啡。", "最簡單的點飲料方式。", "「一つ」可在不熟悉專用量詞時作通用計數。", "紅茶を一つお願いします。", "請給我一杯紅茶。"], ["ホットでお願いします。", "ほっとでおねがいします", "hotto de onegai shimasu", "我要熱的。", "選擇冷熱飲時使用。", "「～でお願いします」可表示「請用～／我要～」。", "アイスでお願いします。", "我要冰的。"], ["店内で飲みます。", "てんないでのみます", "tennai de nomimasu", "我要內用。", "店員詢問內用外帶時回答。", "「店内」＝店內；「で」表示動作場所。", "持ち帰りでお願いします。", "請幫我外帶。"], ["砂糖はいりません。", "さとうはいりません", "satou wa irimasen", "不需要糖。", "飲料客製時使用。", "「いりません」＝不需要。", "ミルクはいりません。", "不需要奶。"], ["ここに座ってもいいですか。", "ここにすわってもいいですか", "koko ni suwatte mo ii desu ka", "可以坐這裡嗎？", "不確定座位是否可用時。", "「～てもいいですか」＝可以～嗎。", "窓側に座ってもいいですか。", "可以坐靠窗的位置嗎？"]]], ["drugstore", "💊 藥妝店", "Drugstore", [["風邪薬はありますか。", "かぜぐすりはありますか", "kazegusuri wa arimasu ka", "有感冒藥嗎？", "在藥妝店詢問商品位置。", "「風邪」＝感冒；「薬」＝藥。", "目薬はありますか。", "有眼藥水嗎？"], ["頭が痛いです。", "あたまがいたいです", "atama ga itai desu", "我頭痛。", "簡單描述症狀。", "身體部位＋「が痛い」＝某部位痛。", "お腹が痛いです。", "我肚子痛。"], ["これは一日に何回飲みますか。", "これはいちにちになんかいのみますか", "kore wa ichinichi ni nankai nomimasu ka", "這個一天吃幾次？", "詢問藥品服用次數。", "「一日に」＝一天之中；「何回」＝幾次。", "いつ飲みますか。", "什麼時候吃？"], ["もっと安いものはありますか。", "もっとやすいものはありますか", "motto yasui mono wa arimasu ka", "有更便宜的嗎？", "找替代商品時使用。", "「もっと」＝更；「安い」＝便宜；「もの」＝東西。", "小さいサイズはありますか。", "有小包裝嗎？"], ["免税できますか。", "めんぜいできますか", "menzei dekimasu ka", "可以免稅嗎？", "符合條件的旅客購物時可詢問。", "「免税」＝免稅；「できますか」＝可以辦理嗎。", "免税カウンターはどこですか。", "免稅櫃台在哪裡？"]]], ["social", "🤝 日常社交與禮貌", "Social", [["おはようございます。", "おはようございます", "ohayou gozaimasu", "早安。", "早上較正式的問候。", "對不熟的人、店員、老師等使用「ございます」較禮貌。", "おはよう。", "早。（較隨意）"], ["こんにちは。", "こんにちは", "konnichiwa", "你好。", "白天常見問候語。", "注意最後寫「は」，但讀作「わ」。", "こんにちは、はじめまして。", "你好，初次見面。"], ["こんばんは。", "こんばんは", "konbanwa", "晚安／晚上好。", "晚上見面時使用。", "最後的「は」同樣讀作「わ」。", "こんばんは。お元気ですか。", "晚上好，你好嗎？"], ["ありがとうございます。", "ありがとうございます", "arigatou gozaimasu", "非常感謝。", "最重要的禮貌用語之一。", "比「ありがとう」更禮貌。", "どうもありがとうございます。", "非常感謝您。"], ["すみません。", "すみません", "sumimasen", "不好意思／對不起／勞駕。", "可道歉、引起注意，也能帶有感謝語感。", "旅行中非常高頻，可先用它開啟詢問。", "すみません、ちょっといいですか。", "不好意思，可以打擾一下嗎？"], ["お願いします。", "おねがいします", "onegai shimasu", "麻煩您／拜託了。", "請求服務時非常萬用。", "可接在名詞後：「水をお願いします」。", "よろしくお願いします。", "請多多指教。"], ["大丈夫です。", "だいじょうぶです", "daijoubu desu", "沒問題／不用了／我沒事。", "意思依情境而變，需看上下文。", "拒絕服務時單說「大丈夫です」可能表示「不用了」。", "はい、大丈夫です。", "是的，沒問題。"], ["わかりました。", "わかりました", "wakarimashita", "我明白了。", "表示理解對方說明。", "「わかる」＝明白；禮貌過去形常作「知道了／明白了」。", "はい、わかりました。", "好的，我明白了。"], ["もう一度お願いします。", "もういちどおねがいします", "mou ichido onegai shimasu", "請再說一次。", "沒聽清楚時非常實用。", "「もう一度」＝再一次。", "すみません、もう一度お願いします。", "不好意思，請再說一次。"], ["ゆっくり話してください。", "ゆっくりはなしてください", "yukkuri hanashite kudasai", "請說慢一點。", "日語初學者的救命句。", "「ゆっくり」＝慢慢地；「話してください」＝請說。", "もう少しゆっくり話してください。", "請再說慢一點。"], ["失礼します。", "しつれいします", "shitsurei shimasu", "失禮了／告辭了。", "進出房間、離開或電話結束等可使用。", "「失礼」字面是失禮，固定用法很廣。", "お先に失礼します。", "我先告辭了。"]]], ["emergency", "🆘 緊急求助", "Emergency", [["助けてください。", "たすけてください", "tasukete kudasai", "請幫幫我。", "遇到緊急狀況時的直接求助。", "「助ける」＝幫助／救助；て形＋ください。", "すみません、助けてください。", "不好意思，請幫幫我。"], ["警察を呼んでください。", "けいさつをよんでください", "keisatsu o yonde kudasai", "請叫警察。", "需要警方協助時。", "「呼ぶ→呼んで」；「警察」＝警察。", "救急車を呼んでください。", "請叫救護車。"], ["財布をなくしました。", "さいふをなくしました", "saifu o nakushimashita", "我的錢包弄丟了。", "遺失物品時。", "「なくす」＝弄丟；「なくしました」＝弄丟了。", "パスポートをなくしました。", "我的護照弄丟了。"], ["道に迷いました。", "みちにまよいました", "michi ni mayoimashita", "我迷路了。", "需要路人協助時。", "固定搭配「道に迷う」。", "ホテルに戻りたいです。", "我想回飯店。"], ["気分が悪いです。", "きぶんがわるいです", "kibun ga warui desu", "我身體不舒服。", "突然感到不適時使用。", "「気分が悪い」可表示身體不舒服、噁心等。", "少し休みたいです。", "我想休息一下。"], ["病院はどこですか。", "びょういんはどこですか", "byouin wa doko desu ka", "醫院在哪裡？", "尋找醫療機構。", "地點詢問基本句型。", "近くに病院はありますか。", "附近有醫院嗎？"]]], ["phone", "📱 手機・網路", "Phone & Internet", [["Wi-Fiは使えますか。", "わいふぁいはつかえますか", "waifai wa tsukaemasu ka", "可以使用Wi-Fi嗎？", "飯店、咖啡店等詢問網路。", "「使える」＝可以使用。", "無料Wi-Fiはありますか。", "有免費Wi-Fi嗎？"], ["パスワードは何ですか。", "ぱすわーどはなんですか", "pasuwaado wa nan desu ka", "密碼是什麼？", "詢問Wi-Fi密碼。", "「何ですか」＝是什麼？", "Wi-Fiのパスワードは何ですか。", "Wi-Fi密碼是什麼？"], ["充電してもいいですか。", "じゅうでんしてもいいですか", "juuden shite mo ii desu ka", "可以充電嗎？", "咖啡店、機場等可詢問。", "「充電する」＝充電；「～てもいいですか」＝可以～嗎。", "ここで充電してもいいですか。", "可以在這裡充電嗎？"], ["コンセントはありますか。", "こんせんとはありますか", "konsento wa arimasu ka", "有插座嗎？", "找充電插座。", "日文「コンセント」指電源插座。", "近くにコンセントはありますか。", "附近有插座嗎？"], ["電話を使ってもいいですか。", "でんわをつかってもいいですか", "denwa o tsukatte mo ii desu ka", "可以使用電話嗎？", "需要借電話時。", "「使ってもいいですか」＝可以使用嗎。", "電話を借りてもいいですか。", "可以借電話嗎？"]]], ["weather", "🌦️ 天氣與行程", "Weather", [["今日は暑いですね。", "きょうはあついですね", "kyou wa atsui desu ne", "今天很熱呢。", "自然的寒暄話題。", "句尾「ね」有尋求共鳴、確認的語氣。", "今日は寒いですね。", "今天很冷呢。"], ["明日の天気はどうですか。", "あしたのてんきはどうですか", "ashita no tenki wa dou desu ka", "明天天氣如何？", "詢問天氣。", "「どうですか」＝如何／怎麼樣。", "今日の天気はどうですか。", "今天天氣如何？"], ["雨が降りそうです。", "あめがふりそうです", "ame ga furisou desu", "看起來快下雨了。", "根據眼前狀況判斷。", "動詞ます形去ます＋そうです，可表示看起來快要～。", "雪が降りそうです。", "看起來快下雪了。"], ["傘を持っていったほうがいいですか。", "かさをもっていったほうがいいですか", "kasa o motte itta hou ga ii desu ka", "帶傘比較好嗎？", "詢問行程建議。", "「～たほうがいい」表示最好～。", "上着を持っていったほうがいいですか。", "帶件外套比較好嗎？"]]], ["sightseeing", "🏯 觀光與拍照", "Sightseeing", [["写真を撮ってもいいですか。", "しゃしんをとってもいいですか", "shashin o totte mo ii desu ka", "可以拍照嗎？", "寺院、商店、展館先詢問較禮貌。", "「写真を撮る」＝拍照；「～てもいいですか」＝可以嗎。", "ここで写真を撮ってもいいですか。", "可以在這裡拍照嗎？"], ["写真を撮ってもらえますか。", "しゃしんをとってもらえますか", "shashin o totte moraemasu ka", "可以幫我拍照嗎？", "請路人協助拍照。", "「～てもらえますか」＝可以請你替我～嗎。", "すみません、写真を撮ってもらえますか。", "不好意思，可以幫我拍照嗎？"], ["入場料はいくらですか。", "にゅうじょうりょうはいくらですか", "nyuujouryou wa ikura desu ka", "門票多少錢？", "景點售票處使用。", "「入場料」＝入場費；「いくら」＝多少錢。", "大人一人はいくらですか。", "一位成人多少錢？"], ["何時まで開いていますか。", "なんじまであいていますか", "nanji made aite imasu ka", "營業到幾點？", "確認景點、商店關門時間。", "「まで」＝到～為止；「開いています」＝開著／營業中。", "何時から開いていますか。", "幾點開始營業？"], ["日本語のパンフレットはありますか。", "にほんごのぱんふれっとはありますか", "nihongo no panfuretto wa arimasu ka", "有日文導覽手冊嗎？", "也可把「日本語」替換成其他語言。", "「～のパンフレット」＝～語的手冊。", "英語のパンフレットはありますか。", "有英文導覽手冊嗎？"]]], ["conversation", "👥 基本日常會話", "Daily Conversation", [["はじめまして。", "はじめまして", "hajimemashite", "初次見面。", "第一次見面時使用。", "通常接著自我介紹，再說「よろしくお願いします」。", "はじめまして。田中です。", "初次見面，我是田中。"], ["私は台湾から来ました。", "わたしはたいわんからきました", "watashi wa taiwan kara kimashita", "我來自台灣。", "旅行中自我介紹很實用。", "「～から来ました」＝從～來。", "台北から来ました。", "我從台北來。"], ["日本語を勉強しています。", "にほんごをべんきょうしています", "nihongo o benkyou shite imasu", "我正在學日文。", "告訴對方自己是學習者。", "「～ています」可表示持續中的狀態。", "一年ぐらい日本語を勉強しています。", "我學日文大約一年了。"], ["日本語は少しわかります。", "にほんごはすこしわかります", "nihongo wa sukoshi wakarimasu", "我懂一點日文。", "避免對方說太快。", "「少し」＝一點；「わかります」＝懂。", "日本語は少ししかわかりません。", "我只懂一點日文。"], ["これは何ですか。", "これはなんですか", "kore wa nan desu ka", "這是什麼？", "不知道物品名稱時的萬用句。", "「何」在「何ですか」讀「なん」。", "これは日本語で何ですか。", "這個用日文怎麼說？"], ["どういう意味ですか。", "どういういみですか", "dou iu imi desu ka", "是什麼意思？", "聽到不懂的字詞時使用。", "「意味」＝意思；「どういう」＝什麼樣的／怎麼樣的。", "この言葉はどういう意味ですか。", "這個詞是什麼意思？"], ["もう少し簡単に言ってください。", "もうすこしかんたんにいってください", "mou sukoshi kantan ni itte kudasai", "請再說簡單一點。", "對方說得太難時使用。", "「もう少し」＝再一點；「簡単に」＝簡單地。", "ゆっくり言ってください。", "請慢慢說。"]]]];
+const phraseCategories=rawCategories.map(([id,name,en,items])=>({id,name,en,items:items.map((x,i)=>({id:`${id}-${String(i+1).padStart(2,"0")}`,categoryId:id,category:name,jp:x[0],read:x[1],romaji:x[2],zh:x[3],tip:x[4],explain:x[5],variation:x[6],variationZh:x[7]}))}));
+const allPhrases=phraseCategories.flatMap(c=>c.items);
+const $=id=>document.getElementById(id);
+function getProgress(){try{return JSON.parse(localStorage.getItem("jlptPhraseProgress")||"{}")}catch{return {}}}
+function saveProgress(x){localStorage.setItem("jlptPhraseProgress",JSON.stringify(x))}
+function getWrong(){try{return JSON.parse(localStorage.getItem("jlptPhraseWrong")||"[]")}catch{return []}}
+function saveWrong(x){localStorage.setItem("jlptPhraseWrong",JSON.stringify([...new Set(x)]))}
+function getVoice(){return speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith("ja"))}
+function speak(text,rate=.9){if(!("speechSynthesis" in window))return alert("目前瀏覽器不支援語音朗讀。");speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=rate;const v=getVoice();if(v)u.voice=v;speechSynthesis.speak(u)}
+function updateDashboard(){const p=getProgress();$("total").textContent=allPhrases.length;$("catCount").textContent=phraseCategories.length;$("mastered").textContent=allPhrases.filter(x=>p[x.id]==="mastered").length;$("wrongCount").textContent=getWrong().length}
+function filtered(items=allPhrases){const q=$("search").value.trim().toLowerCase(),c=$("catFilter").value,s=$("statusFilter").value,p=getProgress();return items.filter(x=>{const text=[x.jp,x.read,x.romaji,x.zh,x.tip,x.explain,x.variation,x.category].join(" ").toLowerCase();return(!q||text.includes(q))&&(c==="ALL"||x.categoryId===c)&&(s==="ALL"||(s==="new"?!p[x.id]:p[x.id]===s))})}
+function renderCategories(){$("categoryView").style.display="block";$("detailView").style.display="none";const list=filtered();$("summary").textContent=`📚 目前條件共有 ${list.length} 個實用片語`;const grid=$("categoryGrid");grid.innerHTML="";phraseCategories.forEach(c=>{const items=list.filter(x=>x.categoryId===c.id);if(!items.length)return;const d=document.createElement("div");d.className="cat";d.innerHTML=`<div class="cat-icon">${c.name.split(" ")[0]}</div><div class="cat-title">${c.name.replace(/^\S+\s/,"")}</div><div class="cat-count">${items.length} 個片語</div>`;d.onclick=()=>openCategory(c.id);grid.appendChild(d)});if(!list.length)grid.innerHTML='<div class="empty">找不到符合條件的片語。</div>'}
+function openCategory(id){const c=phraseCategories.find(x=>x.id===id);const items=filtered(c.items);$("categoryView").style.display="none";$("detailView").style.display="block";$("detailTitle").textContent=`${c.name}（${items.length}）`;$("phraseContainer").innerHTML="";const p=getProgress();items.forEach(x=>{const d=document.createElement("div");d.className="phrase-card";d.innerHTML=`<div class="phrase-jp">${x.jp}</div><div class="read">${x.read} ｜ ${x.romaji}</div><div class="zh">🇹🇼 ${x.zh}</div><div class="teacher">👨‍🏫 <b>老師提醒：</b>${x.tip}</div><div class="explain"><b>🔍 句子拆解／用法：</b><br>${x.explain}</div><div class="variation"><b>🔄 替換練習：</b><br><b>${x.variation}</b><br>${x.variationZh}</div><div class="audio-row"><button class="audio-btn">🔊 正常</button><button class="audio-btn slow">🐢 慢速</button></div><div class="status-row"><button class="status-btn ${p[x.id]==="new"?"selected":""}" data-s="new">😵 不會</button><button class="status-btn ${p[x.id]==="learning"?"selected":""}" data-s="learning">🤔 學習中</button><button class="status-btn ${p[x.id]==="mastered"?"selected":""}" data-s="mastered">😊 熟悉</button></div>`;const aud=d.querySelectorAll(".audio-btn");aud[0].onclick=()=>speak(x.read,.9);aud[1].onclick=()=>speak(x.read,.68);d.querySelectorAll(".status-btn").forEach(b=>b.onclick=()=>setStatus(x.id,b.dataset.s,id));$("phraseContainer").appendChild(d)})}
+function setStatus(id,status,cat){const p=getProgress();p[id]=status;saveProgress(p);updateDashboard();openCategory(cat)}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab+"-section").classList.add("active");if(b.dataset.tab==="wrong")renderWrong()})
+let score=0,correct=0,wrong=0,current=null,last=null;
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startQuiz(){score=correct=wrong=0;last=null;updateScore();nextQuestion()}
+function updateScore(){$("score").textContent=score;$("correct").textContent=correct;$("wrong").textContent=wrong}
+function nextQuestion(){$("feedback").textContent="";$("quizExplain").style.display="none";$("nextBtn").style.display="none";let pool=allPhrases.filter(x=>$("quizCat").value==="ALL"||x.categoryId===$("quizCat").value);let alt=pool.filter(x=>x.id!==last);if(alt.length)pool=alt;current=pool[Math.floor(Math.random()*pool.length)];last=current.id;const mode=$("quizMode").value;let correctText,wrongPool;if(mode==="zh-jp"){$("quizPrompt").textContent="請依中文情境選出最適當的日文。";$("quizQuestion").textContent=`情境：「${current.zh}」`;correctText=current.jp;wrongPool=allPhrases.filter(x=>x.id!==current.id).map(x=>x.jp)}else if(mode==="jp-zh"){$("quizPrompt").textContent="請選出這句日文的正確中文意思。";$("quizQuestion").textContent=current.jp;correctText=current.zh;wrongPool=allPhrases.filter(x=>x.id!==current.id).map(x=>x.zh)}else{$("quizPrompt").innerHTML='🔊 聽完日文後，選出正確中文。 <button class="audio-btn" onclick="speak(current.read,.8)">再聽一次</button>';$("quizQuestion").textContent="🎧 請仔細聽";correctText=current.zh;wrongPool=allPhrases.filter(x=>x.id!==current.id).map(x=>x.zh);setTimeout(()=>speak(current.read,.8),150)}const opts=[correctText,...shuffle([...new Set(wrongPool)]).slice(0,3)];$("options").innerHTML="";shuffle(opts).forEach(o=>{const b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>checkAnswer(o,b,correctText);$("options").appendChild(b)})}
+function checkAnswer(sel,btn,ans){const bs=$("options").querySelectorAll(".option");bs.forEach(b=>b.disabled=true);if(sel===ans){score+=10;correct++;$("feedback").style.color="#2e7d32";$("feedback").textContent="⭕ 答對了！";btn.style.background="#dcedc8"}else{wrong++;$("feedback").style.color="#c62828";$("feedback").textContent=`❌ 答錯了。正確答案：${ans}`;btn.style.background="#ffcdd2";bs.forEach(b=>{if(b.textContent===ans)b.style.background="#dcedc8"});const w=getWrong();w.push(current.id);saveWrong(w)}updateScore();updateDashboard();$("quizExplain").innerHTML=`<b>📘 老師詳解</b><br><br><b>${current.jp}</b><br><span style="color:#777">${current.read} ｜ ${current.romaji}</span><br>🇹🇼 ${current.zh}<br><br>💡 ${current.tip}<br><br>🔍 ${current.explain}<br><br>🔄 <b>${current.variation}</b><br>${current.variationZh}<div class="audio-row"><button class="audio-btn" onclick="speak(current.read,.9)">🔊 正常</button><button class="audio-btn slow" onclick="speak(current.read,.68)">🐢 慢速</button></div>`;$("quizExplain").style.display="block";$("nextBtn").style.display="inline-block"}
+function renderWrong(){const ids=getWrong(),box=$("wrongContainer");box.innerHTML="";if(!ids.length){box.innerHTML='<div class="empty">🎉 目前沒有錯題！</div>';return}ids.forEach(id=>{const x=allPhrases.find(p=>p.id===id);if(!x)return;const d=document.createElement("div");d.className="wrong-card";d.innerHTML=`<b>${x.jp}</b><br><span style="color:#777">${x.read}</span><br>${x.zh}<br><br>💡 ${x.explain}`;box.appendChild(d)})}
+function clearWrong(){if(confirm("確定要清除全部片語錯題嗎？")){saveWrong([]);renderWrong();updateDashboard()}}
+function init(){phraseCategories.forEach(c=>{[$("catFilter"),$("quizCat")].forEach(s=>{const o=document.createElement("option");o.value=c.id;o.textContent=c.name;s.appendChild(o)})});updateDashboard();renderCategories();if("speechSynthesis" in window){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}}
+init();
+</script></body></html>
