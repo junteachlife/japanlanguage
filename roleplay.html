@@ -1,395 +1,2269 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第五階段：JLPT N5 AI 情境角色扮演對話（解鎖升級版）</title>
-    <style>
-        :root {
-            --primary-color: #673ab7;
-            --bg-color: #ede7f6;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-        .container {
-            width: 100%;
-            max-width: 850px;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .scenario-select {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .sc-btn {
-            padding: 10px 14px;
-            border: 2px solid #b39ddb;
-            border-radius: 20px;
-            background: white;
-            cursor: pointer;
-            font-weight: bold;
-            color: #512da8;
-            transition: 0.2s;
-            font-size: 14px;
-        }
-        .sc-btn.active, .sc-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        .chat-box {
-            height: 420px;
-            border: 2px solid #d1c4e9;
-            border-radius: 8px;
-            padding: 15px;
-            overflow-y: auto;
-            background: #fafafa;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        .message.npc {
-            background: #e8eaf6;
-            color: #1a237e;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-        }
-        .message.user {
-            background: var(--primary-color);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-        .choices-area {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .choice-btn {
-            padding: 12px 15px;
-            font-size: 16px;
-            border: 2px solid #9575cd;
-            border-radius: 8px;
-            background: white;
-            color: #311b92;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-        }
-        .choice-btn:hover {
-            background: #ede7f6;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 15px;
-            color: #512da8;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>第五階段：JLPT N5 AI 情境角色扮演</title>
+
+<style>
+:root{
+    --primary:#673ab7;
+    --primary-dark:#512da8;
+    --light:#ede7f6;
+    --card:#ffffff;
+    --text:#333;
+    --green:#2e7d32;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+    "Helvetica Neue",Arial,sans-serif;
+
+    background:var(--light);
+    color:var(--text);
+
+    margin:0;
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+h1{
+    color:var(--primary);
+    margin-bottom:8px;
+}
+
+header p{
+    color:#555;
+    line-height:1.7;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:16px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.back-link{
+    display:inline-block;
+
+    margin-bottom:18px;
+
+    color:var(--primary-dark);
+
+    text-decoration:none;
+
+    font-weight:bold;
+}
+
+.scenario-select{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+
+    gap:10px;
+
+    margin-bottom:20px;
+}
+
+.sc-btn{
+    padding:10px 14px;
+
+    border:2px solid #b39ddb;
+
+    border-radius:22px;
+
+    background:white;
+
+    color:var(--primary-dark);
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.sc-btn:hover,
+.sc-btn.active{
+
+    background:var(--primary);
+
+    border-color:var(--primary);
+
+    color:white;
+}
+
+.scenario-info{
+
+    background:#f7f4fc;
+
+    border-left:5px solid var(--primary);
+
+    padding:12px 15px;
+
+    border-radius:8px;
+
+    margin-bottom:15px;
+
+    line-height:1.6;
+}
+
+.chat-box{
+
+    height:460px;
+
+    overflow-y:auto;
+
+    padding:15px;
+
+    background:#fafafa;
+
+    border:2px solid #d1c4e9;
+
+    border-radius:12px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    scroll-behavior:smooth;
+}
+
+.message{
+
+    max-width:82%;
+
+    padding:12px 16px;
+
+    border-radius:14px;
+
+    line-height:1.65;
+
+    font-size:16px;
+
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(6px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.message.npc{
+
+    align-self:flex-start;
+
+    background:#e8eaf6;
+
+    color:#1a237e;
+
+    border-bottom-left-radius:3px;
+}
+
+.message.user{
+
+    align-self:flex-end;
+
+    background:var(--primary);
+
+    color:white;
+
+    border-bottom-right-radius:3px;
+}
+
+.jp{
+
+    font-size:18px;
+
+    font-weight:bold;
+}
+
+.zh{
+
+    display:block;
+
+    margin-top:4px;
+
+    font-size:13px;
+
+    opacity:.78;
+}
+
+.speaker-btn{
+
+    margin-top:7px;
+
+    border:none;
+
+    background:rgba(255,255,255,.75);
+
+    color:#4527a0;
+
+    padding:5px 9px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:12px;
+}
+
+.user .speaker-btn{
+
+    color:white;
+
+    background:rgba(255,255,255,.18);
+}
+
+.status-bar{
+
+    text-align:center;
+
+    padding:10px;
+
+    min-height:42px;
+
+    color:#666;
+
+    font-size:14px;
+}
+
+.status-speaking{
+
+    color:var(--primary);
+
+    font-weight:bold;
+}
+
+.choices-area{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.choice-btn{
+
+    padding:13px 15px;
+
+    font-size:16px;
+
+    border:2px solid #9575cd;
+
+    border-radius:10px;
+
+    background:white;
+
+    color:#311b92;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    line-height:1.55;
+
+    transition:.2s;
+}
+
+.choice-btn:hover:not(:disabled){
+
+    background:#ede7f6;
+
+    transform:translateY(-1px);
+}
+
+.choice-btn:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+}
+
+.end-box{
+
+    text-align:center;
+
+    background:#e8f5e9;
+
+    border:1px solid #a5d6a7;
+
+    color:#256029;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin-top:5px;
+}
+
+.restart-btn{
+
+    border:none;
+
+    background:var(--green);
+
+    color:white;
+
+    padding:11px 18px;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-top:10px;
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:10px;
+    }
+
+    .container{
+        padding:15px;
+    }
+
+    h1{
+        font-size:24px;
+    }
+
+    .chat-box{
+        height:430px;
+    }
+
+    .message{
+        max-width:90%;
+    }
+
+    .jp{
+        font-size:17px;
+    }
+
+    .choice-btn{
+        font-size:15px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <header>
-        <h1>🤖 第五階段：AI 角色扮演情境對話（解鎖 6 大主題）</h1>
-        <p>涵蓋超商、餐廳、飯店、藥妝店、車站與問路，點擊選項進行實戰演練！</p>
-    </header>
+<header>
 
-    <div class="container">
-        <a href="index.html" class="back-link">⬅️ 返回課程首頁</a>
-        
-        <div class="scenario-select">
-            <button class="sc-btn active" onclick="changeScenario('convenience')">🏪 便利商店</button>
-            <button class="sc-btn" onclick="changeScenario('restaurant')">🍜 餐廳點餐</button>
-            <button class="sc-btn" onclick="changeScenario('hotel')">🏨 飯店入住</button>
-            <button class="sc-btn" onclick="changeScenario('drugstore')">💊 藥妝店購物</button>
-            <button class="sc-btn" onclick="changeScenario('ticket')">🎫 車站買票</button>
-            <button class="sc-btn" onclick="changeScenario('station')">🗺️ 路邊問路</button>
-        </div>
+<h1>🤖 第五階段：AI 情境角色扮演</h1>
 
-        <div class="chat-box" id="chatBox"></div>
-        <div class="choices-area" id="choicesArea"></div>
-    </div>
+<p>
+日本旅遊 6 大實用情境｜分支式對話｜日語真人語音<br>
+<strong>對方說完 → 你回答完 → 才會進入下一句</strong>
+</p>
 
-    <script>
-        const scenarios = {
-            convenience: {
-                steps: [
-                    {
-                        npc: "いらっしゃいませ！お弁当あたためますか。",
-                        npcZh: "歡迎光臨！便當需要幫您加熱嗎？",
-                        choices: [
-                            { text: "はい、お願いします。(好的，麻煩請幫我加熱。)", next: 1, speak: "はい、おねがいします" },
-                            { text: "いいえ、結構です。(不用，謝謝。)", next: 2, speak: "いいえ、けっこうです" }
-                        ]
-                    },
-                    {
-                        npc: "かしこまりました。袋はご利用ですか。",
-                        npcZh: "好的，了解。需要使用塑膠袋嗎？",
-                        choices: [
-                            { text: "はい、お願いします。(請給我袋子。)", next: 3, speak: "はい、おねがいします" },
-                            { text: "袋は要りません。(不需要袋子。)", next: 3, speak: "ふくろはいりません" }
-                        ]
-                    },
-                    {
-                        npc: "わかりました。温め終わるまで少々お待ちください。",
-                        npcZh: "知道了。加熱好之前請稍等一下。",
-                        choices: [
-                            { text: "はい、わかりました。(好的，我知道了。)", next: 3, speak: "はい、わかりました" }
-                        ]
-                    },
-                    {
-                        npc: "合計で650円になります。お会計はどうなさいますか。",
-                        npcZh: "總共是 650 日圓。請問要怎麼付款？",
-                        choices: [
-                            { text: "カードで払います。(用信用卡付款。)", next: 4, speak: "かーどではらいます" },
-                            { text: "現金で払います。(用現金付款。)", next: 4, speak: "げんきんではらいます" }
-                        ]
-                    },
-                    {
-                        npc: "ありがとうございました！またどうぞお越しくださいませ。",
-                        npcZh: "非常謝謝您！歡迎再度光臨。",
-                        choices: [
-                            { text: "（對話結束，點此重新開始）", next: 0, speak: "ありがとうございました" }
-                        ]
-                    }
-                ]
-            },
-            restaurant: {
-                steps: [
-                    {
-                        npc: "いらっしゃいませ！何名様ですか。",
-                        npcZh: "歡迎光臨！請問幾位呢？",
-                        choices: [
-                            { text: "一人です。(一人です / 一位。)", next: 1, speak: "ひとりです" },
-                            { text: "二人です。(ふたりです / 兩位。)", next: 1, speak: "ふたりです" }
-                        ]
-                    },
-                    {
-                        npc: "こちらへどうぞ。ご注文はお決まりですか。",
-                        npcZh: "請坐這邊。請問決定好要點餐了嗎？",
-                        choices: [
-                            { text: "ラーメンを一つお願いします。(我要一份拉麵。)", next: 2, speak: "らーめんをひとつおねがいします" },
-                            { text: "おすすめは何ですか。(請問推薦什麼呢？)", next: 2, speak: "おすすめはなんですか" }
-                        ]
-                    },
-                    {
-                        npc: "かしこまりました！少々お待ちください。",
-                        npcZh: "好的，請稍等片刻！",
-                        choices: [
-                            { text: "（對話結束，點此重新開始）", next: 0, speak: "しょうしょうおまちください" }
-                        ]
-                    }
-                ]
-            },
-            hotel: {
-                steps: [
-                    {
-                        npc: "いらっしゃいませ。本日はご予約でしょうか。",
-                        npcZh: "歡迎光臨。今天是預約入住嗎？",
-                        choices: [
-                            { text: "はい、予約した〇〇です。(是的，我是預約的某某某。)", next: 1, speak: "はい、よやくした〇〇です" },
-                            { text: "チェックインをお願いします。(我要辦理入住。)", next: 1, speak: "ちょっくいんをおねがいします" }
-                        ]
-                    },
-                    {
-                        npc: "パスポートをお願いします。それから、朝食券はこちらになります。",
-                        npcZh: "請出示您的護照。另外，這是您的早餐券。",
-                        choices: [
-                            { text: "はい、どうぞ。(好的，請看。)", next: 2, speak: "はい、どうぞ" }
-                        ]
-                    },
-                    {
-                        npc: "ありがとうございます。お部屋は502号室です。エレベーターはあちらです。",
-                        npcZh: "謝謝您。房間是 502 號房。電梯在這邊。",
-                        choices: [
-                            { text: "荷物を預かってもらえますか。(請問可以幫忙寄放行李嗎？)", next: 3, speak: "にもつをあずかってもらえますか" },
-                            { text: "ありがとうございます。(非常感謝！)", next: 3, speak: "ありがとうございます" }
-                        ]
-                    },
-                    {
-                        npc: "かしこまりました。ごゆっくりどうぞ！",
-                        npcZh: "沒問題。祝您住宿愉快！",
-                        choices: [
-                            { text: "（對話結束，點此重新開始）", next: 0, speak: "ごゆっくりどうぞ" }
-                        ]
-                    }
-                ]
-            },
-            drugstore: {
-                steps: [
-                    {
-                        npc: "いらっしゃいませ！何かお探しですか。",
-                        npcZh: "歡迎光臨！請問在找什麼東西嗎？",
-                        choices: [
-                            { text: "風邪薬はどこですか。(感冒藥在哪裡？)", next: 1, speak: "かぜぐすりはどこですか" },
-                            { text: "この目薬を探しています。(我在找這款眼藥水。)", next: 1, speak: "このめぐすりをさがしています" }
-                        ]
-                    },
-                    {
-                        npc: "あちらの棚の2番目にございます。免税は5000円以上からです。",
-                        npcZh: "在那個架子的第二排。免稅金額是滿 5000 日圓起。",
-                        choices: [
-                            { text: "わかりました。免税でお願いします。(知道了。我要辦理免稅。)", next: 2, speak: "わかりました。めんぜいでおねがいします" },
-                            { text: "そのまま払います。(直接結帳就可以了。)", next: 2, speak: "そのままはらいます" }
-                        ]
-                    },
-                    {
-                        npc: "かしこまりました。レジへどうぞ！",
-                        npcZh: "好的，請到櫃檯結帳！",
-                        choices: [
-                            { text: "（對話結束，點此重新開始）", next: 0, speak: "レジへどうぞ" }
-                        ]
-                    }
-                ]
-            },
-            ticket: {
-                steps: [
-                    {
-                        npc: "いらっしゃいませ。どこまで行きますか。",
-                        npcZh: "歡迎光臨。請間要到哪裡？",
-                        choices: [
-                            { text: "新宿まで大人一枚お願いします。(到新宿，成人票一張。)", next: 1, speak: "しんじゅくまでおとないちまいおねがいします" },
-                            { text: "京都行きの新幹線のチケットをください。(請給我一張去京都的新幹線車票。)", next: 1, speak: "きょうとゆきのしんかんせのちけっとをください" }
-                        ]
-                    },
-                    {
-                        npc: "片道ですか、往復ですか。",
-                        npcZh: "請問是單程還是來回呢？",
-                        choices: [
-                            { text: "片道でお願いします。(單程謝謝。)", next: 2, speak: "かたみちでおねがいします" },
-                            { text: "往復でお願いします。(來回謝謝。)", next: 2, speak: "おうふくでおねがいします" }
-                        ]
-                    },
-                    {
-                        npc: "1,500円になります。発車は3番ホームです。",
-                        npcZh: "總共 1,500 日圓。發車月台是 3 號月台。",
-                        choices: [
-                            { text: "ありがとうございます！(非常感謝！)", next: 3, speak: "ありがとうございます" }
-                        ]
-                    },
-                    {
-                        npc: "お気をつけていってらっしゃいませ！",
-                        npcZh: "請一路順風！",
-                        choices: [
-                            { text: "（對話結束，點此重新開始）", next: 0, speak: "いってらっしゃい" }
-                        ]
-                    }
-                ]
-            },
-            station: {
-                steps: [
-                    {
-                        npc: "すみません、何かお手伝いしましょうか。",
-                        npcZh: "不好意思，請問有需要幫忙嗎？",
-                        choices: [
-                            { text: "すみません、東京駅はどこですか。(不好意思，東京車站在哪裡？)", next: 1, speak: "すみません、とうきょうえきはどこですか" },
-                            { text: "切符売り場はどこですか。(售票處在哪裡？)", next: 1, speak: "きっぷうりばはどこですか" }
-                        ]
-                    },
-                    {
-                        npc: "東京駅ですね。まっすぐ行って、左側にあります。",
-                        npcZh: "是東京車站對吧？直走後在左手邊。",
-                        choices: [
-                            { text: "ありがとうございます！(非常感謝！)", next: 2, speak: "ありがとうございます" }
-                        ]
-                    },
-                    {
-                        npc: "どういたしまして、お気をつけて！",
-                        npcZh: "不客氣，請一路小心！",
-                        choices: [
-                            { text: "（對話結束，點此重新開始）", next: 0, speak: "きをつけて" }
-                        ]
-                    }
-                ]
-            }
-        };
+</header>
 
-        let currentKey = 'convenience';
-        let stepIndex = 0;
 
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ja-JP';
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
+<div class="container">
 
-        function changeScenario(key) {
-            currentKey = key;
-            stepIndex = 0;
-            document.querySelectorAll('.sc-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('chatBox').innerHTML = ''; // 切換時清空舊對話
-            renderChat();
-        }
+<a href="index.html" class="back-link">
+⬅️ 返回課程首頁
+</a>
 
-        function renderChat() {
-            const sc = scenarios[currentKey];
-            const step = sc.steps[stepIndex];
-            
-            const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML += `<div class="message npc">🤖 <strong>店員/路人：</strong><br>${step.npc}<br><span style="font-size:13px; color:#555;">(${step.npcZh})</span></div>`;
-            speak(step.npc);
-            chatBox.scrollTop = chatBox.scrollHeight;
 
-            const choicesArea = document.getElementById('choicesArea');
-            choicesArea.innerHTML = '';
-            step.choices.forEach(ch => {
-                const btn = document.createElement('button');
-                btn.className = 'choice-btn';
-                btn.innerText = `💬 ${ch.text}`;
-                btn.onclick = () => {
-                    chatBox.innerHTML += `<div class="message user">👤 <strong>你：</strong><br>${ch.text}</div>`;
-                    speak(ch.speak);
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                    
-                    stepIndex = ch.next;
-                    setTimeout(renderChat, 800);
-                };
-                choicesArea.appendChild(btn);
-            });
-        }
+<div class="scenario-select">
 
-        // 初始化載入
-        renderChat();
-    </script>
+<button class="sc-btn active"
+data-key="convenience">
+🏪 便利商店
+</button>
+
+<button class="sc-btn"
+data-key="restaurant">
+🍜 餐廳點餐
+</button>
+
+<button class="sc-btn"
+data-key="hotel">
+🏨 飯店入住
+</button>
+
+<button class="sc-btn"
+data-key="drugstore">
+💊 藥妝店
+</button>
+
+<button class="sc-btn"
+data-key="ticket">
+🎫 車站買票
+</button>
+
+<button class="sc-btn"
+data-key="direction">
+🗺️ 問路
+</button>
+
+</div>
+
+
+<div
+id="scenarioInfo"
+class="scenario-info">
+</div>
+
+
+<div
+id="chatBox"
+class="chat-box">
+</div>
+
+
+<div
+id="statusBar"
+class="status-bar">
+</div>
+
+
+<div
+id="choicesArea"
+class="choices-area">
+</div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   情境資料
+
+   next：
+   指向下一個節點 ID
+
+   end:true：
+   表示完成此情境
+========================================================== */
+
+const scenarios={
+
+
+/* ==========================================================
+   1 便利商店
+========================================================== */
+
+convenience:{
+
+title:"🏪 便利商店",
+
+description:
+"練習便當加熱、筷子、購物袋與付款方式。",
+
+start:"c1",
+
+nodes:{
+
+c1:{
+
+npc:"いらっしゃいませ。お弁当、温めますか。",
+
+zh:"歡迎光臨。便當需要加熱嗎？",
+
+choices:[
+
+{
+jp:"はい、お願いします。",
+zh:"好的，麻煩您。",
+next:"c2"
+},
+
+{
+jp:"いいえ、そのままで大丈夫です。",
+zh:"不用，這樣就可以了。",
+next:"c3"
+}
+
+]
+
+},
+
+
+c2:{
+
+npc:"かしこまりました。お箸はお付けしますか。",
+
+zh:"好的。需要附筷子嗎？",
+
+choices:[
+
+{
+jp:"はい、一膳お願いします。",
+zh:"好的，請給我一雙。",
+next:"c3"
+},
+
+{
+jp:"いいえ、要りません。",
+zh:"不用，不需要。",
+next:"c3"
+}
+
+]
+
+},
+
+
+c3:{
+
+npc:"袋はご利用ですか。",
+
+zh:"需要購物袋嗎？",
+
+choices:[
+
+{
+jp:"はい、お願いします。",
+zh:"好的，麻煩您。",
+next:"c4"
+},
+
+{
+jp:"袋は要りません。",
+zh:"不需要袋子。",
+next:"c4"
+}
+
+]
+
+},
+
+
+c4:{
+
+npc:"合計で650円です。お支払いはどうしますか。",
+
+zh:"總共650日圓。請問如何付款？",
+
+choices:[
+
+{
+jp:"現金で払います。",
+zh:"我要付現金。",
+next:"c5"
+},
+
+{
+jp:"カードでお願いします。",
+zh:"請用信用卡。",
+next:"c5"
+},
+
+{
+jp:"電子マネーで払えますか。",
+zh:"可以用電子支付嗎？",
+next:"c6"
+}
+
+]
+
+},
+
+
+c6:{
+
+npc:"はい、ご利用いただけます。",
+
+zh:"可以，可以使用電子支付。",
+
+choices:[
+
+{
+jp:"では、これでお願いします。",
+zh:"那就用這個付款。",
+next:"c5"
+}
+
+]
+
+},
+
+
+c5:{
+
+npc:"ありがとうございました。またお越しくださいませ。",
+
+zh:"非常感謝您，歡迎再次光臨。",
+
+end:true
+
+}
+
+}
+
+},
+
+
+
+/* ==========================================================
+   2 餐廳
+========================================================== */
+
+restaurant:{
+
+title:"🍜 餐廳點餐",
+
+description:
+"練習入店、人數、推薦餐點、點餐、追加與結帳。",
+
+start:"r1",
+
+nodes:{
+
+r1:{
+
+npc:"いらっしゃいませ。何名様ですか。",
+
+zh:"歡迎光臨。請問幾位？",
+
+choices:[
+
+{
+jp:"一人です。",
+zh:"一位。",
+next:"r2"
+},
+
+{
+jp:"二人です。",
+zh:"兩位。",
+next:"r2"
+}
+
+]
+
+},
+
+
+r2:{
+
+npc:"こちらへどうぞ。メニューです。",
+
+zh:"這邊請。這是菜單。",
+
+choices:[
+
+{
+jp:"ありがとうございます。",
+zh:"謝謝。",
+next:"r3"
+},
+
+{
+jp:"おすすめは何ですか。",
+zh:"請問推薦什麼？",
+next:"r4"
+}
+
+]
+
+},
+
+
+r4:{
+
+npc:"この店では味噌ラーメンが人気です。",
+
+zh:"我們店的味噌拉麵很受歡迎。",
+
+choices:[
+
+{
+jp:"では、それをお願いします。",
+zh:"那我要那個。",
+next:"r5"
+},
+
+{
+jp:"しょうゆラーメンはありますか。",
+zh:"有醬油拉麵嗎？",
+next:"r6"
+}
+
+]
+
+},
+
+
+r6:{
+
+npc:"はい、ございます。",
+
+zh:"有的。",
+
+choices:[
+
+{
+jp:"しょうゆラーメンを一つお願いします。",
+zh:"請給我一碗醬油拉麵。",
+next:"r5"
+}
+
+]
+
+},
+
+
+r3:{
+
+npc:"ご注文はお決まりですか。",
+
+zh:"決定好要點什麼了嗎？",
+
+choices:[
+
+{
+jp:"ラーメンを一つお願いします。",
+zh:"請給我一碗拉麵。",
+next:"r5"
+},
+
+{
+jp:"もう少し待ってください。",
+zh:"請再等我一下。",
+next:"r7"
+}
+
+]
+
+},
+
+
+r7:{
+
+npc:"かしこまりました。お決まりになりましたら、お呼びください。",
+
+zh:"好的。決定好之後請叫我。",
+
+choices:[
+
+{
+jp:"すみません、注文をお願いします。",
+zh:"不好意思，我要點餐。",
+next:"r5"
+}
+
+]
+
+},
+
+
+r5:{
+
+npc:"かしこまりました。お飲み物はいかがですか。",
+
+zh:"好的。飲料需要嗎？",
+
+choices:[
+
+{
+jp:"お水で大丈夫です。",
+zh:"水就可以了。",
+next:"r8"
+},
+
+{
+jp:"お茶をお願いします。",
+zh:"請給我茶。",
+next:"r8"
+}
+
+]
+
+},
+
+
+r8:{
+
+npc:"お待たせしました。ごゆっくりどうぞ。",
+
+zh:"讓您久等了，請慢用。",
+
+choices:[
+
+{
+jp:"ありがとうございます。",
+zh:"謝謝。",
+next:"r9"
+},
+
+{
+jp:"すみません、もう一つ注文してもいいですか。",
+zh:"不好意思，可以再加點一樣嗎？",
+next:"r10"
+}
+
+]
+
+},
+
+
+r10:{
+
+npc:"はい、もちろんです。",
+
+zh:"好的，當然可以。",
+
+choices:[
+
+{
+jp:"餃子を一つお願いします。",
+zh:"請再給我一份餃子。",
+next:"r9"
+}
+
+]
+
+},
+
+
+r9:{
+
+npc:"お食事はいかがでしたか。",
+
+zh:"餐點還滿意嗎？",
+
+choices:[
+
+{
+jp:"とてもおいしかったです。お会計をお願いします。",
+zh:"非常好吃。麻煩結帳。",
+next:"r11"
+}
+
+]
+
+},
+
+
+r11:{
+
+npc:"ありがとうございます。レジでお願いします。",
+
+zh:"謝謝您。請到櫃檯結帳。",
+
+end:true
+
+}
+
+}
+
+},
+
+
+
+/* ==========================================================
+   3 飯店
+========================================================== */
+
+hotel:{
+
+title:"🏨 飯店入住",
+
+description:
+"練習入住、護照、早餐、Wi-Fi、行李與房間資訊。",
+
+start:"h1",
+
+nodes:{
+
+h1:{
+
+npc:"いらっしゃいませ。本日はご予約でしょうか。",
+
+zh:"歡迎光臨。今天有預約嗎？",
+
+choices:[
+
+{
+jp:"はい、予約しています。",
+zh:"有，我有預約。",
+next:"h2"
+},
+
+{
+jp:"チェックインをお願いします。",
+zh:"我要辦理入住。",
+next:"h2"
+}
+
+]
+
+},
+
+
+h2:{
+
+npc:"お名前をお願いします。",
+
+zh:"請告訴我您的姓名。",
+
+choices:[
+
+{
+jp:"チャンです。",
+zh:"我姓張。",
+next:"h3"
+},
+
+{
+jp:"予約したチャンです。",
+zh:"我是預約的張。",
+next:"h3"
+}
+
+]
+
+},
+
+
+h3:{
+
+npc:"ありがとうございます。パスポートをお願いします。",
+
+zh:"謝謝。請出示護照。",
+
+choices:[
+
+{
+jp:"はい、どうぞ。",
+zh:"好的，請。",
+next:"h4"
+}
+
+]
+
+},
+
+
+h4:{
+
+npc:"お部屋は502号室です。朝食は7時から10時までです。",
+
+zh:"您的房間是502號。早餐時間是7點到10點。",
+
+choices:[
+
+{
+jp:"Wi-Fiはありますか。",
+zh:"有 Wi-Fi 嗎？",
+next:"h5"
+},
+
+{
+jp:"荷物を預かってもらえますか。",
+zh:"可以幫我寄放行李嗎？",
+next:"h6"
+},
+
+{
+jp:"ありがとうございます。",
+zh:"謝謝。",
+next:"h7"
+}
+
+]
+
+},
+
+
+h5:{
+
+npc:"はい。パスワードはお部屋のカードに書いてあります。",
+
+zh:"有。密碼寫在房卡上。",
+
+choices:[
+
+{
+jp:"わかりました。ありがとうございます。",
+zh:"知道了，謝謝。",
+next:"h7"
+}
+
+]
+
+},
+
+
+h6:{
+
+npc:"はい、フロントでお預かりします。",
+
+zh:"可以，我們可以在櫃檯替您保管。",
+
+choices:[
+
+{
+jp:"ありがとうございます。",
+zh:"謝謝。",
+next:"h7"
+}
+
+]
+
+},
+
+
+h7:{
+
+npc:"エレベーターは右側です。ごゆっくりお過ごしください。",
+
+zh:"電梯在右邊。祝您住宿愉快。",
+
+end:true
+
+}
+
+}
+
+},
+
+
+
+/* ==========================================================
+   4 藥妝店
+========================================================== */
+
+drugstore:{
+
+title:"💊 藥妝店購物",
+
+description:
+"練習尋找商品、詢問價格、用途、免稅與結帳。",
+
+start:"d1",
+
+nodes:{
+
+d1:{
+
+npc:"いらっしゃいませ。何かお探しですか。",
+
+zh:"歡迎光臨。請問在找什麼嗎？",
+
+choices:[
+
+{
+jp:"風邪薬はどこですか。",
+zh:"感冒藥在哪裡？",
+next:"d2"
+},
+
+{
+jp:"目薬を探しています。",
+zh:"我在找眼藥水。",
+next:"d3"
+},
+
+{
+jp:"日焼け止めはありますか。",
+zh:"有防曬乳嗎？",
+next:"d4"
+}
+
+]
+
+},
+
+
+d2:{
+
+npc:"風邪薬はこちらです。症状は何ですか。",
+
+zh:"感冒藥在這裡。請問有什麼症狀？",
+
+choices:[
+
+{
+jp:"喉が痛いです。",
+zh:"我的喉嚨痛。",
+next:"d5"
+},
+
+{
+jp:"鼻水が出ます。",
+zh:"我一直流鼻水。",
+next:"d5"
+}
+
+]
+
+},
+
+
+d3:{
+
+npc:"目薬はこちらの棚にあります。",
+
+zh:"眼藥水在這個架子上。",
+
+choices:[
+
+{
+jp:"これはいくらですか。",
+zh:"這個多少錢？",
+next:"d6"
+}
+
+]
+
+},
+
+
+d4:{
+
+npc:"はい、こちらにございます。",
+
+zh:"有，在這裡。",
+
+choices:[
+
+{
+jp:"これはいくらですか。",
+zh:"這個多少錢？",
+next:"d6"
+}
+
+]
+
+},
+
+
+d5:{
+
+npc:"こちらがおすすめです。",
+
+zh:"推薦您這一款。",
+
+choices:[
+
+{
+jp:"では、これをください。",
+zh:"那我要這個。",
+next:"d7"
+}
+
+]
+
+},
+
+
+d6:{
+
+npc:"1,200円です。",
+
+zh:"1,200日圓。",
+
+choices:[
+
+{
+jp:"これをください。",
+zh:"我要這個。",
+next:"d7"
+},
+
+{
+jp:"もう少し安いものはありますか。",
+zh:"有再便宜一點的嗎？",
+next:"d8"
+}
+
+]
+
+},
+
+
+d8:{
+
+npc:"はい、こちらは980円です。",
+
+zh:"有，這個是980日圓。",
+
+choices:[
+
+{
+jp:"では、これをください。",
+zh:"那我要這個。",
+next:"d7"
+}
+
+]
+
+},
+
+
+d7:{
+
+npc:"免税をご利用になりますか。",
+
+zh:"需要辦理免稅嗎？",
+
+choices:[
+
+{
+jp:"はい、お願いします。",
+zh:"好的，麻煩您。",
+next:"d9"
+},
+
+{
+jp:"いいえ、大丈夫です。",
+zh:"不用，沒關係。",
+next:"d10"
+}
+
+]
+
+},
+
+
+d9:{
+
+npc:"パスポートをお願いします。",
+
+zh:"請出示護照。",
+
+choices:[
+
+{
+jp:"はい、どうぞ。",
+zh:"好的，請。",
+next:"d10"
+}
+
+]
+
+},
+
+
+d10:{
+
+npc:"ありがとうございました。",
+
+zh:"謝謝您的光臨。",
+
+end:true
+
+}
+
+}
+
+},
+
+
+
+/* ==========================================================
+   5 車站
+========================================================== */
+
+ticket:{
+
+title:"🎫 車站買票",
+
+description:
+"練習目的地、單程來回、指定席、月台與轉乘。",
+
+start:"t1",
+
+nodes:{
+
+t1:{
+
+npc:"いらっしゃいませ。どちらまで行かれますか。",
+
+zh:"您好。請問要去哪裡？",
+
+choices:[
+
+{
+jp:"京都までお願いします。",
+zh:"我要到京都。",
+next:"t2"
+},
+
+{
+jp:"新宿までお願いします。",
+zh:"我要到新宿。",
+next:"t2"
+}
+
+]
+
+},
+
+
+t2:{
+
+npc:"片道ですか、往復ですか。",
+
+zh:"請問單程還是來回？",
+
+choices:[
+
+{
+jp:"片道でお願いします。",
+zh:"單程。",
+next:"t3"
+},
+
+{
+jp:"往復でお願いします。",
+zh:"來回。",
+next:"t3"
+}
+
+]
+
+},
+
+
+t3:{
+
+npc:"指定席と自由席、どちらになさいますか。",
+
+zh:"請問要指定席還是自由席？",
+
+choices:[
+
+{
+jp:"指定席をお願いします。",
+zh:"請給我指定席。",
+next:"t4"
+},
+
+{
+jp:"自由席でお願いします。",
+zh:"自由席即可。",
+next:"t4"
+}
+
+]
+
+},
+
+
+t4:{
+
+npc:"次の電車は10時30分発です。",
+
+zh:"下一班車10點30分發車。",
+
+choices:[
+
+{
+jp:"何番ホームですか。",
+zh:"請問幾號月台？",
+next:"t5"
+},
+
+{
+jp:"乗り換えはありますか。",
+zh:"需要轉車嗎？",
+next:"t6"
+}
+
+]
+
+},
+
+
+t5:{
+
+npc:"3番ホームです。",
+
+zh:"3號月台。",
+
+choices:[
+
+{
+jp:"ありがとうございます。",
+zh:"謝謝。",
+next:"t7"
+}
+
+]
+
+},
+
+
+t6:{
+
+npc:"はい、東京駅で一度乗り換えてください。",
+
+zh:"是的，請在東京車站轉車一次。",
+
+choices:[
+
+{
+jp:"わかりました。ありがとうございます。",
+zh:"知道了，謝謝。",
+next:"t7"
+}
+
+]
+
+},
+
+
+t7:{
+
+npc:"お気をつけていってらっしゃいませ。",
+
+zh:"祝您一路順風。",
+
+end:true
+
+}
+
+}
+
+},
+
+
+
+/* ==========================================================
+   6 問路
+========================================================== */
+
+direction:{
+
+title:"🗺️ 路邊問路",
+
+description:
+"練習詢問地點、方向、距離、步行時間與地標。",
+
+start:"q1",
+
+nodes:{
+
+q1:{
+
+npc:"どうしましたか。",
+
+zh:"怎麼了嗎？",
+
+choices:[
+
+{
+jp:"すみません、駅はどこですか。",
+zh:"不好意思，車站在哪裡？",
+next:"q2"
+},
+
+{
+jp:"すみません、コンビニはどこですか。",
+zh:"不好意思，便利商店在哪裡？",
+next:"q3"
+}
+
+]
+
+},
+
+
+q2:{
+
+npc:"この道をまっすぐ行ってください。",
+
+zh:"請沿著這條路直走。",
+
+choices:[
+
+{
+jp:"どのくらいかかりますか。",
+zh:"大概要多久？",
+next:"q4"
+},
+
+{
+jp:"右ですか、左ですか。",
+zh:"是在右邊還是左邊？",
+next:"q5"
+}
+
+]
+
+},
+
+
+q3:{
+
+npc:"次の交差点を右に曲がるとあります。",
+
+zh:"下一個十字路口右轉就會看到。",
+
+choices:[
+
+{
+jp:"歩いて何分ぐらいですか。",
+zh:"走路大約幾分鐘？",
+next:"q4"
+}
+
+]
+
+},
+
+
+q4:{
+
+npc:"歩いて5分ぐらいです。",
+
+zh:"走路大約5分鐘。",
+
+choices:[
+
+{
+jp:"近いですね。ありがとうございます。",
+zh:"很近呢，謝謝。",
+next:"q6"
+}
+
+]
+
+},
+
+
+q5:{
+
+npc:"駅は左側にあります。",
+
+zh:"車站在左手邊。",
+
+choices:[
+
+{
+jp:"わかりました。ありがとうございます。",
+zh:"知道了，謝謝。",
+next:"q6"
+}
+
+]
+
+},
+
+
+q6:{
+
+npc:"どういたしまして。お気をつけて。",
+
+zh:"不客氣，路上小心。",
+
+end:true
+
+}
+
+}
+
+}
+
+};
+
+
+/* ==========================================================
+   系統狀態
+========================================================== */
+
+let currentKey="convenience";
+
+let currentNode=null;
+
+let isSpeaking=false;
+
+
+/* ==========================================================
+   DOM
+========================================================== */
+
+const chatBox=
+document.getElementById("chatBox");
+
+const choicesArea=
+document.getElementById("choicesArea");
+
+const statusBar=
+document.getElementById("statusBar");
+
+const scenarioInfo=
+document.getElementById("scenarioInfo");
+
+
+/* ==========================================================
+   找日文語音
+========================================================== */
+
+function getJapaneseVoice(){
+
+const voices=
+window.speechSynthesis.getVoices();
+
+return voices.find(v=>
+v.lang &&
+v.lang.toLowerCase().startsWith("ja")
+);
+
+}
+
+
+/* ==========================================================
+   ★ 核心語音系統
+
+   重點：
+   不再使用固定 800ms。
+
+   resolve 只會在整句真正朗讀完之後執行。
+========================================================== */
+
+function speakAsync(text){
+
+return new Promise(resolve=>{
+
+if(
+!("speechSynthesis" in window) ||
+!text
+){
+
+resolve();
+
+return;
+
+}
+
+window.speechSynthesis.cancel();
+
+isSpeaking=true;
+
+updateStatus("🔊 正在朗讀，請聽完整句子……",true);
+
+
+const utterance=
+new SpeechSynthesisUtterance(text);
+
+utterance.lang="ja-JP";
+
+utterance.rate=.88;
+
+utterance.pitch=1;
+
+utterance.volume=1;
+
+
+const japaneseVoice=
+getJapaneseVoice();
+
+if(japaneseVoice){
+
+utterance.voice=
+japaneseVoice;
+
+}
+
+
+utterance.onend=()=>{
+
+isSpeaking=false;
+
+updateStatus("");
+
+resolve();
+
+};
+
+
+utterance.onerror=()=>{
+
+isSpeaking=false;
+
+updateStatus("");
+
+resolve();
+
+};
+
+
+window.speechSynthesis.speak(
+utterance
+);
+
+});
+
+}
+
+
+/* ==========================================================
+   狀態列
+========================================================== */
+
+function updateStatus(text,speaking=false){
+
+statusBar.textContent=text;
+
+statusBar.classList.toggle(
+"status-speaking",
+speaking
+);
+
+}
+
+
+/* ==========================================================
+   新增 NPC 訊息
+========================================================== */
+
+function addNpcMessage(jp,zh){
+
+const div=
+document.createElement("div");
+
+div.className=
+"message npc";
+
+div.innerHTML=`
+
+🤖 <strong>店員／對方：</strong>
+
+<br>
+
+<span class="jp">
+${jp}
+</span>
+
+<span class="zh">
+${zh}
+</span>
+
+<button
+class="speaker-btn"
+type="button">
+🔊 再聽一次
+</button>
+
+`;
+
+
+div
+.querySelector(".speaker-btn")
+.addEventListener(
+"click",
+()=>speakAsync(jp)
+);
+
+
+chatBox.appendChild(div);
+
+scrollBottom();
+
+}
+
+
+/* ==========================================================
+   新增使用者訊息
+========================================================== */
+
+function addUserMessage(jp,zh){
+
+const div=
+document.createElement("div");
+
+div.className=
+"message user";
+
+div.innerHTML=`
+
+👤 <strong>你：</strong>
+
+<br>
+
+<span class="jp">
+${jp}
+</span>
+
+<span class="zh">
+${zh}
+</span>
+
+<button
+class="speaker-btn"
+type="button">
+🔊 再聽一次
+</button>
+
+`;
+
+
+div
+.querySelector(".speaker-btn")
+.addEventListener(
+"click",
+()=>speakAsync(jp)
+);
+
+
+chatBox.appendChild(div);
+
+scrollBottom();
+
+}
+
+
+/* ==========================================================
+   捲到底部
+========================================================== */
+
+function scrollBottom(){
+
+requestAnimationFrame(()=>{
+
+chatBox.scrollTop=
+chatBox.scrollHeight;
+
+});
+
+}
+
+
+/* ==========================================================
+   鎖住選項
+========================================================== */
+
+function disableChoices(){
+
+document
+.querySelectorAll(".choice-btn")
+.forEach(btn=>{
+
+btn.disabled=true;
+
+});
+
+}
+
+
+/* ==========================================================
+   顯示目前 NPC 節點
+
+   AI 必須完整說完
+   才產生使用者選項。
+========================================================== */
+
+async function showNode(nodeId){
+
+currentNode=nodeId;
+
+const scenario=
+scenarios[currentKey];
+
+const node=
+scenario.nodes[nodeId];
+
+
+choicesArea.innerHTML="";
+
+
+addNpcMessage(
+node.npc,
+node.zh
+);
+
+
+/*
+AI 完整講完
+*/
+
+await speakAsync(
+node.npc
+);
+
+
+/*
+若是結束節點
+*/
+
+if(node.end){
+
+showEnd();
+
+return;
+
+}
+
+
+/*
+AI 說完之後
+才開放回答。
+*/
+
+renderChoices(
+node.choices
+);
+
+}
+
+
+/* ==========================================================
+   顯示選項
+========================================================== */
+
+function renderChoices(choices){
+
+choicesArea.innerHTML="";
+
+updateStatus(
+"👇 請選擇一句日語回答"
+);
+
+
+choices.forEach(choice=>{
+
+const button=
+document.createElement("button");
+
+button.type="button";
+
+button.className=
+"choice-btn";
+
+button.innerHTML=`
+
+💬 <strong>
+${choice.jp}
+</strong>
+
+<br>
+
+<span style="
+font-size:13px;
+color:#666;
+">
+${choice.zh}
+</span>
+
+`;
+
+
+button.addEventListener(
+"click",
+()=>chooseAnswer(choice)
+);
+
+
+choicesArea.appendChild(
+button
+);
+
+});
+
+}
+
+
+/* ==========================================================
+   ★ 使用者回答流程
+
+   1. 鎖住按鈕
+   2. 顯示使用者句子
+   3. 完整念完使用者句子
+   4. 稍微停頓
+   5. AI 才講下一句
+========================================================== */
+
+async function chooseAnswer(choice){
+
+if(isSpeaking){
+return;
+}
+
+
+disableChoices();
+
+choicesArea.innerHTML="";
+
+
+addUserMessage(
+choice.jp,
+choice.zh
+);
+
+
+await speakAsync(
+choice.jp
+);
+
+
+/*
+自然停頓 350ms
+
+注意：
+這個等待是在「整句已經朗讀完成後」，
+不是用來猜語音需要多久。
+*/
+
+await delay(350);
+
+
+/*
+使用者整句說完
+才進入 AI 下一句。
+*/
+
+await showNode(
+choice.next
+);
+
+}
+
+
+/* ==========================================================
+   完成情境
+========================================================== */
+
+function showEnd(){
+
+updateStatus(
+"🎉 情境練習完成！"
+);
+
+choicesArea.innerHTML=`
+
+<div class="end-box">
+
+<strong>
+🎉 本次情境對話完成！
+</strong>
+
+<br>
+
+可以重新練習，
+或切換上方其他情境。
+
+<br>
+
+<button
+class="restart-btn"
+type="button"
+onclick="restartScenario()">
+🔄 再練習一次
+</button>
+
+</div>
+
+`;
+
+}
+
+
+/* ==========================================================
+   重新開始
+========================================================== */
+
+function restartScenario(){
+
+window.speechSynthesis.cancel();
+
+isSpeaking=false;
+
+chatBox.innerHTML="";
+
+choicesArea.innerHTML="";
+
+updateStatus("");
+
+const scenario=
+scenarios[currentKey];
+
+showNode(
+scenario.start
+);
+
+}
+
+
+/* ==========================================================
+   切換情境
+========================================================== */
+
+function changeScenario(key,button){
+
+window.speechSynthesis.cancel();
+
+isSpeaking=false;
+
+currentKey=key;
+
+
+document
+.querySelectorAll(".sc-btn")
+.forEach(btn=>
+btn.classList.remove("active")
+);
+
+
+button.classList.add(
+"active"
+);
+
+
+chatBox.innerHTML="";
+
+choicesArea.innerHTML="";
+
+updateStatus("");
+
+
+const scenario=
+scenarios[key];
+
+
+scenarioInfo.innerHTML=`
+
+<strong>
+${scenario.title}
+</strong>
+
+<br>
+
+${scenario.description}
+
+`;
+
+
+showNode(
+scenario.start
+);
+
+}
+
+
+/* ==========================================================
+   延遲
+========================================================== */
+
+function delay(ms){
+
+return new Promise(
+resolve=>
+setTimeout(resolve,ms)
+);
+
+}
+
+
+/* ==========================================================
+   情境按鈕
+========================================================== */
+
+document
+.querySelectorAll(".sc-btn")
+.forEach(button=>{
+
+button.addEventListener(
+"click",
+()=>{
+
+changeScenario(
+button.dataset.key,
+button
+);
+
+});
+
+});
+
+
+/* ==========================================================
+   語音載入
+========================================================== */
+
+if(
+"speechSynthesis" in window
+){
+
+window
+.speechSynthesis
+.getVoices();
+
+
+window
+.speechSynthesis
+.onvoiceschanged=()=>{
+
+window
+.speechSynthesis
+.getVoices();
+
+};
+
+}
+
+
+/* ==========================================================
+   初始化
+========================================================== */
+
+function init(){
+
+const scenario=
+scenarios[currentKey];
+
+scenarioInfo.innerHTML=`
+
+<strong>
+${scenario.title}
+</strong>
+
+<br>
+
+${scenario.description}
+
+`;
+
+showNode(
+scenario.start
+);
+
+}
+
+init();
+
+</script>
+
 </body>
 </html>
