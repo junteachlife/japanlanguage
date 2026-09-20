@@ -194,10 +194,12 @@ h1{
 }
 
 .category-icon{font-size:34px}
+
 .category-title{
     font-weight:800;
     margin-top:8px;
 }
+
 .category-count{
     font-size:13px;
     color:var(--muted);
@@ -409,6 +411,44 @@ h1{
     font-weight:800;
 }
 
+.word-navigation{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:10px;
+    align-items:center;
+    margin-top:20px;
+    padding-top:17px;
+    border-top:1px solid #eee;
+}
+
+.word-nav-btn{
+    border:0;
+    background:#eef0fb;
+    color:var(--primary-dark);
+    padding:11px 10px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:800;
+    transition:.2s;
+}
+
+.word-nav-btn:hover{
+    background:#dfe3f7;
+}
+
+.word-nav-btn:active{
+    transform:scale(.97);
+}
+
+.word-position{
+    min-width:82px;
+    text-align:center;
+    color:#687078;
+    font-size:13px;
+    font-weight:700;
+}
+
 .quiz-settings{
     display:flex;
     gap:10px;
@@ -504,10 +544,6 @@ h1{
     gap:12px;
 }
 
-.settings-line{
-    margin-bottom:16px;
-}
-
 .toggle-btn{
     border:1px solid #aaa;
     background:white;
@@ -537,6 +573,21 @@ h1{
     .status-buttons{grid-template-columns:1fr}
     .modal-content{padding:24px 18px}
     .progress-row{grid-template-columns:55px 1fr 60px}
+
+    .word-navigation{
+        grid-template-columns:1fr auto 1fr;
+        gap:6px;
+    }
+
+    .word-nav-btn{
+        padding:11px 6px;
+        font-size:13px;
+    }
+
+    .word-position{
+        min-width:68px;
+        font-size:12px;
+    }
 }
 </style>
 
@@ -559,6 +610,7 @@ h1{
 <main class="wrapper">
 
 <div class="dashboard">
+
 <div class="stat-card">
 <div class="stat-label">📚 真實詞彙</div>
 <div class="stat-number" id="totalWords">0</div>
@@ -578,6 +630,7 @@ h1{
 <div class="stat-label">⭐ 已熟悉</div>
 <div class="stat-number" id="masteredWords">0</div>
 </div>
+
 </div>
 
 <div class="progress-wrap">
@@ -608,10 +661,11 @@ h1{
 <section id="learn-section" class="section active">
 
 <div class="filters">
+
 <input id="searchInput"
-       type="search"
-       placeholder="🔎 搜尋日文、假名、羅馬字或中文"
-       oninput="renderCategories()">
+type="search"
+placeholder="🔎 搜尋日文、假名、羅馬字或中文"
+oninput="renderCategories()">
 
 <select id="levelFilter" onchange="renderCategories()">
 <option value="ALL">全部級別</option>
@@ -629,6 +683,7 @@ h1{
 <button class="toggle-btn" id="romajiToggle" onclick="toggleRomaji()">
 羅馬字：顯示
 </button>
+
 </div>
 
 <div id="categoryView">
@@ -669,6 +724,7 @@ h1{
 </select>
 
 <button class="audio-btn" onclick="startQuiz()">開始／重新測驗</button>
+
 </div>
 
 <div class="quiz-box">
@@ -679,24 +735,16 @@ h1{
 　｜　答錯：<span id="wrongCount">0</span>
 </div>
 
-<div class="quiz-prompt" id="quizPrompt">
-請選擇級別與題型後開始。
-</div>
-
+<div class="quiz-prompt" id="quizPrompt">請選擇級別與題型後開始。</div>
 <div class="quiz-question" id="quizQuestion">🎌</div>
 <div class="quiz-read" id="quizRead"></div>
 
 <div id="listenButtonArea"></div>
-
 <div id="optionsGrid" class="options"></div>
-
 <div id="feedback" class="feedback"></div>
-
 <div id="quizExample" class="quiz-example"></div>
 
-<button id="nextBtn" class="next-btn" onclick="nextQuestion()">
-下一題 ➜
-</button>
+<button id="nextBtn" class="next-btn" onclick="nextQuestion()">下一題 ➜</button>
 
 </div>
 </section>
@@ -705,9 +753,7 @@ h1{
 <h2>⭐ 我的錯題</h2>
 <p>答錯過的單字會自動收錄在這裡，答對後仍保留，方便反覆複習。</p>
 
-<button class="back-btn" onclick="clearWrongWords()">
-清除全部錯題紀錄
-</button>
+<button class="back-btn" onclick="clearWrongWords()">清除全部錯題紀錄</button>
 
 <div id="wrongGrid" class="review-grid"></div>
 </section>
@@ -716,12 +762,15 @@ h1{
 </main>
 
 <div id="wordModal" class="modal">
+
 <div class="modal-content">
 
 <span class="close" onclick="closeModal()">&times;</span>
 
 <div>
-<span id="modalLevel" class="level-badge" style="position:static;display:inline-block;"></span>
+<span id="modalLevel"
+class="level-badge"
+style="position:static;display:inline-block;"></span>
 </div>
 
 <div id="modalWord" class="modal-word"></div>
@@ -735,6 +784,7 @@ h1{
 </div>
 
 <div class="sentence-box">
+
 <div id="modalSentence" class="sentence-jp"></div>
 <div id="modalSentenceRead" class="sentence-read"></div>
 <div id="modalSentenceZh" class="sentence-zh"></div>
@@ -743,28 +793,43 @@ h1{
 <button class="audio-btn" onclick="speakCurrentSentence(.9)">🔊 例句</button>
 <button class="audio-btn" onclick="speakCurrentSentence(.7)">🐢 慢速例句</button>
 </div>
+
 </div>
 
 <div class="learning-status">
+
 <strong>我的熟悉程度</strong>
 
 <div class="status-buttons">
-<button id="status-new" class="status-btn"
-onclick="setLearningStatus('new')">😵 不會</button>
-
-<button id="status-learning" class="status-btn"
-onclick="setLearningStatus('learning')">🤔 有印象</button>
-
-<button id="status-mastered" class="status-btn"
-onclick="setLearningStatus('mastered')">😊 熟悉</button>
+<button id="status-new" class="status-btn" onclick="setLearningStatus('new')">😵 不會</button>
+<button id="status-learning" class="status-btn" onclick="setLearningStatus('learning')">🤔 有印象</button>
+<button id="status-mastered" class="status-btn" onclick="setLearningStatus('mastered')">😊 熟悉</button>
 </div>
+
+</div>
+
+<div class="word-navigation">
+
+<button class="word-nav-btn" onclick="previousModalWord()">
+⬅️ 上一個
+</button>
+
+<div id="modalPosition" class="word-position">
+1 / 1
+</div>
+
+<button class="word-nav-btn" onclick="nextModalWord()">
+下一個 ➡️
+</button>
+
 </div>
 
 </div>
 </div>
 
 <script>
-const allVocab = [];
+
+const allVocab=[];
 
 vocabCategories.forEach(category=>{
     category.items.forEach((item,index)=>{
@@ -778,10 +843,12 @@ vocabCategories.forEach(category=>{
     });
 });
 
-let showRomaji =
-    localStorage.getItem("jlptShowRomaji") !== "false";
+let showRomaji=
+    localStorage.getItem("jlptShowRomaji")!=="false";
 
 let currentModalItem=null;
+let currentModalList=[];
+let currentModalIndex=-1;
 
 let score=0;
 let correctCount=0;
@@ -790,6 +857,15 @@ let currentQuizItem=null;
 let currentCorrectAnswer="";
 let currentQuizMode="";
 let lastQuizUid=null;
+
+function cancelSpeech(){
+    if(
+        "speechSynthesis" in window &&
+        window.speechSynthesis
+    ){
+        window.speechSynthesis.cancel();
+    }
+}
 
 function getProgress(){
     try{
@@ -837,32 +913,41 @@ function normalize(text){
 }
 
 function speak(text,rate=.9){
+
     if(!("speechSynthesis" in window)){
         alert("目前瀏覽器不支援語音朗讀功能。");
         return;
     }
 
-    speechSynthesis.cancel();
+    cancelSpeech();
 
     const u=new SpeechSynthesisUtterance(text);
+
     u.lang="ja-JP";
     u.rate=rate;
 
-    const voices=speechSynthesis.getVoices();
+    const voices=
+        window.speechSynthesis.getVoices();
 
     const jaVoice=voices.find(v=>
         v.lang &&
         v.lang.toLowerCase().startsWith("ja")
     );
 
-    if(jaVoice) u.voice=jaVoice;
+    if(jaVoice){
+        u.voice=jaVoice;
+    }
 
-    speechSynthesis.speak(u);
+    window.speechSynthesis.speak(u);
 }
 
 function speakCurrentWord(rate){
     if(currentModalItem){
-        speak(currentModalItem.read || currentModalItem.jp,rate);
+        speak(
+            currentModalItem.read ||
+            currentModalItem.jp,
+            rate
+        );
     }
 }
 
@@ -877,61 +962,101 @@ function speakCurrentSentence(rate){
 }
 
 function updateDashboard(){
+
     const n5=allVocab.filter(x=>x.level==="N5");
     const n4=allVocab.filter(x=>x.level==="N4");
+
     const progress=getProgress();
 
-    const mastered=allVocab.filter(
-        x=>progress[x.uid]==="mastered"
-    );
+    const mastered=
+        allVocab.filter(
+            x=>progress[x.uid]==="mastered"
+        );
 
-    document.getElementById("totalWords").textContent=allVocab.length;
-    document.getElementById("n5Words").textContent=n5.length;
-    document.getElementById("n4Words").textContent=n4.length;
-    document.getElementById("masteredWords").textContent=mastered.length;
+    document.getElementById("totalWords").textContent=
+        allVocab.length;
 
-    const n5Mastered=n5.filter(
-        x=>progress[x.uid]==="mastered"
-    ).length;
+    document.getElementById("n5Words").textContent=
+        n5.length;
 
-    const n4Mastered=n4.filter(
-        x=>progress[x.uid]==="mastered"
-    ).length;
+    document.getElementById("n4Words").textContent=
+        n4.length;
 
-    const n5Pct=n5.length ?
-        Math.round(n5Mastered/n5.length*100) : 0;
+    document.getElementById("masteredWords").textContent=
+        mastered.length;
 
-    const n4Pct=n4.length ?
-        Math.round(n4Mastered/n4.length*100) : 0;
+    const n5Mastered=
+        n5.filter(
+            x=>progress[x.uid]==="mastered"
+        ).length;
 
-    document.getElementById("n5Progress").style.width=n5Pct+"%";
-    document.getElementById("n4Progress").style.width=n4Pct+"%";
+    const n4Mastered=
+        n4.filter(
+            x=>progress[x.uid]==="mastered"
+        ).length;
 
-    document.getElementById("n5ProgressText").textContent=n5Pct+"%";
-    document.getElementById("n4ProgressText").textContent=n4Pct+"%";
+    const n5Pct=
+        n5.length
+        ? Math.round(n5Mastered/n5.length*100)
+        : 0;
+
+    const n4Pct=
+        n4.length
+        ? Math.round(n4Mastered/n4.length*100)
+        : 0;
+
+    document.getElementById("n5Progress").style.width=
+        n5Pct+"%";
+
+    document.getElementById("n4Progress").style.width=
+        n4Pct+"%";
+
+    document.getElementById("n5ProgressText").textContent=
+        n5Pct+"%";
+
+    document.getElementById("n4ProgressText").textContent=
+        n4Pct+"%";
 }
 
 function switchTab(name){
+
     document.querySelectorAll(".section")
-        .forEach(x=>x.classList.remove("active"));
+        .forEach(
+            x=>x.classList.remove("active")
+        );
 
     document.querySelectorAll(".tab-btn")
-        .forEach(x=>x.classList.remove("active"));
+        .forEach(
+            x=>x.classList.remove("active")
+        );
 
     document.getElementById(name+"-section")
         .classList.add("active");
 
-    document.querySelector(`[data-tab="${name}"]`)
-        .classList.add("active");
+    const tab=
+        document.querySelector(
+            `[data-tab="${name}"]`
+        );
 
-    if(name==="review") renderReview();
-    if(name==="wrong") renderWrongWords();
+    if(tab){
+        tab.classList.add("active");
+    }
+
+    if(name==="review"){
+        renderReview();
+    }
+
+    if(name==="wrong"){
+        renderWrongWords();
+    }
 }
 
 function getFilteredItems(items){
-    const q=normalize(
-        document.getElementById("searchInput").value
-    );
+
+    const q=
+        normalize(
+            document.getElementById("searchInput").value
+        );
 
     const level=
         document.getElementById("levelFilter").value;
@@ -943,64 +1068,105 @@ function getFilteredItems(items){
 
     return items.filter(item=>{
 
-        const searchable=normalize([
-            item.jp,
-            item.read,
-            item.romaji,
-            item.zh,
-            item.stJp,
-            item.stZh
-        ].join(" "));
+        const searchable=
+            normalize([
+                item.jp,
+                item.read,
+                item.romaji,
+                item.zh,
+                item.stJp,
+                item.stZh
+            ].join(" "));
 
-        const matchSearch=!q || searchable.includes(q);
-        const matchLevel=level==="ALL" || item.level===level;
+        const matchSearch=
+            !q ||
+            searchable.includes(q);
+
+        const matchLevel=
+            level==="ALL" ||
+            item.level===level;
 
         let matchStatus=true;
 
         if(status!=="ALL"){
+
             if(status==="new"){
+
                 matchStatus=
                     !progress[item.uid] ||
                     progress[item.uid]==="new";
+
             }else{
-                matchStatus=progress[item.uid]===status;
+
+                matchStatus=
+                    progress[item.uid]===status;
+
             }
         }
 
-        return matchSearch && matchLevel && matchStatus;
+        return(
+            matchSearch &&
+            matchLevel &&
+            matchStatus
+        );
     });
 }
 
 function renderCategories(){
-    document.getElementById("detailView").style.display="none";
-    document.getElementById("categoryView").style.display="block";
 
-    const grid=document.getElementById("categoryGrid");
+    document.getElementById("detailView").style.display=
+        "none";
+
+    document.getElementById("categoryView").style.display=
+        "block";
+
+    const grid=
+        document.getElementById("categoryGrid");
+
     grid.innerHTML="";
 
     let visibleTotal=0;
 
     vocabCategories.forEach(category=>{
 
-        const categoryItems=allVocab.filter(
-            x=>x.categoryId===category.id
-        );
+        const categoryItems=
+            allVocab.filter(
+                x=>x.categoryId===category.id
+            );
 
-        const filtered=getFilteredItems(categoryItems);
+        const filtered=
+            getFilteredItems(categoryItems);
 
-        if(!filtered.length) return;
+        if(!filtered.length){
+            return;
+        }
 
         visibleTotal+=filtered.length;
 
-        const n5=filtered.filter(x=>x.level==="N5").length;
-        const n4=filtered.filter(x=>x.level==="N4").length;
+        const n5=
+            filtered.filter(
+                x=>x.level==="N5"
+            ).length;
 
-        const card=document.createElement("div");
+        const n4=
+            filtered.filter(
+                x=>x.level==="N4"
+            ).length;
+
+        const card=
+            document.createElement("div");
+
         card.className="category-card";
 
         card.innerHTML=`
-            <div class="category-icon">${category.icon}</div>
-            <div class="category-title">${category.name}</div>
+            <div class="category-icon">
+                ${category.icon}
+            </div>
+
+            <div class="category-title">
+                ${category.name}
+            </div>
+
             <div class="category-count">
                 ${filtered.length} 字
                 ${n5 ? `・N5 ${n5}` : ""}
@@ -1008,7 +1174,8 @@ function renderCategories(){
             </div>
         `;
 
-        card.onclick=()=>openCategory(category.id);
+        card.onclick=
+            ()=>openCategory(category.id);
 
         grid.appendChild(card);
     });
@@ -1018,23 +1185,35 @@ function renderCategories(){
 
     if(!visibleTotal){
         grid.innerHTML=
-            `<div class="empty">找不到符合條件的單字。</div>`;
+            `<div class="empty">
+                找不到符合條件的單字。
+            </div>`;
     }
 }
 
 function openCategory(categoryId){
-    const category=vocabCategories.find(
-        c=>c.id===categoryId
-    );
 
-    if(!category) return;
+    const category=
+        vocabCategories.find(
+            c=>c.id===categoryId
+        );
 
-    const items=getFilteredItems(
-        allVocab.filter(x=>x.categoryId===categoryId)
-    );
+    if(!category){
+        return;
+    }
 
-    document.getElementById("categoryView").style.display="none";
-    document.getElementById("detailView").style.display="block";
+    const items=
+        getFilteredItems(
+            allVocab.filter(
+                x=>x.categoryId===categoryId
+            )
+        );
+
+    document.getElementById("categoryView").style.display=
+        "none";
+
+    document.getElementById("detailView").style.display=
+        "block";
 
     document.getElementById("detailTitle").textContent=
         `${category.icon} ${category.name}（${items.length} 字）`;
@@ -1050,11 +1229,14 @@ function backToCategories(){
 }
 
 function renderWordCards(container,items){
+
     container.innerHTML="";
 
     if(!items.length){
         container.innerHTML=
-            `<div class="empty">目前沒有符合條件的單字。</div>`;
+            `<div class="empty">
+                目前沒有符合條件的單字。
+            </div>`;
         return;
     }
 
@@ -1062,7 +1244,9 @@ function renderWordCards(container,items){
 
     items.forEach(item=>{
 
-        const card=document.createElement("div");
+        const card=
+            document.createElement("div");
+
         card.className="vocab-card";
 
         card.innerHTML=`
@@ -1070,83 +1254,305 @@ function renderWordCards(container,items){
                 ${item.level}
             </span>
 
-            <div class="vocab-jp">${item.jp}</div>
-            <div class="vocab-read">${item.read}</div>
+            <div class="vocab-jp">
+                ${item.jp}
+            </div>
+
+            <div class="vocab-read">
+                ${item.read}
+            </div>
 
             <div class="vocab-romaji"
                  style="${showRomaji ? "" : "display:none"}">
                 ${item.romaji || ""}
             </div>
 
-            <div class="vocab-zh">${item.zh}</div>
+            <div class="vocab-zh">
+                ${item.zh}
+            </div>
 
             <div class="status-dot">
                 ${statusText(progress[item.uid])}
             </div>
         `;
 
-        card.onclick=()=>showModal(item);
+        card.onclick=
+            ()=>showModal(item,items);
 
         container.appendChild(card);
     });
 }
 
-function showModal(item){
+function showModal(item,list=null){
+
+    if(
+        Array.isArray(list) &&
+        list.length
+    ){
+        currentModalList=[...list];
+    }else{
+        currentModalList=[item];
+    }
+
+    currentModalIndex=
+        currentModalList.findIndex(
+            x=>x.uid===item.uid
+        );
+
+    if(currentModalIndex<0){
+        currentModalList=[item];
+        currentModalIndex=0;
+    }
+
     currentModalItem=item;
 
-    document.getElementById("modalLevel").textContent=item.level;
+    renderModalItem();
+
+    document.getElementById("wordModal").style.display=
+        "flex";
+}
+
+function renderModalItem(){
+
+    if(!currentModalItem){
+        return;
+    }
+
+    const item=currentModalItem;
+
+    document.getElementById("modalLevel").textContent=
+        item.level;
+
     document.getElementById("modalLevel").className=
         `level-badge level-${item.level}`;
 
-    document.getElementById("modalWord").textContent=item.jp;
-    document.getElementById("modalRead").textContent=item.read;
-    document.getElementById("modalRomaji").textContent=
-        showRomaji ? item.romaji : "";
+    document.getElementById("modalWord").textContent=
+        item.jp;
 
-    document.getElementById("modalZh").textContent=item.zh;
-    document.getElementById("modalSentence").textContent=item.stJp;
+    document.getElementById("modalRead").textContent=
+        item.read;
+
+    document.getElementById("modalRomaji").textContent=
+        showRomaji
+        ? (item.romaji || "")
+        : "";
+
+    document.getElementById("modalZh").textContent=
+        item.zh;
+
+    document.getElementById("modalSentence").textContent=
+        item.stJp;
+
     document.getElementById("modalSentenceRead").textContent=
         item.stRead || "";
 
-    document.getElementById("modalSentenceZh").textContent=item.stZh;
+    document.getElementById("modalSentenceZh").textContent=
+        item.stZh;
 
     updateModalStatus();
+    updateModalPosition();
+}
 
-    document.getElementById("wordModal").style.display="flex";
+function updateModalPosition(){
+
+    const position=
+        document.getElementById("modalPosition");
+
+    if(
+        !currentModalList.length ||
+        currentModalIndex<0
+    ){
+        position.textContent="1 / 1";
+        return;
+    }
+
+    position.textContent=
+        `${currentModalIndex+1} / ${currentModalList.length}`;
+}
+
+function scrollModalToTop(){
+
+    const modalContent=
+        document.querySelector(
+            "#wordModal .modal-content"
+        );
+
+    if(modalContent){
+        modalContent.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+    }
+}
+
+function previousModalWord(){
+
+    if(!currentModalList.length){
+        return;
+    }
+
+    cancelSpeech();
+
+    currentModalIndex--;
+
+    if(currentModalIndex<0){
+        currentModalIndex=
+            currentModalList.length-1;
+    }
+
+    currentModalItem=
+        currentModalList[currentModalIndex];
+
+    renderModalItem();
+    scrollModalToTop();
+}
+
+function nextModalWord(){
+
+    if(!currentModalList.length){
+        return;
+    }
+
+    cancelSpeech();
+
+    currentModalIndex++;
+
+    if(
+        currentModalIndex>=
+        currentModalList.length
+    ){
+        currentModalIndex=0;
+    }
+
+    currentModalItem=
+        currentModalList[currentModalIndex];
+
+    renderModalItem();
+    scrollModalToTop();
 }
 
 function closeModal(){
-    speechSynthesis?.cancel();
-    document.getElementById("wordModal").style.display="none";
+
+    cancelSpeech();
+
+    document.getElementById("wordModal").style.display=
+        "none";
 }
 
 function updateModalStatus(){
+
     document.querySelectorAll(".status-btn")
-        .forEach(x=>x.classList.remove("selected"));
+        .forEach(
+            x=>x.classList.remove("selected")
+        );
 
-    if(!currentModalItem) return;
+    if(!currentModalItem){
+        return;
+    }
 
-    const status=getProgress()[currentModalItem.uid];
+    const status=
+        getProgress()[currentModalItem.uid];
 
     if(status){
-        const btn=document.getElementById("status-"+status);
-        if(btn) btn.classList.add("selected");
+
+        const btn=
+            document.getElementById(
+                "status-"+status
+            );
+
+        if(btn){
+            btn.classList.add("selected");
+        }
     }
 }
 
 function setLearningStatus(status){
-    if(!currentModalItem) return;
+
+    if(!currentModalItem){
+        return;
+    }
 
     const progress=getProgress();
+
     progress[currentModalItem.uid]=status;
+
     saveProgress(progress);
 
     updateModalStatus();
     updateDashboard();
-    renderCategories();
+    refreshVisibleWordLists();
+}
+
+function refreshVisibleWordLists(){
+
+    const detailView=
+        document.getElementById("detailView");
+
+    const learnSection=
+        document.getElementById("learn-section");
+
+    if(
+        learnSection.classList.contains("active")
+    ){
+
+        if(
+            detailView.style.display==="none"
+        ){
+
+            renderCategories();
+
+        }else{
+
+            const currentCategory=
+                currentModalItem
+                ? currentModalItem.categoryId
+                : null;
+
+            if(currentCategory){
+
+                const category=
+                    vocabCategories.find(
+                        c=>c.id===currentCategory
+                    );
+
+                if(category){
+
+                    const items=
+                        getFilteredItems(
+                            allVocab.filter(
+                                x=>x.categoryId===currentCategory
+                            )
+                        );
+
+                    document.getElementById("detailTitle").textContent=
+                        `${category.icon} ${category.name}（${items.length} 字）`;
+
+                    renderWordCards(
+                        document.getElementById("vocabGrid"),
+                        items
+                    );
+                }
+            }
+        }
+    }
+
+    if(
+        document.getElementById("review-section")
+            .classList.contains("active")
+    ){
+        renderReview();
+    }
+
+    if(
+        document.getElementById("wrong-section")
+            .classList.contains("active")
+    ){
+        renderWrongWords();
+    }
 }
 
 function toggleRomaji(){
+
     showRomaji=!showRomaji;
 
     localStorage.setItem(
@@ -1160,18 +1566,24 @@ function toggleRomaji(){
     renderCategories();
 
     if(currentModalItem){
+
         document.getElementById("modalRomaji").textContent=
-            showRomaji ? currentModalItem.romaji : "";
+            showRomaji
+            ? (currentModalItem.romaji || "")
+            : "";
     }
 }
 
 function renderReview(){
+
     const progress=getProgress();
 
-    const items=allVocab.filter(item=>
-        progress[item.uid]==="new" ||
-        progress[item.uid]==="learning"
-    );
+    const items=
+        allVocab.filter(
+            item=>
+                progress[item.uid]==="new" ||
+                progress[item.uid]==="learning"
+        );
 
     renderWordCards(
         document.getElementById("reviewGrid"),
@@ -1180,10 +1592,16 @@ function renderReview(){
 }
 
 function renderWrongWords(){
+
     const ids=getWrongWords();
 
-    const items=ids
-        .map(id=>allVocab.find(x=>x.uid===id))
+    const items=
+        ids
+        .map(
+            id=>allVocab.find(
+                x=>x.uid===id
+            )
+        )
         .filter(Boolean);
 
     renderWordCards(
@@ -1193,24 +1611,43 @@ function renderWrongWords(){
 }
 
 function clearWrongWords(){
-    if(!confirm("確定要清除全部錯題紀錄嗎？")) return;
+
+    if(
+        !confirm(
+            "確定要清除全部錯題紀錄嗎？"
+        )
+    ){
+        return;
+    }
 
     saveWrongWords([]);
     renderWrongWords();
 }
 
 function shuffle(array){
+
     const a=[...array];
 
-    for(let i=a.length-1;i>0;i--){
-        const j=Math.floor(Math.random()*(i+1));
-        [a[i],a[j]]=[a[j],a[i]];
+    for(
+        let i=a.length-1;
+        i>0;
+        i--
+    ){
+
+        const j=
+            Math.floor(
+                Math.random()*(i+1)
+            );
+
+        [a[i],a[j]]=
+            [a[j],a[i]];
     }
 
     return a;
 }
 
 function startQuiz(){
+
     score=0;
     correctCount=0;
     wrongCount=0;
@@ -1221,49 +1658,85 @@ function startQuiz(){
 }
 
 function updateQuizScore(){
-    document.getElementById("score").textContent=score;
-    document.getElementById("correctCount").textContent=correctCount;
-    document.getElementById("wrongCount").textContent=wrongCount;
+
+    document.getElementById("score").textContent=
+        score;
+
+    document.getElementById("correctCount").textContent=
+        correctCount;
+
+    document.getElementById("wrongCount").textContent=
+        wrongCount;
 }
 
 function nextQuestion(){
 
     document.getElementById("feedback").innerHTML="";
-    document.getElementById("quizExample").style.display="none";
+
+    document.getElementById("quizExample").style.display=
+        "none";
+
     document.getElementById("quizExample").innerHTML="";
-    document.getElementById("nextBtn").style.display="none";
+
+    document.getElementById("nextBtn").style.display=
+        "none";
+
     document.getElementById("listenButtonArea").innerHTML="";
 
-    const level=document.getElementById("quizLevel").value;
+    const level=
+        document.getElementById("quizLevel").value;
 
-    let pool=allVocab.filter(
-        x=>level==="ALL" || x.level===level
-    );
+    let pool=
+        allVocab.filter(
+            x=>
+                level==="ALL" ||
+                x.level===level
+        );
 
     if(pool.length<4){
+
         document.getElementById("quizPrompt").textContent=
             "目前這個級別的單字不足 4 個，無法產生測驗。";
+
         return;
     }
 
-    let candidatePool=pool.filter(
-        x=>x.uid!==lastQuizUid
-    );
+    let candidatePool=
+        pool.filter(
+            x=>x.uid!==lastQuizUid
+        );
 
-    if(!candidatePool.length) candidatePool=pool;
+    if(!candidatePool.length){
+        candidatePool=pool;
+    }
 
     currentQuizItem=
         candidatePool[
-            Math.floor(Math.random()*candidatePool.length)
+            Math.floor(
+                Math.random()*candidatePool.length
+            )
         ];
 
     lastQuizUid=currentQuizItem.uid;
 
-    let mode=document.getElementById("quizMode").value;
+    let mode=
+        document.getElementById("quizMode").value;
 
     if(mode==="random"){
-        const modes=["jpZh","zhJp","reading","listening"];
-        mode=modes[Math.floor(Math.random()*modes.length)];
+
+        const modes=[
+            "jpZh",
+            "zhJp",
+            "reading",
+            "listening"
+        ];
+
+        mode=
+            modes[
+                Math.floor(
+                    Math.random()*modes.length
+                )
+            ];
     }
 
     currentQuizMode=mode;
@@ -1275,54 +1748,101 @@ function nextQuestion(){
     let wrongPool=[];
 
     if(mode==="jpZh"){
-        prompt="這個日文單字的中文意思是？";
-        question=currentQuizItem.jp;
-        read=currentQuizItem.read;
-        correct=currentQuizItem.zh;
-        wrongPool=pool.map(x=>x.zh);
+
+        prompt=
+            "這個日文單字的中文意思是？";
+
+        question=
+            currentQuizItem.jp;
+
+        read=
+            currentQuizItem.read;
+
+        correct=
+            currentQuizItem.zh;
+
+        wrongPool=
+            pool.map(x=>x.zh);
     }
 
     if(mode==="zhJp"){
-        prompt="這個中文意思對應哪一個日文單字？";
-        question=currentQuizItem.zh;
-        correct=currentQuizItem.jp;
-        wrongPool=pool.map(x=>x.jp);
+
+        prompt=
+            "這個中文意思對應哪一個日文單字？";
+
+        question=
+            currentQuizItem.zh;
+
+        correct=
+            currentQuizItem.jp;
+
+        wrongPool=
+            pool.map(x=>x.jp);
     }
 
     if(mode==="reading"){
-        prompt="請選出這個單字的正確讀音。";
-        question=currentQuizItem.jp;
-        correct=currentQuizItem.read;
-        wrongPool=pool.map(x=>x.read);
+
+        prompt=
+            "請選出這個單字的正確讀音。";
+
+        question=
+            currentQuizItem.jp;
+
+        correct=
+            currentQuizItem.read;
+
+        wrongPool=
+            pool.map(x=>x.read);
     }
 
     if(mode==="listening"){
-        prompt="🔊 聽發音後，選出正確的日文單字。";
-        question="🎧 聽力題";
-        correct=currentQuizItem.jp;
-        wrongPool=pool.map(x=>x.jp);
+
+        prompt=
+            "🔊 聽發音後，選出正確的日文單字。";
+
+        question=
+            "🎧 聽力題";
+
+        correct=
+            currentQuizItem.jp;
+
+        wrongPool=
+            pool.map(x=>x.jp);
 
         document.getElementById("listenButtonArea").innerHTML=`
-            <button class="audio-btn" onclick="playQuizAudio(.9)">
+            <button class="audio-btn"
+                    onclick="playQuizAudio(.9)">
                 🔊 再聽一次
             </button>
-            <button class="audio-btn" onclick="playQuizAudio(.7)">
+
+            <button class="audio-btn"
+                    onclick="playQuizAudio(.7)">
                 🐢 慢速
             </button>
         `;
 
-        setTimeout(()=>playQuizAudio(.9),250);
+        setTimeout(
+            ()=>playQuizAudio(.9),
+            250
+        );
     }
 
     currentCorrectAnswer=correct;
 
-    document.getElementById("quizPrompt").textContent=prompt;
-    document.getElementById("quizQuestion").textContent=question;
-    document.getElementById("quizRead").textContent=read;
+    document.getElementById("quizPrompt").textContent=
+        prompt;
+
+    document.getElementById("quizQuestion").textContent=
+        question;
+
+    document.getElementById("quizRead").textContent=
+        read;
 
     const uniqueWrong=[
         ...new Set(
-            wrongPool.filter(x=>x!==correct)
+            wrongPool.filter(
+                x=>x!==correct
+            )
         )
     ];
 
@@ -1331,11 +1851,15 @@ function nextQuestion(){
         ...shuffle(uniqueWrong).slice(0,3)
     ];
 
-    renderOptions(shuffle(options));
+    renderOptions(
+        shuffle(options)
+    );
 }
 
 function playQuizAudio(rate=.9){
+
     if(currentQuizItem){
+
         speak(
             currentQuizItem.read ||
             currentQuizItem.jp,
@@ -1345,99 +1869,157 @@ function playQuizAudio(rate=.9){
 }
 
 function renderOptions(options){
-    const grid=document.getElementById("optionsGrid");
+
+    const grid=
+        document.getElementById("optionsGrid");
+
     grid.innerHTML="";
 
     options.forEach(option=>{
-        const btn=document.createElement("button");
+
+        const btn=
+            document.createElement("button");
+
         btn.className="option";
         btn.textContent=option;
 
-        btn.onclick=()=>checkAnswer(
-            option,
-            btn
-        );
+        btn.onclick=
+            ()=>checkAnswer(
+                option,
+                btn
+            );
 
         grid.appendChild(btn);
     });
 }
 
 function checkAnswer(selected,button){
-    const buttons=document.querySelectorAll(".option");
 
-    buttons.forEach(b=>b.disabled=true);
+    const buttons=
+        document.querySelectorAll(".option");
 
-    const feedback=document.getElementById("feedback");
+    buttons.forEach(
+        b=>b.disabled=true
+    );
 
-    if(selected===currentCorrectAnswer){
+    const feedback=
+        document.getElementById("feedback");
+
+    if(
+        selected===
+        currentCorrectAnswer
+    ){
 
         score+=10;
         correctCount++;
 
-        button.style.background="#dcedc8";
-        button.style.borderColor="#7cb342";
+        button.style.background=
+            "#dcedc8";
 
-        feedback.style.color="#2e7d32";
-        feedback.innerHTML="⭕ 答對了！";
+        button.style.borderColor=
+            "#7cb342";
+
+        feedback.style.color=
+            "#2e7d32";
+
+        feedback.innerHTML=
+            "⭕ 答對了！";
 
     }else{
 
         wrongCount++;
 
-        button.style.background="#ffcdd2";
-        button.style.borderColor="#e57373";
+        button.style.background=
+            "#ffcdd2";
+
+        button.style.borderColor=
+            "#e57373";
 
         buttons.forEach(b=>{
-            if(b.textContent===currentCorrectAnswer){
-                b.style.background="#dcedc8";
-                b.style.borderColor="#7cb342";
+
+            if(
+                b.textContent===
+                currentCorrectAnswer
+            ){
+
+                b.style.background=
+                    "#dcedc8";
+
+                b.style.borderColor=
+                    "#7cb342";
             }
         });
 
-        feedback.style.color="#c62828";
+        feedback.style.color=
+            "#c62828";
+
         feedback.innerHTML=
             `❌ 答錯了。正確答案：${currentCorrectAnswer}`;
 
         const wrong=getWrongWords();
 
-        if(!wrong.includes(currentQuizItem.uid)){
-            wrong.push(currentQuizItem.uid);
+        if(
+            !wrong.includes(
+                currentQuizItem.uid
+            )
+        ){
+
+            wrong.push(
+                currentQuizItem.uid
+            );
+
             saveWrongWords(wrong);
         }
     }
 
     updateQuizScore();
 
-    const example=document.getElementById("quizExample");
+    const example=
+        document.getElementById("quizExample");
 
     example.innerHTML=`
         <strong>
             ${currentQuizItem.jp}
             （${currentQuizItem.read}）
         </strong>
+
         <br>
+
         ${currentQuizItem.zh}
+
         <hr style="border:0;border-top:1px solid #ddd;">
+
         ${currentQuizItem.stJp}
+
         <br>
+
         <span style="color:#777;">
             ${currentQuizItem.stRead || ""}
         </span>
+
         <br>
+
         ${currentQuizItem.stZh}
+
         <br><br>
-        <button class="audio-btn" onclick="speakQuizExample()">
+
+        <button class="audio-btn"
+                onclick="speakQuizExample()">
             🔊 聽例句
         </button>
     `;
 
-    example.style.display="block";
+    example.style.display=
+        "block";
 
-    document.getElementById("nextBtn").style.display="inline-block";
+    document.getElementById("nextBtn").style.display=
+        "inline-block";
 }
 
 function speakQuizExample(){
+
     if(currentQuizItem){
+
         speak(
             currentQuizItem.stRead ||
             currentQuizItem.stJp,
@@ -1446,17 +2028,49 @@ function speakQuizExample(){
     }
 }
 
-window.addEventListener("click",event=>{
-    if(event.target===document.getElementById("wordModal")){
-        closeModal();
-    }
-});
+window.addEventListener(
+    "click",
+    event=>{
 
-document.addEventListener("keydown",event=>{
-    if(event.key==="Escape") closeModal();
-});
+        if(
+            event.target===
+            document.getElementById("wordModal")
+        ){
+            closeModal();
+        }
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        const modal=
+            document.getElementById("wordModal");
+
+        const modalOpen=
+            modal.style.display==="flex";
+
+        if(event.key==="Escape"){
+            closeModal();
+            return;
+        }
+
+        if(modalOpen){
+
+            if(event.key==="ArrowLeft"){
+                previousModalWord();
+            }
+
+            if(event.key==="ArrowRight"){
+                nextModalWord();
+            }
+        }
+    }
+);
 
 function initialize(){
+
     document.getElementById("romajiToggle").textContent=
         `羅馬字：${showRomaji ? "顯示" : "隱藏"}`;
 
@@ -1465,6 +2079,7 @@ function initialize(){
 }
 
 initialize();
+
 </script>
 
 </body>
