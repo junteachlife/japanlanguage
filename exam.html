@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>第六階段：JLPT N5・N4 綜合能力驗收中心</title>
+<title>第六階段：JLPT N5・N4 FINAL PRO 綜合能力驗收中心</title>
 <style>
 :root{--p:#b71c1c;--p2:#d32f2f;--bg:#fff5f5;--card:#fff;--text:#263238;--muted:#667085;--line:#f1c7c7;--good:#2e7d32;--warn:#ef6c00;--bad:#c62828;--blue:#1565c0}
 *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#ffebee 0,#fff 360px);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif;color:var(--text);padding:18px}
@@ -79,8 +79,8 @@ h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(5,1fr);g
 <div class="wrap">
 <a class="back" href="index.html">⬅️ 返回學習首頁</a>
 <header class="hero">
-<h1>📝 第六階段：JLPT N5・N4 綜合能力驗收中心</h1>
-<p>整合 50 音、核心單字、文法形變、生活旅遊片語、情境對話，再加入 JLPT 型的讀音、表記、文脈、改寫、句子重組、閱讀、資訊檢索與聽解題。</p>
+<h1>📝 第六階段：JLPT N5・N4 FINAL PRO 綜合能力驗收中心</h1>
+<p>整合 50 音、核心單字、文法形變、生活旅遊片語、情境對話，再加入 JLPT 型的讀音、表記、文脈、改寫、句子重組、閱讀、資訊檢索與聽解題。練習模式負責學習與診斷；仿正式模式則採限時、延後解析與較嚴格的聽解規則。</p>
 </header>
 
 <section id="setup" class="panel">
@@ -88,7 +88,7 @@ h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(5,1fr);g
 <div class="mode-grid">
 <div class="mode selected" data-mode="practice" onclick="chooseMode(this)"><b>📘 練習模式</b><span>每題作答後立即顯示老師解析，適合學習與訂正。</span></div>
 <div class="mode" data-mode="exam" onclick="chooseMode(this)"><b>🧪 模擬考模式</b><span>考試途中不公布答案，完成後一次批改。</span></div>
-<div class="mode" data-mode="official" onclick="chooseMode(this)"><b>🏫 仿正式模式</b><span>依文字語彙、文法讀解、聽解分區組卷，考後一次解析。</span></div>
+<div class="mode" data-mode="official" onclick="chooseMode(this)"><b>🏫 JLPT 仿正式模式</b><span>本站原創模擬題；依文字語彙、文法讀解、聽解分區組卷，限時作答、考後一次解析。</span></div>
 <div class="mode" data-mode="weak" onclick="chooseMode(this)"><b>🎯 弱點特訓</b><span>依歷史正確率與熟練度優先抽取薄弱考點。</span></div>
 <div class="mode" data-mode="wrong" onclick="chooseMode(this)"><b>⭐ 錯題再測</b><span>錯題需不同題型連續答對 2 次才視為穩定掌握。</span></div>
 </div>
@@ -107,7 +107,7 @@ h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(5,1fr);g
   </div>
   <div id="resumeNote" class="resume-note"></div>
 </div>
-<div class="note">💡 題目會重新洗牌選項，正確答案不固定在 A；干擾選項盡量採同類型設計。Final 另加入閱讀題組、聽解最多播放2次、作答後逐字稿、熟練度追蹤與最近測驗紀錄。<br><b id="bankSummary"></b></div>
+<div class="note">💡 題目會重新洗牌選項，正確答案不固定在 A；干擾選項盡量採同類型設計。FINAL PRO 另加入閱讀題組、聽解控制、作答後逐字稿、熟練度追蹤與最近測驗紀錄。練習／一般模擬聽解最多播放2次；JLPT 仿正式模式僅提供正常速度1次。<br><b id="bankSummary"></b></div>
 <div style="text-align:center;margin-top:20px"><button class="btn primary" onclick="startExam()">開始驗收</button></div>
 </section>
 
@@ -715,11 +715,25 @@ function renderQ(){
  $("progressText").textContent=`第 ${idx+1} / ${active.length} 題`;$("progressFill").style.width=`${idx/active.length*100}%`;
  $("qMeta").innerHTML=`題型：${q.type}　｜　考點：${q.skill}${q.group?` <span class="groupbadge">題組 ${q.group}</span>`:""}`;
  $("transcript").classList.add("hidden");$("transcript").innerHTML="";
- if(q.audio){const used=listenPlays[q.id]||0;$("listenCount").textContent=`已播放 ${used}/2 次`;$("normalListenBtn").disabled=used>=2;$("slowListenBtn").disabled=used>=2;}
+ if(q.audio){
+   const used=listenPlays[q.id]||0;
+   const maxPlays=mode==="official"?1:2;
+   $("listenCount").textContent=`已播放 ${used}/${maxPlays} 次`;
+   $("normalListenBtn").disabled=used>=maxPlays;
+   $("slowListenBtn").disabled=mode==="official"||used>=maxPlays;
+   $("slowListenBtn").style.display=mode==="official"?"none":"inline-block";
+   $("normalListenBtn").textContent=mode==="official"?"🔊 播放日語（1次）":"🔊 播放日語";
+ }
  if(q.examSection){$("sectionHead").textContent=`📚 ${q.examSection}`;$("sectionHead").classList.remove("hidden")}else $("sectionHead").classList.add("hidden");
  if(q.source==="reading"){$("passage").textContent=q.passage||q.q;$("passage").classList.remove("hidden");$("question").textContent=q.prompt||"請依文章內容選出最適合的答案。"}
  else{$("passage").classList.add("hidden");$("question").textContent=q.q}
- if(q.audio){$("listen").classList.remove("hidden");$("question").textContent="請先聆聽日語，再選出最適合的答案。"}else $("listen").classList.add("hidden");
+ if(q.audio){
+   $("listen").classList.remove("hidden");
+   $("question").textContent="請先聆聽日語，再選出最適合的答案。";
+ }else{
+   $("listen").classList.add("hidden");
+   $("slowListenBtn").style.display="inline-block";
+ }
  if(!optionOrders[q.id]) optionOrders[q.id]=shuffle(q.options);
  $("options").innerHTML="";
  optionOrders[q.id].forEach(t=>{let btn=document.createElement("button");btn.className="opt";btn.textContent=t;
@@ -805,7 +819,8 @@ function finish(timedOut=false){
  $("acceptanceReport").innerHTML=`<b>🎓 本次驗收摘要</b><br>
  <span class="small">模式：${modeName(mode)}｜程度：${$("level").value}｜完成 ${answers.length}/${active.length} 題${timedOut?"｜時間到自動交卷":""}</span>
  <p>${pct>=85&&low.length===0?"本次各主要領域表現較均衡，可進入下一輪較高難度綜合應用。":pct>=70?"整體已有基礎，但仍有特定領域需要回課程補強後再複驗。":"目前建議先依下方路線回到前置階段複習，再做弱點特訓。"} <b>這是本站學習驗收結果，不等同 JLPT 官方合否或官方換算分數。</b></p>
- <span class="small">自我判斷校準：${calibration}%｜有把握且答對 ${sureCorrect} 題｜猜對 ${guessedCorrect} 題｜有把握卻答錯 ${unsureWrong} 題</span>`;
+ <span class="small">自我判斷校準：${calibration}%｜有把握且答對 ${sureCorrect} 題｜猜對 ${guessedCorrect} 題｜有把握卻答錯 ${unsureWrong} 題</span>
+ ${mode==="official"?`<div class="auditbox" style="margin-top:10px"><b>🏫 JLPT 仿正式能力參考：</b>本站以原始答對率呈現學習診斷，不把百分比換算成 JLPT 官方分數。JLPT 正式成績採官方計分方式，因此本頁結果僅供備考與課程驗收使用。</div>`:""}`;
  
  const detail={};
  answers.forEach(a=>{
@@ -833,11 +848,30 @@ function finish(timedOut=false){
 }
 function playListening(rate=.9){
  let q=active[idx];if(!q.audio||!("speechSynthesis"in window))return;
- let used=listenPlays[q.id]||0;if(used>=2){alert("模擬聽解每題最多播放 2 次；作答後會顯示逐字稿。");return}
- listenPlays[q.id]=used+1;$("listenCount").textContent=`已播放 ${listenPlays[q.id]}/2 次`;
- if(listenPlays[q.id]>=2){$("normalListenBtn").disabled=true;$("slowListenBtn").disabled=true}
- speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(q.audio);u.lang="ja-JP";u.rate=rate;
- let vs=speechSynthesis.getVoices();let v=vs.find(x=>x.lang&&x.lang.toLowerCase().startsWith("ja"));if(v)u.voice=v;speechSynthesis.speak(u)
+ const maxPlays=mode==="official"?1:2;
+ if(mode==="official" && rate!==.9){
+   alert("JLPT 仿正式模式不提供慢速播放。");
+   return;
+ }
+ let used=listenPlays[q.id]||0;
+ if(used>=maxPlays){
+   alert(mode==="official"?"JLPT 仿正式模式每題僅播放 1 次；交卷後會顯示逐字稿。":"練習／模擬聽解每題最多播放 2 次；作答後會顯示逐字稿。");
+   return;
+ }
+ listenPlays[q.id]=used+1;
+ $("listenCount").textContent=`已播放 ${listenPlays[q.id]}/${maxPlays} 次`;
+ if(listenPlays[q.id]>=maxPlays){
+   $("normalListenBtn").disabled=true;
+   $("slowListenBtn").disabled=true;
+ }
+ speechSynthesis.cancel();
+ let u=new SpeechSynthesisUtterance(q.audio);
+ u.lang="ja-JP";
+ u.rate=mode==="official"?.9:rate;
+ let vs=speechSynthesis.getVoices();
+ let v=vs.find(x=>x.lang&&x.lang.toLowerCase().startsWith("ja"));
+ if(v)u.voice=v;
+ speechSynthesis.speak(u);
 }
 function quitExam(){clearInterval(timerId);speechSynthesis?.cancel();$("exam").classList.add("hidden");$("setup").classList.remove("hidden")}
 function backSetup(){$("result").classList.add("hidden");$("setup").classList.remove("hidden")}
@@ -879,15 +913,22 @@ function typeCoverage(){
  return officialTypes;
 }
 
+function answerPositionAudit(){
+ const pos=[0,0,0,0];
+ bank.forEach(q=>{const i=q.options?.indexOf(q.answer);if(i>=0&&i<4)pos[i]++});
+ const total=Math.max(1,pos.reduce((a,b)=>a+b,0));
+ return pos.map((n,i)=>`${String.fromCharCode(65+i)}:${n}（${Math.round(n/total*100)}%）`).join("、");
+}
 function updateBankSummary(){
  const n5=bank.filter(q=>q.level==="N5").length,n4=bank.filter(q=>q.level==="N4").length;
  const types=new Set(bank.map(q=>q.type)).size,issues=editorialAudit();
  const el=$("bankSummary");
- if(el)el.innerHTML=`目前母題庫：${bank.length} 題（N5：${n5}／N4：${n4}），涵蓋 ${types} 種題型。
+ if(el)el.innerHTML=`目前母題庫：${bank.length} 題（N5：${n5}／N4：${n4}），涵蓋 ${types} 種題型、${new Set(bank.map(q=>q.source)).size} 大能力領域。
  <div class="auditbox ${issues.length?"auditwarn":""}"><b>🧪 題庫編輯檢查：</b>
  ID／選項／答案／解析／閱讀與聽解資料結構共檢出 <b>${issues.length}</b> 項待人工複核。
  ${issues.length?`<br>前幾項：${issues.slice(0,5).join("；")}`:"<br>結構檢查目前未發現異常。"}
  <br>品質管理：${bank.filter(q=>q.reviewed).length}/${bank.length} 題標記已審｜題目家族 ${new Set(bank.map(q=>q.familyId)).size} 組。
+ <br>母題原始正解位置：${answerPositionAudit()}；實際作答時仍會重新洗牌選項。
  <br>※自動檢查負責結構與可疑字串；日語自然度、級別邊界與唯一答案性仍以人工審題為準。</div>`;
 }
 updateBankSummary();
