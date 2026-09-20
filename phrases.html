@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>第四階段：JLPT N5・N4 實用生活與旅遊片語中心</title>
+<title>第四階段：JLPT N5・N4 實用片語 FINAL 情境中心</title>
 <style>
 :root{--primary:#d81b60;--dark:#880e4f;--light:#fce4ec;--card:#fff;--text:#333;--muted:#6b6b6b;--border:#f3bfd2;}
 *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Noto Sans JP",Arial,sans-serif;background:#fff5f8;color:var(--text)}
@@ -27,9 +27,19 @@
 .next-btn{display:none;margin-top:12px} .wrong-card{border:1px solid #ddd;border-left:5px solid #d32f2f;border-radius:9px;padding:14px;margin:10px 0;background:#fffafa} .empty{text-align:center;color:#777;padding:30px}
 @media(max-width:850px){.dashboard{grid-template-columns:repeat(2,1fr)}.category-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){h1{font-size:24px}.panel{padding:13px}.filters{grid-template-columns:1fr}.category-grid{grid-template-columns:repeat(2,1fr)}.options{grid-template-columns:1fr}}
+
+/* FINAL QUALITY training */
+.final-trainer{background:linear-gradient(135deg,#fff4f8,#f7f2ff);border:1px solid #f4c5d7;border-radius:14px;padding:16px;margin-bottom:18px}
+.final-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}.final-grid label{font-size:12px;font-weight:900;color:#7b3f5c}.final-grid select{width:100%;margin-top:5px;padding:10px;border:1px solid #e7bfd0;border-radius:8px;background:#fff}
+.final-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.final-actions button{border:0;border-radius:8px;padding:10px 15px;color:#fff;font-weight:900;cursor:pointer}.weak-btn{background:#7b1fa2}.wrong-retry{background:#1565c0}
+.quiz-track{height:9px;background:#f6dce6;border-radius:99px;overflow:hidden;max-width:850px;margin:10px auto}.quiz-fill{height:100%;background:#d81b60;width:0}
+.final-result{text-align:center;max-width:850px;margin:auto}.big-score{font-size:48px;font-weight:1000;color:#ad1457}.diag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.diag{background:#fff5f8;border-radius:10px;padding:10px}.diag b{display:block;font-size:20px;color:#ad1457}
+.review-item{text-align:left;background:#fff7fa;border-left:4px solid #d81b60;padding:11px;border-radius:8px;margin:8px 0;line-height:1.65}
+@media(max-width:650px){.final-grid{grid-template-columns:1fr}.diag-grid{grid-template-columns:1fr 1fr}}
+
 </style>
 </head><body>
-<header class="hero"><div class="hero-inner"><a class="back" href="index.html">⬅️ 返回學習首頁</a><h1>🗣️ 第四階段：JLPT N5・N4 實用生活與旅遊片語中心</h1><p>不是只背一句話，而是學會「什麼時候說、句子怎麼拆、還能怎麼替換」。收錄日本旅遊與日常生活高頻情境，搭配發音、老師講解、熟悉度與實戰測驗。</p></div></header>
+<header class="hero"><div class="hero-inner"><a class="back" href="index.html">⬅️ 返回學習首頁</a><h1>🗣️ 第四階段：JLPT N5・N4 實用片語 FINAL 情境中心</h1><p>不是只背一句話，而是學會「什麼時候說、句子怎麼拆、還能怎麼替換」。收錄日本旅遊與日常生活高頻情境，搭配發音、老師講解、熟悉度與實戰測驗。</p></div></header>
 <main class="wrap">
 <div class="dashboard"><div class="stat"><small>📖 片語總數</small><div class="num" id="total">0</div></div><div class="stat"><small>🗂️ 情境分類</small><div class="num" id="catCount">0</div></div><div class="stat"><small>😊 已熟悉</small><div class="num" id="mastered">0</div></div><div class="stat"><small>⭐ 錯題</small><div class="num" id="wrongCount">0</div></div></div>
 <div class="tabs"><button class="tab active" data-tab="learn">📖 情境片語</button><button class="tab" data-tab="quiz">✍️ 情境實戰</button><button class="tab" data-tab="wrong">⭐ 我的錯題</button></div>
@@ -39,7 +49,19 @@
 <div id="categoryView"><h3 id="summary"></h3><div id="categoryGrid" class="category-grid"></div></div>
 <div id="detailView" style="display:none"><button class="back-cat" onclick="renderCategories()">⬅️ 返回情境分類</button><h2 id="detailTitle"></h2><div id="phraseContainer" class="phrase-grid"></div></div>
 </section>
-<section id="quiz-section" class="section"><div class="quiz-settings"><select id="quizCat"><option value="ALL">全部情境</option></select><select id="quizMode"><option value="zh-jp">中文 → 選日文</option><option value="jp-zh">日文 → 選中文</option><option value="listen">🔊 聽力 → 選中文</option></select><button class="start-btn" onclick="startQuiz()">開始／重新測驗</button></div><div class="quiz-box"><div>得分：<b id="score">0</b> ｜答對：<b id="correct">0</b> ｜答錯：<b id="wrong">0</b></div><div id="quizPrompt" style="margin-top:12px;color:#777">選擇模式後開始。</div><div id="quizQuestion" class="quiz-question">🎌</div><div id="options" class="options"></div><div id="feedback" class="feedback"></div><div id="quizExplain" class="quiz-explain"></div><button id="nextBtn" class="next-btn" onclick="nextQuestion()">下一題 ➜</button></div></section>
+<section id="quiz-section" class="section">
+<div class="final-trainer">
+<h2>🗣️ 片語 FINAL 情境訓練中心</h2>
+<p>從中文選日文、日文選中文、聽力理解一路做到情境判斷。測驗採有限題數，並加入弱點與錯題再測。</p>
+<div class="final-grid">
+<label>測驗模式<select id="quizMode"><option value="zh-jp">中文情境 → 選日文</option><option value="jp-zh">日文 → 選中文</option><option value="listen">聽日文 → 選中文</option><option value="situation">情境 → 選最適合說法</option></select></label>
+<label>情境<select id="quizCat"><option value="ALL">全部情境</option></select></label>
+<label>題數<select id="quizCount"><option value="10">10題快速練習</option><option value="20">20題挑戰</option><option value="full">完整驗收</option></select></label>
+</div>
+<div class="final-actions"><button class="start-btn" onclick="startQuiz('normal')">▶️ 開始測驗</button><button class="weak-btn" onclick="startQuiz('weak')">🎯 弱點特訓</button><button class="wrong-retry" onclick="startQuiz('wrong')">⭐ 錯題再測</button></div>
+</div>
+<div class="quiz-box"><div class="score">進度 <span id="quizPos">0/0</span> ｜ 得分 <span id="score">0</span> ｜ 答對 <span id="correct">0</span> ｜ 答錯 <span id="wrong">0</span></div><div class="quiz-track"><div id="quizFill" class="quiz-fill"></div></div><div id="quizPrompt" style="color:#777;margin-top:12px">請選擇設定後開始。</div><div id="quizQuestion" class="quiz-question">🎌</div><div id="options" class="options"></div><div id="feedback" class="feedback"></div><div id="quizExplain" class="quiz-explain"></div><button id="nextBtn" class="next-btn" onclick="nextQuestion()">下一題 ➜</button></div>
+</section>
 <section id="wrong-section" class="section"><h2>⭐ 我的片語錯題</h2><p>答錯的題目會保留在這台裝置，方便集中複習。</p><button class="clear-btn" onclick="clearWrong()">清除全部錯題</button><div id="wrongContainer"></div></section>
 </div></main>
 <script>
@@ -59,13 +81,54 @@ function renderCategories(){$("categoryView").style.display="block";$("detailVie
 function openCategory(id){const c=phraseCategories.find(x=>x.id===id);const items=filtered(c.items);$("categoryView").style.display="none";$("detailView").style.display="block";$("detailTitle").textContent=`${c.name}（${items.length}）`;$("phraseContainer").innerHTML="";const p=getProgress();items.forEach(x=>{const d=document.createElement("div");d.className="phrase-card";d.innerHTML=`<div class="phrase-jp">${x.jp}</div><div class="read">${x.read} ｜ ${x.romaji}</div><div class="zh">🇹🇼 ${x.zh}</div><div class="teacher">👨‍🏫 <b>老師提醒：</b>${x.tip}</div><div class="explain"><b>🔍 句子拆解／用法：</b><br>${x.explain}</div><div class="variation"><b>🔄 替換練習：</b><br><b>${x.variation}</b><br>${x.variationZh}</div><div class="audio-row"><button class="audio-btn">🔊 正常</button><button class="audio-btn slow">🐢 慢速</button></div><div class="status-row"><button class="status-btn ${p[x.id]==="new"?"selected":""}" data-s="new">😵 不會</button><button class="status-btn ${p[x.id]==="learning"?"selected":""}" data-s="learning">🤔 學習中</button><button class="status-btn ${p[x.id]==="mastered"?"selected":""}" data-s="mastered">😊 熟悉</button></div>`;const aud=d.querySelectorAll(".audio-btn");aud[0].onclick=()=>speak(x.read,.9);aud[1].onclick=()=>speak(x.read,.68);d.querySelectorAll(".status-btn").forEach(b=>b.onclick=()=>setStatus(x.id,b.dataset.s,id));$("phraseContainer").appendChild(d)})}
 function setStatus(id,status,cat){const p=getProgress();p[id]=status;saveProgress(p);updateDashboard();openCategory(cat)}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab+"-section").classList.add("active");if(b.dataset.tab==="wrong")renderWrong()})
-let score=0,correct=0,wrong=0,current=null,last=null;
+
+const PHRASE_STAT_KEY="jlptPhraseQuizStatsFinal";
+let score=0,correct=0,wrong=0,current=null,quizQueue=[],quizIndex=0,quizRunMode="normal",quizReview=[];
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function startQuiz(){score=correct=wrong=0;last=null;updateScore();nextQuestion()}
-function updateScore(){$("score").textContent=score;$("correct").textContent=correct;$("wrong").textContent=wrong}
-function nextQuestion(){$("feedback").textContent="";$("quizExplain").style.display="none";$("nextBtn").style.display="none";let pool=allPhrases.filter(x=>$("quizCat").value==="ALL"||x.categoryId===$("quizCat").value);let alt=pool.filter(x=>x.id!==last);if(alt.length)pool=alt;current=pool[Math.floor(Math.random()*pool.length)];last=current.id;const mode=$("quizMode").value;let correctText,wrongPool;if(mode==="zh-jp"){$("quizPrompt").textContent="請依中文情境選出最適當的日文。";$("quizQuestion").textContent=`情境：「${current.zh}」`;correctText=current.jp;wrongPool=allPhrases.filter(x=>x.id!==current.id).map(x=>x.jp)}else if(mode==="jp-zh"){$("quizPrompt").textContent="請選出這句日文的正確中文意思。";$("quizQuestion").textContent=current.jp;correctText=current.zh;wrongPool=allPhrases.filter(x=>x.id!==current.id).map(x=>x.zh)}else{$("quizPrompt").innerHTML='🔊 聽完日文後，選出正確中文。 <button class="audio-btn" onclick="speak(current.read,.8)">再聽一次</button>';$("quizQuestion").textContent="🎧 請仔細聽";correctText=current.zh;wrongPool=allPhrases.filter(x=>x.id!==current.id).map(x=>x.zh);setTimeout(()=>speak(current.read,.8),150)}const opts=[correctText,...shuffle([...new Set(wrongPool)]).slice(0,3)];$("options").innerHTML="";shuffle(opts).forEach(o=>{const b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>checkAnswer(o,b,correctText);$("options").appendChild(b)})}
-function checkAnswer(sel,btn,ans){const bs=$("options").querySelectorAll(".option");bs.forEach(b=>b.disabled=true);if(sel===ans){score+=10;correct++;$("feedback").style.color="#2e7d32";$("feedback").textContent="⭕ 答對了！";btn.style.background="#dcedc8"}else{wrong++;$("feedback").style.color="#c62828";$("feedback").textContent=`❌ 答錯了。正確答案：${ans}`;btn.style.background="#ffcdd2";bs.forEach(b=>{if(b.textContent===ans)b.style.background="#dcedc8"});const w=getWrong();w.push(current.id);saveWrong(w)}updateScore();updateDashboard();$("quizExplain").innerHTML=`<b>📘 老師詳解</b><br><br><b>${current.jp}</b><br><span style="color:#777">${current.read} ｜ ${current.romaji}</span><br>🇹🇼 ${current.zh}<br><br>💡 ${current.tip}<br><br>🔍 ${current.explain}<br><br>🔄 <b>${current.variation}</b><br>${current.variationZh}<div class="audio-row"><button class="audio-btn" onclick="speak(current.read,.9)">🔊 正常</button><button class="audio-btn slow" onclick="speak(current.read,.68)">🐢 慢速</button></div>`;$("quizExplain").style.display="block";$("nextBtn").style.display="inline-block"}
-function renderWrong(){const ids=getWrong(),box=$("wrongContainer");box.innerHTML="";if(!ids.length){box.innerHTML='<div class="empty">🎉 目前沒有錯題！</div>';return}ids.forEach(id=>{const x=allPhrases.find(p=>p.id===id);if(!x)return;const d=document.createElement("div");d.className="wrong-card";d.innerHTML=`<b>${x.jp}</b><br><span style="color:#777">${x.read}</span><br>${x.zh}<br><br>💡 ${x.explain}`;box.appendChild(d)})}
+function getPhraseStats(){try{return JSON.parse(localStorage.getItem(PHRASE_STAT_KEY)||"{}")}catch{return {}}}
+function savePhraseStats(x){localStorage.setItem(PHRASE_STAT_KEY,JSON.stringify(x))}
+function updateScore(){$("score").textContent=score;$("correct").textContent=correct;$("wrong").textContent=wrong;$("quizPos").textContent=`${Math.min(quizIndex+1,quizQueue.length)}/${quizQueue.length}`;$("quizFill").style.width=(quizQueue.length?Math.min(100,quizIndex/quizQueue.length*100):0)+"%"}
+function phraseWeakScore(x){const s=getPhraseStats()[x.id]||{c:0,w:0,streak:0};return s.w*3-s.c*.4-s.streak}
+function phrasePool(){return allPhrases.filter(x=>$("quizCat").value==="ALL"||x.categoryId===$("quizCat").value)}
+function startQuiz(mode="normal"){
+ quizRunMode=mode;score=correct=wrong=0;quizIndex=0;quizReview=[];let pool=phrasePool();
+ if(mode==="wrong"){const ids=new Set(getWrong());pool=pool.filter(x=>ids.has(x.id));if(!pool.length)return alert("目前這個情境沒有錯題。")}
+ if(mode==="weak")pool=[...pool].sort((a,b)=>phraseWeakScore(b)-phraseWeakScore(a)+((Math.random()-.5)*1.2));else pool=shuffle(pool);
+ const n=$("quizCount").value==="full"?pool.length:Number($("quizCount").value);quizQueue=pool.slice(0,Math.min(n,pool.length));if(!quizQueue.length)return alert("目前沒有可用題目。");updateScore();renderPhraseQuestion()
+}
+function makePhraseQuestion(x){
+ const mode=$("quizMode").value;let prompt,question,answer,pool;
+ if(mode==="zh-jp"){prompt="請依中文情境選出最適當的日文。";question=`情境：「${x.zh}」`;answer=x.jp;pool=allPhrases.filter(y=>y.id!==x.id).map(y=>y.jp)}
+ else if(mode==="jp-zh"){prompt="請選出這句日文的正確中文意思。";question=x.jp;answer=x.zh;pool=allPhrases.filter(y=>y.id!==x.id).map(y=>y.zh)}
+ else if(mode==="listen"){prompt='🔊 聽完日文後，選出正確中文。';question="🎧 請仔細聽";answer=x.zh;pool=allPhrases.filter(y=>y.id!==x.id).map(y=>y.zh)}
+ else{prompt="想像你正在日本遇到以下情境，選出最適合直接說的一句。";question=x.tip;answer=x.jp;pool=allPhrases.filter(y=>y.id!==x.id&&y.categoryId===x.categoryId).map(y=>y.jp);if(pool.length<3)pool=allPhrases.filter(y=>y.id!==x.id).map(y=>y.jp)}
+ return {prompt,question,answer,options:shuffle([answer,...shuffle([...new Set(pool)]).slice(0,3)])}
+}
+function renderPhraseQuestion(){
+ if(quizIndex>=quizQueue.length)return renderPhraseResult();current=quizQueue[quizIndex];const q=makePhraseQuestion(current);
+ $("quizPrompt").innerHTML=q.prompt+($("quizMode").value==="listen"?' <button class="audio-btn" onclick="speak(current.read,.8)">再聽一次</button>':"");$("quizQuestion").textContent=q.question;$("feedback").textContent="";$("quizExplain").style.display="none";$("nextBtn").style.display="none";$("options").innerHTML="";
+ q.options.forEach(o=>{const b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>checkAnswer(o,b,q.answer);$("options").appendChild(b)});
+ if($("quizMode").value==="listen")setTimeout(()=>speak(current.read,.8),180);updateScore()
+}
+function updatePhraseStat(x,ok){
+ const all=getPhraseStats(),s=all[x.id]||{c:0,w:0,streak:0};s[ok?"c":"w"]++;s.streak=ok?s.streak+1:0;s.last=Date.now();all[x.id]=s;savePhraseStats(all);
+ let ids=getWrong();if(ok&&s.streak>=2)ids=ids.filter(i=>i!==x.id);if(!ok)ids.push(x.id);saveWrong(ids)
+}
+function checkAnswer(sel,btn,ans){
+ const bs=$("options").querySelectorAll(".option");bs.forEach(b=>b.disabled=true);const ok=sel===ans;
+ if(ok){score+=10;correct++;$("feedback").style.color="#2e7d32";$("feedback").textContent="⭕ 答對了！";btn.style.background="#dcedc8"}else{wrong++;$("feedback").style.color="#c62828";$("feedback").textContent=`❌ 答錯了。正確答案：${ans}`;btn.style.background="#ffcdd2";bs.forEach(b=>{if(b.textContent===ans)b.style.background="#dcedc8"})}
+ updatePhraseStat(current,ok);quizReview.push({x:current,ok,sel,ans});updateScore();updateDashboard();
+ $("quizExplain").innerHTML=`<b>📘 老師詳解</b><br><br><b>${current.jp}</b><br><span style="color:#777">${current.read} ｜ ${current.romaji}</span><br>🇹🇼 ${current.zh}<br><br>💡 ${current.tip}<br><br>🔍 ${current.explain}<br><br>🔄 <b>${current.variation}</b><br>${current.variationZh}<div class="audio-row"><button class="audio-btn" onclick="speak(current.read,.9)">🔊 正常</button><button class="audio-btn slow" onclick="speak(current.read,.68)">🐢 慢速</button></div>`;
+ $("quizExplain").style.display="block";$("nextBtn").textContent=quizIndex===quizQueue.length-1?"查看結果":"下一題 ➜";$("nextBtn").style.display="inline-block"
+}
+function nextQuestion(){quizIndex++;renderPhraseQuestion()}
+function renderPhraseResult(){
+ const total=quizQueue.length,pct=Math.round(correct/Math.max(1,total)*100),cats={};quizReview.forEach(r=>{let k=r.x.categoryId;cats[k]??={c:0,n:0};cats[k].n++;if(r.ok)cats[k].c++});
+ const arr=Object.entries(cats).map(([k,v])=>({k,p:Math.round(v.c/v.n*100),n:v.n,name:phraseCategories.find(c=>c.id===k)?.name||k})).sort((a,b)=>a.p-b.p);
+ $("quizPrompt").textContent="";$("quizQuestion").textContent="";$("options").innerHTML="";$("feedback").textContent="";$("nextBtn").style.display="none";$("quizFill").style.width="100%";$("quizExplain").style.display="block";
+ $("quizExplain").innerHTML=`<div class="final-result"><h2>🎓 情境片語驗收完成</h2><div class="big-score">${pct}%</div><p>${pct>=90?"情境反應很穩定。":pct>=75?"整體不錯，再加強低分情境。":"建議回到低分情境重新聽讀與替換練習。"}</p><div class="diag-grid">${arr.map(a=>`<div class="diag"><b>${a.p}%</b>${a.name}<br><small>${a.n}題</small></div>`).join("")}</div>${quizReview.some(r=>!r.ok)?`<h3>📌 本回錯題</h3>${quizReview.filter(r=>!r.ok).map(r=>`<div class="review-item"><b>${r.x.jp}</b><br>${r.x.zh}<br>你的答案：${r.sel}<br>💡 ${r.x.explain}</div>`).join("")}`:"<p>🌟 本回沒有錯題。</p>"}<div class="final-actions"><button class="start-btn" onclick="startQuiz('normal')">再測一次</button><button class="weak-btn" onclick="startQuiz('weak')">弱點特訓</button><button class="wrong-retry" onclick="startQuiz('wrong')">錯題再測</button></div></div>`
+}
+function renderWrong(){const ids=getWrong(),box=$("wrongContainer"),stats=getPhraseStats();box.innerHTML="";if(!ids.length){box.innerHTML='<div class="empty">🎉 目前沒有錯題！錯題連續答對兩次後會自動移出。</div>';return}ids.forEach(id=>{const x=allPhrases.find(p=>p.id===id);if(!x)return;const s=stats[id]||{c:0,w:0,streak:0};const d=document.createElement("div");d.className="wrong-card";d.innerHTML=`<b>${x.jp}</b><br><span style="color:#777">${x.read}</span><br>${x.zh}<br><br>💡 ${x.explain}<br><small>答對 ${s.c}｜答錯 ${s.w}｜目前連對 ${s.streak}</small>`;box.appendChild(d)})}
 function clearWrong(){if(confirm("確定要清除全部片語錯題嗎？")){saveWrong([]);renderWrong();updateDashboard()}}
 function init(){phraseCategories.forEach(c=>{[$("catFilter"),$("quizCat")].forEach(s=>{const o=document.createElement("option");o.value=c.id;o.textContent=c.name;s.appendChild(o)})});updateDashboard();renderCategories();if("speechSynthesis" in window){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}}
 init();
