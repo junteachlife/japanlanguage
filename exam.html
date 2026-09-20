@@ -1,460 +1,216 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第六階段：JLPT N5 150題五大模組綜合模擬大考</title>
-    <style>
-        :root {
-            --primary-color: #c62828;
-            --bg-color: #ffebee;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-        .container {
-            width: 100%;
-            max-width: 850px;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-        }
-        .question-box {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #b71c1c;
-            line-height: 1.6;
-        }
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-        .option-btn {
-            padding: 15px;
-            font-size: 17px;
-            border: 2px solid #ffcdd2;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-        }
-        .option-btn:hover {
-            background: #ffebee;
-            border-color: var(--primary-color);
-        }
-        .progress-bar {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        .result-box {
-            display: none;
-        }
-        .result-score-card {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eee;
-        }
-        .result-score {
-            font-size: 48px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin: 10px 0;
-        }
-        .restart-btn {
-            padding: 12px 30px;
-            font-size: 18px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: block;
-            margin: 20px auto 0 auto;
-        }
-        .restart-btn:hover {
-            background-color: #b71c1c;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 15px;
-            color: #c62828;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        .review-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        .review-item {
-            background: #fafafa;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .review-item.correct {
-            border-left: 6px solid #4CAF50;
-            background: #f1f8e9;
-        }
-        .review-item.wrong {
-            border-left: 6px solid #f44336;
-            background: #ffebee;
-        }
-        .review-q {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: #222;
-        }
-        .review-details {
-            font-size: 14px;
-            color: #555;
-            line-height: 1.5;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第六階段：JLPT N5・N4 綜合能力驗收中心</title>
+<style>
+:root{--p:#b71c1c;--p2:#d32f2f;--bg:#fff5f5;--card:#fff;--text:#263238;--muted:#667085;--line:#f1c7c7;--good:#2e7d32;--warn:#ef6c00;--bad:#c62828;--blue:#1565c0}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#ffebee 0,#fff 360px);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif;color:var(--text);padding:18px}
+.wrap{max-width:1100px;margin:auto}.back{display:inline-block;color:#3949ab;text-decoration:none;font-weight:800;margin:4px 0 14px}
+.hero{text-align:center;padding:16px 10px 22px}.hero h1{color:var(--p);margin:0 0 8px;font-size:clamp(25px,4vw,38px)}.hero p{margin:5px auto;color:#5f6368;max-width:850px;line-height:1.7}
+.panel{background:var(--card);border-radius:18px;box-shadow:0 8px 28px rgba(90,20,20,.08);padding:24px;margin-bottom:18px}
+h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.mode{border:2px solid #f1d3d3;background:#fffafa;border-radius:14px;padding:18px;cursor:pointer;text-align:left}.mode:hover,.mode.selected{border-color:var(--p2);background:#ffebee}.mode b{display:block;color:var(--p);font-size:18px;margin-bottom:6px}.mode span{font-size:13px;color:var(--muted);line-height:1.5}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}.field label{display:block;font-weight:800;margin-bottom:7px}.field select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;background:white;font-size:16px}
+.btn{border:0;border-radius:10px;padding:12px 20px;font-size:16px;font-weight:800;cursor:pointer}.primary{background:var(--p2);color:#fff}.secondary{background:#eceff1;color:#37474f}.blue{background:var(--blue);color:#fff}
+.note{background:#fff8e1;border-left:5px solid #f9a825;padding:12px 14px;border-radius:8px;line-height:1.6;font-size:14px}
+.hidden{display:none!important}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.pill{padding:7px 11px;border-radius:999px;background:#ffebee;color:var(--p);font-weight:800;font-size:13px}.timer{font-weight:900;color:var(--p);font-size:18px}
+.progress-track{height:9px;background:#eee;border-radius:99px;overflow:hidden;margin:10px 0 20px}.progress-fill{height:100%;background:var(--p2);width:0}
+.qmeta{font-size:13px;color:var(--muted);font-weight:800;margin-bottom:8px}.qbox{font-size:21px;font-weight:800;line-height:1.8;color:#3e2723;white-space:pre-line}.passage{background:#fafafa;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin:14px 0;line-height:1.9;white-space:pre-line}.listen{margin:12px 0}.listen button{border:1px solid #90caf9;background:#e3f2fd;color:#0d47a1;border-radius:9px;padding:9px 13px;font-weight:800;cursor:pointer}
+.options{display:grid;gap:11px;margin-top:18px}.opt{padding:14px 16px;border:2px solid #eee;border-radius:11px;background:#fff;text-align:left;font-size:16px;cursor:pointer;line-height:1.5}.opt:hover{border-color:#ef9a9a;background:#fff8f8}.opt.chosen{border-color:var(--p2);background:#ffebee}.opt.correct{border-color:#66bb6a;background:#e8f5e9}.opt.wrong{border-color:#ef5350;background:#ffebee}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:22px}.explain{margin-top:18px;padding:16px;border-radius:12px;background:#f7fbff;border-left:5px solid var(--blue);line-height:1.75}.explain strong{color:#0d47a1}.why{margin-top:8px;font-size:14px;color:#455a64}
+.score-big{text-align:center;font-size:58px;font-weight:900;color:var(--p)}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.metric{border:1px solid #eee;border-radius:12px;padding:14px;background:#fafafa}.metric b{display:block;font-size:23px;color:#263238}.metric span{font-size:13px;color:var(--muted)}
+.review{border:1px solid #e5e7eb;border-radius:12px;padding:15px;margin:12px 0}.review.good{border-left:6px solid var(--good)}.review.bad{border-left:6px solid var(--bad)}.review .rq{font-weight:800;line-height:1.6}.small{font-size:13px;color:var(--muted)}.weak{background:#fff3e0;border-left:5px solid var(--warn);padding:14px;border-radius:9px;margin:12px 0}
+@media(max-width:760px){body{padding:10px}.panel{padding:16px}.mode-grid,.controls,.result-grid{grid-template-columns:1fr}.qbox{font-size:18px}.navrow{flex-direction:column}.navrow .btn{width:100%}}
+</style>
 </head>
 <body>
+<div class="wrap">
+<a class="back" href="index.html">⬅️ 返回學習首頁</a>
+<header class="hero">
+<h1>📝 第六階段：JLPT N5・N4 綜合能力驗收中心</h1>
+<p>整合 50 音、核心單字、文法形變、生活旅遊片語、情境對話，再加入 JLPT 型的讀音、表記、文脈、改寫、句子重組、閱讀、資訊檢索與聽解題。</p>
+</header>
 
-    <header>
-        <h1>📝 第六階段：JLPT N5 五大模組 150 題大題庫模擬考</h1>
-        <p>涵蓋 50音、核心單字、文法形變、實用片語與 AI 情境對話，每次隨機抽選 20 題！</p>
-    </header>
+<section id="setup" class="panel">
+<h2>🎯 選擇驗收方式</h2>
+<div class="mode-grid">
+<div class="mode selected" data-mode="practice" onclick="chooseMode(this)"><b>📘 練習模式</b><span>每題作答後立即顯示老師解析，適合學習與訂正。</span></div>
+<div class="mode" data-mode="exam" onclick="chooseMode(this)"><b>🧪 模擬考模式</b><span>考試途中不公布答案，完成後一次批改。</span></div>
+<div class="mode" data-mode="weak" onclick="chooseMode(this)"><b>🎯 弱點特訓</b><span>優先抽取曾經答錯的考點，再搭配同類變化題。</span></div>
+<div class="mode" data-mode="wrong" onclick="chooseMode(this)"><b>⭐ 錯題再測</b><span>直接重做保存在本機的錯題；答對後可逐步清除。</span></div>
+</div>
+<div class="controls">
+<div class="field"><label>程度</label><select id="level"><option value="N5">N5</option><option value="N4">N4</option><option value="ALL" selected>N5＋N4 綜合</option></select></div>
+<div class="field"><label>題數</label><select id="count"><option>20</option><option selected>30</option><option>50</option></select></div>
+<div class="field"><label>範圍</label><select id="scope"><option value="ALL">全領域</option><option value="kana">50音・文字</option><option value="vocab">核心單字</option><option value="grammar">文法・形變</option><option value="phrase">生活片語</option><option value="dialogue">情境對話</option><option value="reading">閱讀・資訊</option><option value="listening">聽解</option></select></div>
+</div>
+<div class="note">💡 題目會在顯示時重新洗牌選項，因此正確答案不會固定在 A。干擾選項盡量採「同類型、看起來也合理」的設計，避免靠題型外觀猜答案。</div>
+<div style="text-align:center;margin-top:20px"><button class="btn primary" onclick="startExam()">開始驗收</button></div>
+</section>
 
-    <div class="container">
-        <a href="index.html" class="back-link">⬅️ 返回學習首頁</a>
+<section id="exam" class="panel hidden">
+<div class="topbar"><div><span id="partPill" class="pill"></span> <span id="levelPill" class="pill"></span></div><div id="timer" class="timer"></div></div>
+<div id="progressText" class="small"></div><div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+<div id="qMeta" class="qmeta"></div><div id="passage" class="passage hidden"></div><div id="question" class="qbox"></div>
+<div id="listen" class="listen hidden"><button onclick="playListening()">🔊 播放日語</button> <button onclick="playListening(.72)">🐢 慢速</button></div>
+<div id="options" class="options"></div><div id="explanation" class="explain hidden"></div>
+<div class="navrow"><button class="btn secondary" onclick="quitExam()">返回設定</button><button id="nextBtn" class="btn primary hidden" onclick="nextQuestion()">下一題</button></div>
+</section>
 
-        <!-- 考試進行中畫面 -->
-        <div id="examSection">
-            <div class="progress-bar" id="progressBar">題目：1 / 20</div>
-            <div class="question-box" id="questionBox">載入中...</div>
-            <div class="options-grid" id="examOptions"></div>
-        </div>
+<section id="result" class="panel hidden">
+<h2 style="text-align:center">📊 本次驗收結果</h2><div id="scoreBig" class="score-big"></div><p id="comment" style="text-align:center;font-size:18px"></p>
+<div id="resultGrid" class="result-grid"></div><div id="weakness"></div>
+<h3>📋 逐題老師解析</h3><div id="review"></div>
+<div class="navrow"><button class="btn secondary" onclick="backSetup()">返回設定</button><button class="btn blue" onclick="retryWrong()">只重測本次錯題</button><button class="btn primary" onclick="startExam()">重新組卷</button></div>
+</section>
+</div>
+<script>
+const Q=(id,level,source,type,skill,q,options,answer,explanation,extra={})=>({id,level,source,type,skill,q,options,answer,explanation,...extra});
+const bank=[
+Q("K001","N5","kana","reading","平假名","「ぬ」的羅馬字是哪一個？",["nu","ne","me","ru"],"nu","「ぬ」讀作 nu；初學時常與「め」的字形混淆。"),
+Q("K002","N5","kana","orthography","片假名","「ホテル」的第一個假名「ホ」對應哪個平假名？",["ほ","は","へ","ま"],"ほ","ホ／ほ 都讀作 ho。"),
+Q("K003","N5","kana","sound","促音","「きって」最接近哪一種節奏？",["ki-t-te","ki-te","ki-i-te","ki-n-te"],"ki-t-te","小「っ」表示促音，要在後面的子音前停一拍。"),
+Q("K004","N5","kana","sound","拗音","哪一個讀作「kyo」？",["きょ","きよ","ぎょ","きゅ"],"きょ","き＋小ょ＝きょ（kyo）；「きよ」是兩拍 ki-yo。"),
+Q("K005","N5","kana","particle-sound","助詞讀音","句子「わたしは学生です」中的「は」怎麼念？",["wa","ha","ba","pa"],"wa","「は」作主題助詞時讀 wa。"),
+Q("K006","N5","kana","particle-sound","助詞讀音","「学校へ行きます」中的「へ」怎麼念？",["e","he","be","pe"],"e","「へ」作方向助詞時讀 e。"),
+Q("K007","N5","kana","katakana","片假名","下列哪一個是「咖啡」？",["コーヒー","コピー","コート","コーラ"],"コーヒー","コーヒー＝coffee。長音符號「ー」也要讀出長度。"),
+Q("K008","N5","kana","sound","長音","「おばさん」和「おばあさん」的主要差別是？",["母音長短","濁音","促音","拗音"],"母音長短","おばさん＝阿姨；おばあさん＝祖母。長音會影響詞義。"),
 
-        <!-- 考試結算與回顧畫面 -->
-        <div class="result-box" id="resultSection">
-            <div class="result-score-card">
-                <h2>🎉 模擬考成績結算</h2>
-                <p>你的總得分為：</p>
-                <div class="result-score" id="finalScore">0 分</div>
-                <p id="resultComment" style="font-size: 18px; margin-bottom: 10px;"></p>
-            </div>
+Q("V001","N5","vocab","kanji-reading","漢字讀音","「駅」的正確讀音是？",["えき","いき","えぎ","いけ"],"えき","駅（えき）＝車站。"),
+Q("V002","N5","vocab","orthography","表記","「がっこう」應寫成？",["学校","学交","校学","学校う"],"学校","学校（がっこう）。「っ」反映促音。"),
+Q("V003","N5","vocab","context","交通動詞","毎朝、駅で電車に（　）、学校へ行きます。",["乗ります","降ります","渡ります","曲がります"],"乗ります","交通工具＋に＋乗ります＝搭乘。"),
+Q("V004","N5","vocab","context","位置詞","銀行は郵便局の（　）です。二つの建物は道をはさんで向かい合っています。",["向かい","中","上","後ろ"],"向かい","向かい＝對面；題幹提供「面對面」的線索。"),
+Q("V005","N5","vocab","paraphrase","近義改寫","「このかばんは安いです。」最接近哪一句？",["このかばんは値段が高くありません。","このかばんは大きくありません。","このかばんは新しくありません。","このかばんは軽くありません。"],"このかばんは値段が高くありません。","安い＝價格不高。"),
+Q("V006","N5","vocab","usage","動詞用法","「借ります」使用最自然的是哪一句？",["図書館で本を借ります。","友達に本を借します。","本が私を借ります。","図書館を本に借ります。"],"図書館で本を借ります。","借ります＝借入；場所用「で」，受詞用「を」。"),
+Q("V007","N5","vocab","context","頻率副詞","私はコーヒーが好きではないので、（　）飲みません。",["あまり","いつも","よく","毎日"],"あまり","あまり＋否定＝不太……。"),
+Q("V008","N5","vocab","context","程度副詞","この料理は（　）辛くて、私は食べられません。",["とても","あまり","ぜんぜん","まだ"],"とても","後文「吃不了」支持程度很高；とても＝非常。"),
+Q("V009","N4","vocab","context","狀態詞","電車が事故で止まったので、会社に（　）しました。",["遅刻","予約","準備","出発"],"遅刻","遅刻する＝遲到。事故造成電車停駛，語境最合理。"),
+Q("V010","N4","vocab","usage","詞彙用法","「間に合う」使用最自然的是？",["急げば電車に間に合います。","電車を間に合います。","駅が間に合います。","時間を間に合ってください。"],"急げば電車に間に合います。","～に間に合う＝趕得上……。"),
 
-            <div class="review-title">📋 逐題詳細回顧與解析</div>
-            <div id="reviewContainer"></div>
+Q("G001","N5","grammar","particle","場所助詞","図書館（　）日本語を勉強しました。",["で","に","を","へ"],"で","動作「勉強する」發生的場所用「で」。", {why:{"に":"多表示存在地點、時間點或目的地。","を":"主要標示受詞或移動經過／離開的場所。","へ":"表示移動方向。"}}),
+Q("G002","N5","grammar","particle","離開場所","毎朝七時半に家（　）出ます。",["を","に","で","が"],"を","「場所を出る」表示離開某處。"),
+Q("G003","N5","grammar","particle","存在","机の上（　）本があります。",["に","で","を","へ"],"に","存在句「場所に＋物があります」。"),
+Q("G004","N5","grammar","conjugation","て形","「泳ぐ」的て形是？",["泳いで","泳いて","泳って","泳んで"],"泳いで","五段動詞「ぐ」→「いで」：泳ぐ→泳いで。"),
+Q("G005","N5","grammar","conjugation","て形","「行く」的て形是？",["行って","行いて","行んで","行きて"],"行って","「行く」是て形的常見例外：行って。"),
+Q("G006","N5","grammar","adjective","い形容詞","昨日のテストは（　）です。",["難しかった","難しいかった","難しかったな","難しくでした"],"難しかった","い形容詞過去：去「い」＋かった。"),
+Q("G007","N5","grammar","adjective","な形容詞","この町は夜も（　）です。",["静か","静かな","静かに","静かだな"],"静か","な形容詞作述語：静かです；修飾名詞才用「静かな＋名詞」。"),
+Q("G008","N5","grammar","pattern","目的","日曜日、図書館へ本を（　）に行きます。",["借り","借りる","借って","借ります"],"借り","目的表現：ます形去ます＋に行きます。借ります→借りに行きます。"),
+Q("G009","N5","grammar","pattern","能力","私は日本語で簡単な会話をする（　）ができます。",["こと","もの","ところ","ほう"],"こと","辭書形＋ことができます＝能夠做……。"),
+Q("G010","N5","grammar","sentence-order","句子重組","請選出最自然的句子。",["私は毎朝七時に家を出ます。","私は家を毎朝出ます七時に。","毎朝私は七時を家に出ます。","七時に家が私は毎朝出ます。"],"私は毎朝七時に家を出ます。","時間＋場所を＋出る的語序與助詞都正確。"),
+Q("G011","N4","grammar","plain","普通形＋と思う","明日は雨が（　）と思います。",["降る","降ります","降って","降り"],"降る","「と思います」前接普通形：降ると思います。"),
+Q("G012","N4","grammar","condition","條件たら","時間が（　）、一緒に映画を見ませんか。",["あったら","あると","あればです","ありながら"],"あったら","「時間があったら」＝如果有時間。"),
+Q("G013","N4","grammar","condition","恆常條件と","春に（　）、桜が咲きます。",["なると","なったらだけ","なればです","なりながら"],"なると","自然、反覆發生的結果常用「～と」。"),
+Q("G014","N4","grammar","obligation","義務","明日は試験ですから、勉強し（　）。",["なければなりません","なくてもいいです","ないほうがいいです","てはいけません"],"なければなりません","～なければなりません＝必須做……。"),
+Q("G015","N4","grammar","action","ておく","旅行の前に、ホテルを予約して（　）。",["おきます","みます","しまいます","あります"],"おきます","～ておく＝為未來事先做好準備。"),
+Q("G016","N4","grammar","action","ながら","音楽を聞き（　）、宿題をします。",["ながら","たら","ので","まで"],"ながら","ます形去ます＋ながら＝一邊……一邊……。"),
+Q("G017","N4","grammar","change","ようになる","日本に来てから、納豆が食べられる（　）。",["ようになりました","ことにしました","つもりです","そうでした"],"ようになりました","～ようになる表示能力、習慣或狀態的變化。"),
+Q("G018","N4","grammar","giving","授受","友達が私に日本語を教えて（　）。",["くれました","あげました","もらいました","やりました"],"くれました","別人為「我」做某事：～てくれます。"),
 
-            <button class="restart-btn" onclick="restartExam()">重新抽取 20 題挑戰</button>
-        </div>
-    </div>
+Q("P001","N5","phrase","shopping","購物","店裡看到喜歡的商品，想請店員拿這個給你，最自然的是？",["これをください。","これがあります。","これはどうですか。","これを見ません。"],"これをください。","これをください＝請給我這個。"),
+Q("P002","N5","phrase","payment","付款","結帳前想確認能否使用信用卡，應該說？",["カードは使えますか。","カードを作れますか。","カードがありますか。","カードを見ますか。"],"カードは使えますか。","～は使えますか＝……可以使用嗎？"),
+Q("P003","N5","phrase","restaurant","餐廳","服務生問「ご注文はお決まりですか。」你還沒決定，最自然的回答是？",["まだです。もう少し待ってください。","はい、ごちそうさまでした。","いいえ、駅はどこですか。","二人です。"],"まだです。もう少し待ってください。","まだです＝還沒；後句請對方再等一下。"),
+Q("P004","N5","phrase","convenience","便利商店","店員：「お弁当、温めますか。」你不需要加熱，最自然的是？",["いいえ、結構です。","はい、袋です。","カードは使えます。","いただきます。"],"いいえ、結構です。","結構です在此表示「不用，謝謝」。"),
+Q("P005","N5","phrase","hotel","飯店","到飯店櫃檯辦理入住，已經用「陳」的名字預約，最自然的是？",["予約した陳です。","陳を予約します。","陳が部屋です。","予約は陳をください。"],"予約した陳です。","「予約した〇〇です」可用來表明自己是以該名字預約的客人。"),
+Q("P006","N5","phrase","direction","問路","你迷路了，想先告訴路人「我迷路了」，應說？",["道に迷いました。","道を忘れます。","駅に乗りました。","道が曲がります。"],"道に迷いました。","道に迷う＝迷路。"),
+Q("P007","N4","phrase","hotel","寄放行李","退房後想請飯店暫時保管行李，最自然的是？",["荷物を預かってもらえますか。","荷物を借りてもらえますか。","荷物を預けてくれません。","荷物が泊まれますか。"],"荷物を預かってもらえますか。","～てもらえますか是禮貌請求；預かる＝代為保管。"),
+Q("P008","N4","phrase","restaurant","外帶","店員：「こちらでお召し上がりですか。」你要外帶，最自然的是？",["持ち帰りでお願いします。","店内でお願いします。","温めてお願いします。","ごちそうさまでお願いします。"],"持ち帰りでお願いします。","持ち帰り＝外帶；店内＝內用。"),
 
-    <script>
-        // 五大模組 150 題完整題庫（每個模組 30 題）
-        const fullQuestionBank = [
-            // --- 模組一：50音與發音基礎 (1-30) ---
-            { part: "50音基礎", q: "問題 1：日語平假名「あ」對應的羅馬拼音是？", options: ["a", "i", "u", "e"], correct: 0 },
-            { part: "50音基礎", q: "問題 2：日語平假名「き」的發音是？", options: ["ki", "shi", "chi", "ni"], correct: 0 },
-            { part: "50音基礎", q: "問題 3：平假名「す」對應的片假名是？", options: ["ス", "シ", "セ", "ソ"], correct: 0 },
-            { part: "50音基礎", q: "問題 4：下列哪一個是濁音？", options: ["が (ga)", "か (ka)", "さ (sa)", "た (ta)"], correct: 0 },
-            { part: "50音基礎", q: "問題 5：下列哪一個是半濁音？", options: ["ぱ (pa)", "ば (ba)", "ま (ma)", "ら (ra)"], correct: 0 },
-            { part: "50音基礎", q: "問題 6：日語「こんにちは」的正確意思是？", options: ["你好", "早安", "晚安", "再見"], correct: 0 },
-            { part: "50音基礎", q: "問題 7：平假名「お」的羅馬拼音是？", options: ["o", "a", "u", "e"], correct: 0 },
-            { part: "50音基礎", q: "問題 8：促音「っ」在發音上的特徵是？", options: ["停頓一拍（小塞音）", "拉長音", "鼻音", "清音化"], correct: 0 },
-            { part: "50音基礎", q: "問題 9：長音「おおかみ」的正確發音方式是？", options: ["o-o-ka-mi（拉長o的音）", "o-ka-mi", "o-ka-a-mi", "o-ka-mi-i"], correct: 0 },
-            { part: "50音基礎", q: "問題 10：平假名「ん」是日語唯一的？", options: ["單獨鼻音", "母音", "促音", "清音"], correct: 0 },
-            { part: "50音基礎", q: "問題 11：平假名「て」的羅馬字為？", options: ["te", "to", "ta", "ti"], correct: 0 },
-            { part: "50音基礎", q: "問題 12：片假名「ト」對應的平假名是？", options: ["と", "て", "た", "つ"], correct: 0 },
-            { part: "50音基礎", q: "問題 13：下列哪一個假名屬於 $u$ 段音？", options: ["す (su)", "さ (sa)", "せ (se)", "そ (so)"], correct: 0 },
-            { part: "50音基礎", q: "問題 14：日語「さようなら」的意思是？", options: ["再見", "謝謝", "對不起", "不客氣"], correct: 0 },
-            { part: "50音基礎", q: "問題 15：日語「ありがとう」的意思是？", options: ["謝謝", "早安", "晚安", "你好"], correct: 0 },
-            { part: "50音基礎", q: "問題 16：平假名「の」常被用來表示？", options: ["所有格（的）", "動作受詞", "主題提示", "疑問語氣"], correct: 0 },
-            { part: "50音基礎", q: "問題 17：平假名「は」當作助詞時，發音要念成？", options: ["wa", "ha", "pa", "ba"], correct: 0 },
-            { part: "50音基礎", q: "問題 18：平假名「を」當作助詞時，標準發音通常念作？", options: ["o", "wo", "he", "e"], correct: 0 },
-            { part: "50音基礎", q: "問題 19：平假名「へ」當作方向助詞時，發音念作？", options: ["e", "he", "pe", "be"], correct: 0 },
-            { part: "50音基礎", q: "問題 20：下列哪一個是拗音組合？", options: ["きゃ (kya)", "かあ (kaa)", "かつ (katsu)", "かん (kan)"], correct: 0 },
-            { part: "50音基礎", q: "問題 21：片假名通常用來拼寫？", options: ["外來語與專有名詞", "漢字動詞", "助詞", "副詞"], correct: 0 },
-            { part: "50音基礎", q: "問題 22：日語「すみません」可以表示？", options: ["不好意思 / 謝謝", "再見", "早安", "太好了"], correct: 0 },
-            { part: "50音基礎", q: "問題 23：平假名「ぬ」的字形容易和哪一個字混淆？", options: ["め", "ね", "わ", "れ"], correct: 0 },
-            { part: "50音基礎", q: "問題 24：平假名「る」與哪一個字字形相似但結尾不同？", options: ["ろ", "ら", "り", "れ"], correct: 0 },
-            { part: "50音基礎", q: "問題 25：日語「いただきます」是用在？", options: ["飯前開動時", "吃飽飯後", "睡覺前", "出門時"], correct: 0 },
-            { part: "50音基礎", q: "問題 26：日語「ごちそうさまでした」是用在？", options: ["吃飽飯後（多謝款待）", "吃飯前", "打招呼", "道歉時"], correct: 0 },
-            { part: "50音基礎", q: "問題 27：日語「ただいま」的意思是？", options: ["我回來了", "歡迎光臨", "你好", "再見"], correct: 0 },
-            { part: "50音基礎", q: "問題 28：聽到「ただいま」時，應回答？", options: ["おかえりなさい（歡迎回家）", "いってきます", "もしもし", "さようなら"], correct: 0 },
-            { part: "50音基礎", q: "問題 29：日語「いってきます」的意思是？", options: ["我出門了", "你一路小心", "我回來了", "你好"], correct: 0 },
-            { part: "50音基礎", q: "問題 30：聽到「いってきます」時，應回答？", options: ["いってらっしゃい（請慢走）", "ただいま", "おかえり", "はい"], correct: 0 },
+Q("D001","N5","dialogue","quick-response","即時應答","A：ありがとうございます。\nB：（　）",["どういたしまして。","いただきます。","いらっしゃいませ。","おかえりなさい。"],"どういたしまして。","對方道謝時，「どういたしまして」＝不客氣。"),
+Q("D002","N5","dialogue","quick-response","家庭應答","A：ただいま。\nB：（　）",["おかえりなさい。","いってらっしゃい。","おやすみなさい。","はじめまして。"],"おかえりなさい。","ただいま＝我回來了；對應回答是おかえりなさい。"),
+Q("D003","N5","dialogue","restaurant","人數","店員：何名様ですか。\n客：二人です。\n店員接下來最可能做什麼？",["帶兩位客人入座","詢問護照","賣電車票","請客人寄放行李"],"帶兩位客人入座","何名様ですか是在餐廳確認用餐人數。"),
+Q("D004","N5","dialogue","station","車站","站務員：どちらまでですか。\n旅客想去新宿，最自然的回答是？",["新宿までお願いします。","新宿から来ません。","新宿は何時ですか。","新宿を食べます。"],"新宿までお願いします。","どちらまで＝到哪裡；「新宿まで」直接回答目的地。"),
+Q("D005","N4","dialogue","quick-response","邀約","A：今度の日曜日、一緒に映画を見ませんか。\nB：日曜日はちょっと……。\nB 最可能想表達什麼？",["婉轉拒絕邀約","非常期待電影","詢問票價","不知道星期日"],"婉轉拒絕邀約","「～はちょっと……」在邀約情境常用來婉轉拒絕。"),
+Q("D006","N4","dialogue","work","職場","A：お先に失礼します。\nB：（　）",["お疲れ様でした。","いただきます。","いらっしゃいませ。","お大事に。"],"お疲れ様でした。","同事先離開工作場所時常說「お先に失礼します」，回應可用「お疲れ様でした」。"),
 
-            // --- 模組二：800核心單字與例句 (31-60) ---
-            { part: "核心單字", q: "問題 31：私（わたし）的意思是？", options: ["我", "你", "他", "我們"], correct: 0 },
-            { part: "核心單字", q: "問題 32：本（ほん）的意思是？", options: ["書", "筆", "桌子", "椅子"], correct: 0 },
-            { part: "核心單字", q: "問題 33：車（くるま）的意思是？", options: ["汽車", "腳踏車", "電車", "飛機"], correct: 0 },
-            { part: "核心單字", q: "問題 34：水（みず）的意思是？", options: ["水", "茶", "牛奶", "果汁"], correct: 0 },
-            { part: "核心單字", q: "問題 35：医者（いしゃ）的意思是？", options: ["醫生", "老師", "學生", "公司職員"], correct: 0 },
-            { part: "核心單字", q: "問題 36：学校（がっこう）的意思是？", options: ["學校", "醫院", "銀行", "郵局"], correct: 0 },
-            { part: "核心單字", q: "問題 37：魚（さかな）的意思是？", options: ["魚", "肉", "蔬菜", "水果"], correct: 0 },
-            { part: "核心單字", q: "問題 38：りんご的意思是？", options: ["蘋果", "香蕉", "橘子", "西瓜"], correct: 0 },
-            { part: "核心單字", q: "問題 39：猫（ねこ）的意思是？", options: ["貓", "狗", "鳥", "馬"], correct: 0 },
-            { part: "核心單字", q: "問題 40：犬（いぬ）的意思是？", options: ["狗", "貓", "兔", "鼠"], correct: 0 },
-            { part: "核心單字", q: "問題 41：高い（たかい）的意思是？", options: ["高 / 貴", "低 / 便宜", "大", "小"], correct: 0 },
-            { part: "核心單字", q: "問題 42：安い（やすい）的意思是？", options: ["便宜", "貴", "難吃", "遠"], correct: 0 },
-            { part: "核心單字", q: "問題 43：新しい（あたらしい）的意思是？", options: ["新的", "舊的", "大的", "小的"], correct: 0 },
-            { part: "核心單字", q: "問題 44：古い（ふるい）的意思是？", options: ["舊的 / 老的", "新的", "好的", "壞的"], correct: 0 },
-            { part: "核心單字", q: "問題 45：大きい（おおきい）的意思是？", options: ["大的", "小的", "高的", "矮的"], correct: 0 },
-            { part: "核心單字", q: "問題 46：小さい（ちいさい）的意思是？", options: ["小的", "大的", "多的", "少的"], correct: 0 },
-            { part: "核心單字", q: "問題 47：美味しい（おいしい）的意思是？", options: ["好吃的", "難吃的", "甜的", "酸的"], correct: 0 },
-            { part: "核心單字", q: "問題 48：静か（しずか）的意思是？", options: ["安靜的", "熱鬧的", "乾淨的", "漂亮的"], correct: 0 },
-            { part: "核心單字", q: "問題 49：有名（ゆうめい）的意思是？", options: ["有名的", "奇特的", "安靜的", "忙碌的"], correct: 0 },
-            { part: "核心單字", q: "問題 50：時計（とけい）的意思是？", options: ["時鐘 / 手錶", "眼鏡", "帽子", "鞋子"], correct: 0 },
-            { part: "核心單字", q: "問題 51：靴（くつ）的意思是？", options: ["鞋子", "衣服", "褲子", "襪子"], correct: 0 },
-            { part: "核心單字", q: "問題 52：鞄（かばん）的意思是？", options: ["包包 / 皮包", "雨傘", "錢包", "鑰匙"], correct: 0 },
-            { part: "核心單字", q: "問題 53：傘（かさ）的意思是？", options: ["雨傘", "帽子", "鞋子", "手套"], correct: 0 },
-            { part: "核心單字", q: "問題 54：駅（えき）的意思是？", options: ["車站", "機場", "港口", "學校"], correct: 0 },
-            { part: "核心單字", q: "問題 55：銀行（ぎんこう）的意思是？", options: ["銀行", "郵局", "醫院", "超市"], correct: 0 },
-            { part: "核心單字", q: "問題 56：野菜（やさい）的意思是？", options: ["蔬菜", "水果", "肉類", "海鮮"], correct: 0 },
-            { part: "核心單字", q: "問題 57：肉（にく）的意思是？", options: ["肉", "魚", "蛋", "菜"], correct: 0 },
-            { part: "核心單字", q: "問題 58：卵（たまご）的意思是？", options: ["雞蛋", "牛奶", "麵包", "米飯"], correct: 0 },
-            { part: "核心單字", q: "問題 59：服（ふく）的意思是？", options: ["衣服", "帽子", "鞋子", "毛巾"], correct: 0 },
-            { part: "核心單字", q: "問題 60：部屋（へや）的意思是？", options: ["房間", "客廳", "廚房", "浴室"], correct: 0 },
+Q("R001","N5","reading","short","短文理解","美咲さんは毎朝七時に起きます。朝ご飯を食べて、七時四十分に家を出ます。学校まで自転車で二十分かかります。","美咲さんは何時ごろ学校に着きますか。",["八時ごろ","七時二十分ごろ","七時四十分ごろ","八時二十分ごろ"],"八時ごろ","7:40 出門，加 20 分鐘，約 8:00 到校。"),
+Q("R002","N5","reading","information","資訊檢索","【図書館のお知らせ】\n月曜日：休み\n火～金曜日：9:00～18:00\n土・日曜日：10:00～17:00\n本は一人5冊まで、2週間借りられます。","星期日下午四點想借 6 本書，哪一項正確？",["圖書館有開，但一次最多借5本","圖書館沒有開","可以借6本兩週","星期日九點開門"],"圖書館有開，但一次最多借5本","星期日 10:00～17:00 開館，但規定一人最多 5 冊。"),
+Q("R003","N5","reading","text-grammar","文章文法","きのう、友達と公園へ行きました。天気がよかったです。（　）、公園でお弁当を食べました。","空格放哪一個最自然？",["それから","でも","だから雨","まだ"],"それから","前後是依序發生的活動：「去了公園，然後吃便當」。"),
+Q("R004","N4","reading","short","短文理解","田中さんは来月、京都へ旅行します。最初は車で行くつもりでしたが、休日は道が混むと聞いたので、新幹線で行くことにしました。ホテルは駅の近くを予約しました。","田中さん為什麼改搭新幹線？",["聽說假日道路會塞車","飯店沒有停車場","新幹線比較便宜","不會開車"],"聽說假日道路會塞車","文中「休日は道が混むと聞いたので」直接說明原因。"),
+Q("R005","N4","reading","information","資訊檢索","【市民プール】\n平日 10:00～20:00\n土日 9:00～18:00\n水曜日は休館。\n高校生以上 500円／中学生以下 300円。\n17:00以降は100円引き（平日のみ）。","星期五下午5:30，一名國中生入場要多少錢？",["200円","300円","400円","500円"],"200円","國中生 300 円；平日 17:00 後折 100 円，所以 200 円。"),
+Q("R006","N4","reading","text-grammar","文章文法","私は日本へ来たとき、日本語がほとんど話せませんでした。毎日学校で勉強して、家でも日本のドラマを見るようにしました。（　）、少しずつ会話ができるようになりました。","最適合放入空格的是？",["その結果","ところで","たとえば","それなのに"],"その結果","後句是前述持續學習造成的結果，因此「その結果」最自然。"),
 
-            // --- 模組三：核心文法與形變規則 (61-90) ---
-            { part: "文法與形變", q: "問題 61：私 (　　) 学生です。", options: ["は", "を", "に", "で"], correct: 0 },
-            { part: "文法與形變", q: "問題 62：りんご (　　) 食べます。", options: ["を", "は", "が", "で"], correct: 0 },
-            { part: "文法與形變", q: "問題 63：学校 (　　) 行きます。", options: ["に", "を", "と", "の"], correct: 0 },
-            { part: "文法與形變", q: "問題 64：図書館 (　　) 本を読みます。", options: ["で", "に", "を", "は"], correct: 0 },
-            { part: "文法與形變", q: "問題 65：バス (　　) 会社に行きます。", options: ["で", "に", "を", "が"], correct: 0 },
-            { part: "文法與形變", q: "問題 66：食べる (たべる) 的否定形 (ない形) 是？", options: ["食べない", "食べません", "食べた", "食べたくない"], correct: 0 },
-            { part: "文法與形變", q: "問題 67：飲む (のむ) 的禮貌形 (ます形) 是？", options: ["飲みます", "飲むます", "飲まます", "飲んだ"], correct: 0 },
-            { part: "文法與形變", q: "問題 68：い形容詞「おいしい」的過去形是？", options: ["おいしかった", "おいしかったです", "おいしくない", "おいしかったです"], correct: 0 },
-            { part: "文法與形變", q: "問題 69：な形容詞「しずか」的否定形是？", options: ["しずかではありません", "しずかじゃない", "しずかくいけない", "しずかになかった"], correct: 0 },
-            { part: "文法與形變", q: "問題 70：行く (いく) 的た形（過去肯定）是？", options: ["行った (いった)", "行いた", "行いだ", "行た"], correct: 0 },
-            { part: "文法與形變", q: "問題 71：書く (かく) 的て形是？", options: ["書いて (かいて)", "書いて", "書きて", "書どて"], correct: 0 },
-            { part: "文法與形變", q: "問題 72：泳ぐ (およぐ) 的て形是？", options: ["泳いで (およいで)", "泳いて", "泳いで", "泳ぎて"], correct: 0 },
-            { part: "文法與形變", q: "問題 73：買う (かう) 的て形是？", options: ["買って (かって)", "買いて", "買えて", "買そて"], correct: 0 },
-            { part: "文法與形變", q: "問題 74：する (不規則動詞) 的ない形是？", options: ["しない", "すらない", "せぬ", "できない"], correct: 0 },
-            { part: "文法與形變", q: "問題 75：来る (くる) 的ます形是？", options: ["来ます (きます)", "きます", "来ります", "行きます"], correct: 0 },
-            { part: "文法與形變", q: "問題 76：あそこはとても (　　) 公園です。", options: ["きれいな", "きれいい", "きれいなだ", "きれいだ"], correct: 0 },
-            { part: "文法與形變", q: "問題 77：この部屋はとても静か (　　) です。", options: ["な", "い", "の", "だ"], correct: 0 },
-            { part: "文法與形變", q: "問題 78：机の上に本が (　　) 冊あります。", options: ["三", "三つ", "三人", "三日"], correct: 0 },
-            { part: "文法與形變", q: "問題 79：スーパーで野菜を (　　) 買いました。", options: ["たくさん", "あまり", "ぜんぜん", "すこしだけ"], correct: 0 },
-            { part: "文法與形變", q: "問題 80：今、何時 (　　) か。", options: ["か", "です", "ね", "よ"], correct: 0 },
-            { part: "文法與形變", q: "問題 81：駅 (　　) 友達を30分待ちました。", options: ["で", "に", "を", "は"], correct: 0 },
-            { part: "文法與形變", q: "問題 82：日曜日、図書館へ本を (　　) に行きます。", options: ["借りる (かりる)", "食べる", "飲む", "寝る"], correct: 0 },
-            { part: "文法與形變", q: "問題 83：カバンの中に財布が (　　) います。", options: ["入って (はいって)", "あって", "していて", "乗って"], correct: 0 },
-            { part: "文法與形變", q: "問題 84：1年は (　　) ヶ月があります。", options: ["十二 (じゅうに)", "十一", "十", "九"], correct: 0 },
-            { part: "文法與形變", q: "問題 85：教室に学生が (　　) 人いますか。", options: ["何 (なん)", "誰", "どこ", "いつ"], correct: 0 },
-            { part: "文法與形變", q: "問題 86：あの人は背が (　　) です。", options: ["高い (たかい)", "安い", "大きい", "古い"], correct: 0 },
-            { part: "文法與形變", q: "問題 87：お酒を (　　) から、運転できません。", options: ["飲んだ", "食べた", "見た", "聞いた"], correct: 0 },
-            { part: "文法與形變", q: "問題 88：バスに乗って、会社へ (　　) します。", options: ["通勤 (つうきん)", "散歩", "料理", "洗濯"], correct: 0 },
-            { part: "文法與形變", q: "問題 89：すみません、そのペンを (　　) ください。", options: ["貸して (かして)", "買って", "売って", "持って"], correct: 0 },
-            { part: "文法與形變", q: "問題 90：私はピアノを弾く (　　) ができます。", options: ["こと", "の", "もの", "ほう"], correct: 0 },
+Q("L001","N5","listening","quick-response","聽解即時應答","",["はい、お願いします。","いいえ、食べました。","駅へ行きます。","三人です。"],"はい、お願いします。","聽到「袋は要りますか」若需要袋子，可回答「はい、お願いします」。",{audio:"袋は要りますか。"}),
+Q("L002","N5","listening","key-point","聽取重點","",["九時半","九時","十時","八時半"],"九時半","語音說「九時ではなく、九時半」，要抓修正後的時間。",{audio:"明日の集合は九時ではなく、九時半です。遅れないでください。"}),
+Q("L003","N5","listening","task","聽取行動","",["先買票，再去3號月台","先去3號月台，再找飯店","先吃飯，再買票","直接搭計程車"],"先買票，再去3號月台","語音依序要求先買票，再去3號月台。",{audio:"まず切符を買ってください。それから、三番ホームへ行ってください。"}),
+Q("L004","N4","listening","quick-response","聽解即時應答","",["すみません、今持っていません。","はい、傘をさします。","いいえ、雨でした。","駅で借ります。"],"すみません、今持っていません。","「ペンを貸してくれませんか」是借筆的請求；沒有筆時這樣回答自然。",{audio:"すみません、ペンを貸してくれませんか。"}),
+Q("L005","N4","listening","key-point","聽取重點","",["牛奶","麵包","雞蛋","咖啡"],"牛奶","語音說麵包和蛋已有，只需要買牛奶。",{audio:"パンと卵はもうあります。牛乳だけ買ってきてください。"}),
+Q("L006","N4","listening","task","聽取行動","",["先寫名字，再交給老師","先交給老師，再寫名字","帶回家明天寫","不用寫名字"],"先寫名字，再交給老師","「名前を書いてから、先生に出してください」明確指定順序。",{audio:"この紙に名前を書いてから、先生に出してください。"})
+];
 
-            // --- 模組四：實用生活與旅遊片語 (91-120) ---
-            { part: "實用片語", q: "問題 91：買東西時詢問價格，應說：", options: ["いくらですか。", "何ですか。", "どこですか。", "誰ですか。"], correct: 0 },
-            { part: "問題 92：指著商品想買它，應說：", options: ["これをください。", "これを見ます。", "これを作ります。", "これを食べます。"], correct: 0 },
-            { part: "實用片語", q: "問題 93：超商店員問「袋は要りますか。」時，若要回答不需要，應說：", options: ["結構です / 要りません", "はい、お願いします", "わかりました", "ありがとうございます"], correct: 0 },
-            { part: "實用片語", q: "問題 94：結帳時詢問是否能刷卡，應說：", options: ["カードは使えますか。", "現金は使えますか。", "お金はありますか。", "レシートは要りますか。"], correct: 0 },
-            { part: "實用片語", q: "問題 95：在餐廳呼叫服務生點餐，應說：", options: ["すみません、注文お願いします。", "こんにちは、さようなら", "お水ください", "美味しいです"], correct: 0 },
-            { part: "實用片語", q: "問題 96：不知道點什麼好時，問店員推薦什麼，應說：", options: ["おすすめは何ですか。", "これはいくらですか。", "何名様ですか。", "英語が話せますか。"], correct: 0 },
-            { part: "實用片語", q: "問題 97：吃飽結帳離開時對店員說：", options: ["ご馳走様でした。", "いただきます", "こんにちは", "こんばんは"], correct: 0 },
-            { part: "實用片語", q: "問題 98：請求店員提供開水，應說：", options: ["水をお願いします。", "お酒をお願いします", "お茶をお願いします", "ジュースをお願いします"], correct: 0 },
-            { part: "實用片語", q: "問題 99：向路人詢問車站怎麼走，應說：", options: ["駅はどこですか。", "駅はいつですか。", "駅は誰ですか。", "駅は何ですか。"], correct: 0 },
-            { part: "實用片語", q: "問題 100：在地鐵站尋找買票口，應說：", options: ["切符売り場はどこですか。", "改札はどこですか。", "ホームはどこですか。", "出口はどこですか。"], correct: 0 },
-            { part: "實用片語", q: "問題 101：溝通困難時詢問對方會不會說英文，應說：", options: ["英語が話せますか。", "日本語が話せますか。", "中国語が話せますか。", "韓国語が話せますか。"], correct: 0 },
-            { part: "實用片語", q: "問題 102：早晨見面時的問候語是：", options: ["おはようございます。", "こんにちは。", "こんばんは。", "おやすみなさい。"], correct: 0 },
-            { part: "實用片語", q: "問題 103：最基本的道謝禮貌用語是：", options: ["ありがとうございます。", "すみません。", "ごめんなさい。", "し失礼します。"], correct: 0 },
-            { part: "實用片語", q: "問題 104：在日本身兼道歉、感謝與引起注意的多功能用語是：", options: ["すみません。", "ありがとう。", "おはよう。", "はい。"], correct: 0 },
-            { part: "實用片語", q: "問題 105：進出房間或掛電話時常用的禮貌用語是：", options: ["失礼します。", "さようなら。", "またね。", "いってきます。"], correct: 0 },
-            { part: "實用片語", q: "問題 106：飯店登記入住時，向櫃檯表明預約身分，應說：", options: ["予約した〇〇です。", "部屋を借ります。", "お金を払います。", "カバンを置きます。"], correct: 0 },
-            { part: "實用片語", q: "問題 107：詢問飯店是否能寄放行李，應說：", options: ["荷物を預かってもらえますか。", "部屋を掃除してください", "朝食はどこですか", "チェックアウトは何時ですか"], correct: 0 },
-            { part: "實用片語", q: "問題 108：在藥妝店尋找感冒藥，應說：", options: ["風邪薬はどこですか。", "目薬はどこですか。", "マスクはどこですか。", "化粧品はどこですか。"], correct: 0 },
-            { part: "實用片語", q: "問題 109：在藥妝店結帳時確認免稅，應說：", options: ["免税でお願いします。", "袋をください。", "カードで払います。", "ポイントカードはありますか。"], correct: 0 },
-            { part: "實用片語", q: "問題 110：在車站買車票時，買去新宿的單程票應說：", options: ["新宿まで片道一枚お願いします。", "新宿まで往復一枚お願いします。", "東京までお願いします。", "京都までお願いします。"], correct: 0 },
-            { part: "實用片語", q: "問題 111：詢問發車月台是哪一個，應說：", options: ["何番ホームですか。", "何時ですか。", "いくらですか。", "どこですか。"], correct: 0 },
-            { part: "實用片語", q: "問題 112：迷路時向人求助「我迷路了」，應說：", options: ["道に迷いました。", "駅がわかりません。", "お金がありません。", "時間がありません。"], correct: 0 },
-            { part: "實用片語", q: "問題 113：點餐時說「我要這個」，應說：", options: ["これをください。", "これを見ます。", "これを作ります。", "これを食べます。"], correct: 0 },
-            { part: "實用片語", q: "問題 114：在日本問路時，最標準的句型是「……(　　) どこですか。」", options: ["は", "を", "に", "で"], correct: 0 },
-            { part: "實用片語", q: "問題 115：店員找完零錢後向客人道謝，客人通常會回應：", options: ["どうも / ありがとうございます", "いらっしゃいませ", "さようなら", "おはようございます"], correct: 0 },
-            { part: "實用片語", q: "問題 116：搭乘電車或地鐵時，聽到廣播「まもなく発車します」意思是：", options: ["即將發車", "即將到站", "列車誤點", "請勿上車"], correct: 0 },
-            { part: "實用片語", q: "問題 117：在日本便利商店買便當，店員問「あたためますか」意思是：", options: ["要加熱嗎", "要袋子嗎", "要筷子嗎", "要集點嗎"], correct: 0 },
-            { part: "實用片語", q: "問題 118：在日本居酒屋入座後，通常會先點飲料，店員會問「飲み物は？」意思是：", options: ["飲料要什麼呢", "餐點要什麼呢", "甜點要什麼呢", "結帳要現金嗎"], correct: 0 },
-            { part: "實用片語", q: "問題 119：逛街時看到喜歡的東西，對同伴說「這個好漂亮啊」，日文是：", options: ["これ、きれいですね。", "これ、高いですね。", "これ、古いですね。", "これ、小さですね。"], correct: 0 },
-            { part: "實用片語", q: "問題 120：跟日本朋友約定明天見面，道別時說：", options: ["また明日（あした）！", "おやすみなさい", "いただきます", "ただいま"], correct: 0 },
-
-            // --- 模組五：AI 情境角色扮演與綜合應用 (121-150) ---
-            { part: "AI與綜合應用", q: "問題 121：店員：「いらっしゃいませ！何名様ですか。」<br>正確回答「兩位」的日文是：", options: ["二人です (ふたりです)", "一人です", "三人です", "四人です"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 122：車站人員：「何かお手伝いしましょうか。」<br>回答「不好意思，東京車站在哪裡？」的日文是：", options: ["すみません、東京駅はどこですか。", "東京駅に行きません。", "東京駅は大きいです。", "東京駅が好きです。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 123：飯店櫃檯：「パスポートをお願いします。」<br>回答「好的，請看。」的日文是：", options: ["はい、どうぞ。", "はい、わかりました。", "いいえ、結構です。", "ありがとうございます。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 124：藥妝店員：「何かお探しですか。」<br>回答「我在找眼藥水。」的日文是：", options: ["目薬を探しています。", "目薬を食べています。", "目薬を買いません。", "目薬を見ます。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 125：車站買票時，售票員問「片道ですか、往復ですか。」<br>回答「單程謝謝」的日文是：", options: ["片道でお願いします。", "往復でお願いします。", "切符をください。", "現金で払います。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 126：超商店員：「合計で650円になります。」<br>回答「用現金付款」的日文是：", options: ["現金で払います。", "カードで払います。", "電子マネーです。", "お金がありません。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 127：餐廳服務員：「ご注文はお決まりですか。」<br>回答「還沒決定好」的日文是：", options: ["まだです / 少し待ってください", "決めました", "美味しいです", "ご馳走様"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 128：在日本問路，路人回答「まっすぐ行って、左側にあります。」意思是：", options: ["直走後在左手邊", "右轉後在右手邊", "在車站裡面", "非常遠"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 129：飯店櫃檯交給房客鑰匙或房卡時說「お部屋は502号室です。」房客應禮貌回應：", options: ["ありがとうございます。", "さようなら。", "どういたしまして。", "いってきます。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 130：藥妝店員提醒「免税は5000円以上からです。」意思是：", options: ["免稅規定是滿 5000 日圓起", "免稅要收手續費", "不能辦理免稅", "刷卡才能免稅"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 131：綜合判斷：下列哪一個動詞屬於不規則動詞（第三類動詞）？", options: ["する、来る (くる)", "食べる、見る", "行く、飲む", "話す、書く"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 132：綜合判斷：下列哪一個形容詞是「な形容詞」？", options: ["有名 (ゆうめい)", "美味しい", "高い", "新しい"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 133：綜合判斷：下列哪一個助詞用來表示「動作發生的場所」？", options: ["で", "に", "を", "は"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 134：綜合判斷：下列哪一個助詞用來表示「移動的目的地」？", options: ["に / へ", "で", "を", "と"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 135：綜合判斷：日語中「昨天」的正確單字是？", options: ["昨日 (きのう)", "明日 (あした)", "今日 (きょう)", "毎日 (まいにち)"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 136：綜合判斷：日語中「明天」的正確單字是？", options: ["明日 (あした)", "昨日 (きのう)", "今日 (きょう)", "先週 (せんしゅう)"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 137：綜合判斷：日語中「今天」的正確單字是？", options: ["今日 (きょう)", "昨日", "明日", "来週"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 138：綜合判斷：數字「四」在日語中除了「よん (yon)」之外，另一個常見念法是？", options: ["し (shi)", "ち (chi)", "はち (hachi)", "く (ku)"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 139：綜合判斷：數字「七」在日語中除了「なな (nana)」之外，另一個常見念法是？", options: ["しち (shichi)", "なん", "きゅう", "じゅう"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 140：綜合判斷：數字「九」在日語中除了「きゅう (kyuu)」之外，另一個常見念法是？", options: ["く (ku)", "こ", "と", "ひ"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 141：綜合應用：日本商店結帳時，店員問「ポイントカードはありますか。」意思是：", options: ["有集點卡嗎", "有信用卡嗎", "有現金嗎", "有會員卡嗎（部分涵義同點數卡）"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 142：綜合應用：聽到別人說「お疲れ様でした (Otukaresama deshita)」，通常是在對方：", options: ["辛苦工作或學習結束時", "剛睡醒時", "肚子餓時", "準備出門時"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 143：綜合應用：朋友對你說「ありがとうございます」，最標準且親切的回應是：", options: ["どういたしまして。", "いらっしゃいませ。", "さようなら。", "はじめまして。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 144：綜合應用：初次見面自我介紹時，應說：", options: ["はじめまして、どうぞよろしく。", "さようなら、またね。", "ただいま帰りました。", "ご馳走様でした。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 145：綜合應用：在日本搭乘電扶梯時，關東地區（如東京）習慣站在哪一側？", options: ["左側（右側讓給趕時間的人）", "右側", "中間", "兩側都可以"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 146：綜合應用：在日本餐廳用餐完畢，結帳的櫃檯通常日文稱為：", options: ["レジ (Reji)", "ホーム", "切符売り場", "入口"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 147：綜合應用：在日本搭地鐵，如果聽到廣播「まもなく、東京、東京」，代表：", options: ["即將到達東京車站", "東京車站發車了", "東京車站過站不停", "東京車站轉車"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 148：綜合應用：在日本便利商店買熱食或肉包時，店員用夾子夾給客人，客人會說：", options: ["ありがとうございます。", "すみません。", "いらっしゃいませ。", "いただきます。"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 149：綜合應用：在日本旅行逛街，店家門口寫著「本日定休日」，意思是：", options: ["今天公休", "今天特價", "今天正常營業", "今天提早打烊"], correct: 0 },
-            { part: "AI與綜合應用", q: "問題 150：綜合應用：總結這套 JLPT N5 課程，想要順利合格，最重要的是：", options: ["扎實複習單字、熟練文法形變並多做模擬考刷題", "只要死背英文", "完全不用看書", "只看50音"], correct: 0 }
-        ];
-
-        let activeQuestions = [];
-        let currentIndex = 0;
-        let score = 0;
-        let userAnswers = [];
-
-        // 核心抽選機制：從五大模組各抽 4 題，共 20 題
-        function initExam() {
-            // 將 150 題依所屬 part 分組
-            const partsMap = {};
-            fullQuestionBank.forEach(q => {
-                if (!partsMap[q.part]) partsMap[q.part] = [];
-                partsMap[q.part].push(q);
-            });
-
-            activeQuestions = [];
-            // 對每一個模組隨機抽 4 題
-            for (let partName in partsMap) {
-                const shuffledPart = [...partsMap[partName]].sort(() => Math.random() - 0.5);
-                const selectedFromPart = shuffledPart.slice(0, 4); // 每模組 4 題，5個模組共 20 題
-                activeQuestions.push(...selectedFromPart);
-            }
-
-            // 將這 20 題再打散排序
-            activeQuestions.sort(() => Math.random() - 0.5);
-
-            currentIndex = 0;
-            score = 0;
-            userAnswers = [];
-            
-            document.getElementById('examSection').style.display = 'block';
-            document.getElementById('resultSection').style.display = 'none';
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            if (currentIndex >= activeQuestions.length) {
-                showResult();
-                return;
-            }
-
-            const current = activeQuestions[currentIndex];
-            document.getElementById('progressBar').innerText = `[模組：${current.part}] 題目：${currentIndex + 1} / ${activeQuestions.length}`;
-            document.getElementById('questionBox').innerText = current.q;
-
-            const optionsGrid = document.getElementById('examOptions');
-            optionsGrid.innerHTML = '';
-            
-            current.options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
-                btn.onclick = () => selectAnswer(idx);
-                optionsGrid.appendChild(btn);
-            });
-        }
-
-        function selectAnswer(selectedIdx) {
-            userAnswers.push({
-                questionObj: activeQuestions[currentIndex],
-                selectedIndex: selectedIdx
-            });
-
-            // 每題 5 分，共 20 題 = 100 分
-            if (selectedIdx === activeQuestions[currentIndex].correct) {
-                score += 5;
-            }
-            currentIndex++;
-            loadQuestion();
-        }
-
-        function showResult() {
-            document.getElementById('examSection').style.display = 'none';
-            document.getElementById('resultSection').style.display = 'block';
-            document.getElementById('finalScore').innerText = `${score} 分`;
-
-            let comment = "";
-            if (score >= 90) {
-                comment = "🏆 太神了！擁有官方 N5 合格的高標實力，五大模組全方位通關！";
-            } else if (score >= 70) {
-                comment = "👍 表現很棒！基礎扎實，再複習一下錯題就萬無一失了！";
-            } else {
-                comment = "💡 還需要多加練習喔！請參考下方的詳細回顧，加強不熟悉的模組觀念。";
-            }
-            document.getElementById('resultComment').innerText = comment;
-
-            const reviewContainer = document.getElementById('reviewContainer');
-            reviewContainer.innerHTML = '';
-
-            userAnswers.forEach((ans, index) => {
-                const q = ans.questionObj;
-                const isCorrect = ans.selectedIndex === q.correct;
-                const userOptText = q.options[ans.selectedIndex];
-                const correctOptText = q.options[q.correct];
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = `review-item ${isCorrect ? 'correct' : 'wrong'}`;
-                itemDiv.innerHTML = `
-                    <div class="review-q">第 ${index + 1} 題 [${q.part}]：${q.q}</div>
-                    <div class="review-details">
-                        你的選擇：<span style="font-weight:bold; color:${isCorrect ? '#2e7d32' : '#c62828'};">${String.fromCharCode(65 + ans.selectedIndex)}. ${userOptText}</span> ${isCorrect ? '⭕' : '❌'}<br>
-                        ${!isCorrect ? `正確解答：<span style="font-weight:bold; color:#2e7d32;">${String.fromCharCode(65 + q.correct)}.${correctOptText}</span><br>` : ''}
-                    </div>
-                `;
-                reviewContainer.appendChild(itemDiv);
-            });
-        }
-
-        function restartExam() {
-            initExam();
-        }
-
-        // 初始化
-        initExam();
-    </script>
+const sourceNames={kana:"50音・文字",vocab:"核心單字",grammar:"文法・形變",phrase:"生活片語",dialogue:"情境對話",reading:"閱讀・資訊",listening:"聽解"};
+let mode="practice", active=[], idx=0, answers=[], selected=null, startedAt=0, timerId=null, retryPool=null;
+const wrongKey="jlptExamWrongIds", statKey="jlptExamSkillStats";
+const $=id=>document.getElementById(id);
+function shuffle(a){let x=[...a];for(let i=x.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+function chooseMode(el){document.querySelectorAll(".mode").forEach(x=>x.classList.remove("selected"));el.classList.add("selected");mode=el.dataset.mode}
+function filteredPool(){
+ let p=bank.filter(q=>($("level").value==="ALL"||q.level===$("level").value)&&($("scope").value==="ALL"||q.source===$("scope").value));
+ const wrong=new Set(JSON.parse(localStorage.getItem(wrongKey)||"[]"));
+ if(mode==="wrong") p=p.filter(q=>wrong.has(q.id));
+ if(mode==="weak"){
+   const st=JSON.parse(localStorage.getItem(statKey)||"{}");
+   const weakSkills=Object.entries(st).filter(([k,v])=>v.w>v.c).map(([k])=>k);
+   let w=p.filter(q=>weakSkills.includes(q.skill)||wrong.has(q.id)); if(w.length) p=w.concat(p.filter(q=>!w.includes(q)));
+ }
+ return p;
+}
+function balancedSelect(pool,n){
+ if(retryPool){let r=retryPool;retryPool=null;return shuffle(r)}
+ const groups={};pool.forEach(q=>(groups[q.source]??=[]).push(q));Object.values(groups).forEach(g=>{let s=shuffle(g);g.splice(0,g.length,...s)});
+ let out=[], keys=shuffle(Object.keys(groups));
+ while(out.length<n && keys.some(k=>groups[k].length)){for(const k of keys){if(groups[k].length&&out.length<n)out.push(groups[k].pop())}}
+ return shuffle(out);
+}
+function startExam(){
+ let pool=filteredPool(), n=Math.min(parseInt($("count").value),pool.length);
+ if(!pool.length){alert("目前這個條件沒有可用題目；若是錯題模式，可能還沒有錯題紀錄。");return}
+ active=balancedSelect(pool,n);idx=0;answers=[];selected=null;startedAt=Date.now();
+ $("setup").classList.add("hidden");$("result").classList.add("hidden");$("exam").classList.remove("hidden");
+ clearInterval(timerId);timerId=setInterval(updateTimer,1000);updateTimer();renderQ();
+}
+function updateTimer(){let s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60);$("timer").textContent=`⏱ ${m}:${String(s%60).padStart(2,"0")}`}
+function renderQ(){
+ const q=active[idx];selected=null;$("nextBtn").classList.add("hidden");$("explanation").classList.add("hidden");
+ $("partPill").textContent=sourceNames[q.source];$("levelPill").textContent=q.level;
+ $("progressText").textContent=`第 ${idx+1} / ${active.length} 題`;$("progressFill").style.width=`${idx/active.length*100}%`;
+ $("qMeta").textContent=`題型：${q.type}　｜　考點：${q.skill}`;
+ if(q.source==="reading"){$("passage").textContent=q.q;$("passage").classList.remove("hidden");$("question").textContent=q.options? q.explanation&&q.id ? (q.id==="R001"?"美咲さんは何時ごろ学校に着きますか。":q.id==="R002"?"星期日下午四點想借 6 本書，哪一項正確？":q.id==="R003"?"空格放哪一個最自然？":q.id==="R004"?"田中さん為什麼改搭新幹線？":q.id==="R005"?"星期五下午5:30，一名國中生入場要多少錢？":"最適合放入空格的是？"):"":q.q}
+ else{$("passage").classList.add("hidden");$("question").innerHTML=q.q}
+ if(q.audio){$("listen").classList.remove("hidden");$("question").textContent="請先聆聽日語，再選出最適合的答案。"}else $("listen").classList.add("hidden");
+ const opts=shuffle(q.options.map(t=>({t,correct:t===q.answer})));$("options").innerHTML="";
+ opts.forEach(o=>{let b=document.createElement("button");b.className="opt";b.textContent=o.t;b.onclick=()=>answer(o.t,b);$("options").appendChild(b)});
+}
+function answer(text,btn){
+ if(selected!==null)return;selected=text;const q=active[idx],ok=text===q.answer;
+ answers.push({q,selected:text,ok});document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(mode==="practice"&&b.textContent===q.answer)b.classList.add("correct")});
+ btn.classList.add(ok?"correct":"wrong");updateMemory(q,ok);
+ if(mode==="practice"){showExplain(q,text,ok);$("nextBtn").classList.remove("hidden")}else setTimeout(nextQuestion,180);
+}
+function showExplain(q,sel,ok){
+ let why="";if(q.why&&!ok&&q.why[sel])why=`<div class="why">❌ 你選的「${sel}」：${q.why[sel]}</div>`;
+ $("explanation").innerHTML=`<strong>${ok?"⭕ 答對了":"❌ 這題要再注意"}</strong><br>正確答案：<b>${q.answer}</b><br>${q.explanation}${why}<div class="small">📌 考點：${q.skill}｜建議回看：${sourceNames[q.source]}</div>`;
+ $("explanation").classList.remove("hidden");
+}
+function updateMemory(q,ok){
+ let wrong=new Set(JSON.parse(localStorage.getItem(wrongKey)||"[]"));ok?wrong.delete(q.id):wrong.add(q.id);localStorage.setItem(wrongKey,JSON.stringify([...wrong]));
+ let st=JSON.parse(localStorage.getItem(statKey)||"{}");st[q.skill]??={c:0,w:0};st[q.skill][ok?"c":"w"]++;localStorage.setItem(statKey,JSON.stringify(st));
+}
+function nextQuestion(){idx++;if(idx>=active.length)finish();else renderQ()}
+function finish(){clearInterval(timerId);$("exam").classList.add("hidden");$("result").classList.remove("hidden");$("progressFill").style.width="100%";
+ const correct=answers.filter(a=>a.ok).length, pct=Math.round(correct/answers.length*100);$("scoreBig").textContent=`${pct} 分`;
+ $("comment").textContent=pct>=90?"🏆 掌握度很高，接下來可增加閱讀、聽解與易混淆題。":pct>=75?"👍 基礎已具備，建議針對下方弱點做變化題再測。":"📘 建議依弱點回到前五階段複習，再使用「弱點特訓」。";
+ const by={};answers.forEach(a=>{let k=a.q.source;by[k]??={n:0,c:0};by[k].n++;if(a.ok)by[k].c++});
+ $("resultGrid").innerHTML=Object.entries(by).map(([k,v])=>`<div class="metric"><b>${Math.round(v.c/v.n*100)}%</b><span>${sourceNames[k]}　${v.c}/${v.n}</span></div>`).join("");
+ const skill={};answers.filter(a=>!a.ok).forEach(a=>skill[a.q.skill]=(skill[a.q.skill]||0)+1);let weak=Object.entries(skill).sort((a,b)=>b[1]-a[1]).slice(0,4);
+ $("weakness").innerHTML=weak.length?`<div class="weak"><b>🎯 本次優先複習：</b> ${weak.map(x=>`${x[0]}（錯 ${x[1]} 題）`).join("、")}</div>`:`<div class="weak"><b>🎉 本次沒有錯題。</b></div>`;
+ $("review").innerHTML=answers.map((a,i)=>`<div class="review ${a.ok?"good":"bad"}"><div class="rq">第 ${i+1} 題［${sourceNames[a.q.source]}・${a.q.level}］ ${a.q.source==="reading"?"閱讀題":a.q.q}</div><div class="small">你的答案：${a.selected} ${a.ok?"⭕":"❌"}<br>正確答案：${a.q.answer}</div><div style="margin-top:7px">${a.q.explanation}</div><div class="small">考點：${a.q.skill}</div></div>`).join("");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function playListening(rate=.9){let q=active[idx];if(!q.audio||!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(q.audio);u.lang="ja-JP";u.rate=rate;let vs=speechSynthesis.getVoices();let v=vs.find(x=>x.lang&&x.lang.toLowerCase().startsWith("ja"));if(v)u.voice=v;speechSynthesis.speak(u)}
+function quitExam(){clearInterval(timerId);speechSynthesis?.cancel();$("exam").classList.add("hidden");$("setup").classList.remove("hidden")}
+function backSetup(){$("result").classList.add("hidden");$("setup").classList.remove("hidden")}
+function retryWrong(){let r=answers.filter(a=>!a.ok).map(a=>a.q);if(!r.length){alert("本次沒有錯題。");return}retryPool=r;mode="practice";startExam()}
+</script>
 </body>
 </html>
