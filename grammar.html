@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>第三階段：JLPT N5・N4 核心文法與形變學習中心</title>
+<title>第三階段：JLPT N5・N4 核心文法 FINAL 學習中心</title>
 <style>
 :root{--primary:#00796b;--dark:#004d40;--light:#e0f2f1;--n5:#43a047;--n4:#ef6c00;--bg:#eef7f6;--text:#263238;--muted:#687078}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Noto Sans JP",Arial,sans-serif;background:var(--bg);color:var(--text)}
@@ -17,10 +17,24 @@
 .conjugation-card{background:#fafafa;border:1px solid #ddd;border-radius:11px;padding:18px;margin-bottom:18px}.conjugation-card h3{color:#00695c}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:760px;background:#fff}th,td{border:1px solid #c8ddd9;padding:9px;text-align:center;white-space:nowrap}th{background:#dcedc8;color:#33691e}.teacher-note{padding:12px;background:#fffde7;border:1px dashed #fbc02d;border-radius:8px;line-height:1.8;margin-top:10px}
 .quiz-settings{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}.quiz-box{text-align:center}.score-board{font-weight:800;color:#555}.quiz-question{font-size:25px;font-weight:900;color:#00695c;margin:18px 0}.options-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:800px;margin:20px auto}.option-btn{padding:14px;border:2px solid #b2dfdb;border-radius:9px;background:#fff;cursor:pointer;font-size:17px}.feedback{margin-top:17px;font-weight:900;font-size:17px}.explanation{display:none;max-width:750px;margin:15px auto;text-align:left;background:#f7f9f9;border-radius:9px;padding:15px;line-height:1.8}.next-btn{display:none;background:#43a047}.wrong-card{border:1px solid #ddd;border-left:5px solid #d32f2f;border-radius:9px;padding:14px;margin-bottom:11px;background:#fffafa}.empty{text-align:center;color:#777;padding:35px}
 @media(max-width:900px){.dashboard{grid-template-columns:repeat(2,1fr)}.category-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:600px){.hero h1{font-size:24px}.wrapper{padding:0 9px 30px}.panel{padding:14px}.category-grid{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.options-grid{grid-template-columns:1fr}.progress-row{grid-template-columns:50px 1fr 55px}}
+
+/* FINAL QUALITY quiz */
+.final-quiz-panel{background:linear-gradient(135deg,#f2fbf9,#fff8ed);border:1px solid #cfe5df;border-radius:14px;padding:16px;margin-bottom:18px}
+.final-quiz-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0}
+.final-quiz-grid label{font-size:12px;font-weight:900;color:#546e7a}
+.final-quiz-grid select{width:100%;margin-top:5px}
+.final-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.final-actions button{border:0;border-radius:8px;padding:10px 15px;color:#fff;font-weight:900;cursor:pointer}
+.weak-btn{background:#7b1fa2}.wrong-retry-btn{background:#1565c0}.exam-btn{background:#ef6c00}
+.quiz-progress-track{height:9px;background:#e5eeee;border-radius:99px;overflow:hidden;margin:10px auto 16px;max-width:800px}.quiz-progress-fill{height:100%;background:#00796b;width:0}
+.quiz-result-final{max-width:850px;margin:auto;text-align:center}.big-score{font-size:48px;font-weight:1000;color:#00796b}
+.diag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.diag-card{background:#f6f9f9;border-radius:10px;padding:11px}.diag-card b{display:block;font-size:20px;color:#004d40}
+.review-list{text-align:left;margin-top:15px}.review-item{background:#fff8f3;border-left:4px solid #ef6c00;padding:11px;margin:8px 0;border-radius:7px;line-height:1.65}
+@media(max-width:700px){.final-quiz-grid{grid-template-columns:1fr 1fr}.diag-grid{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
-<header class="hero"><div class="hero-inner"><a href="index.html" class="back-link">⬅️ 返回學習首頁</a><h1>🌱 第三階段：JLPT N5・N4 核心文法與形變學習中心</h1><p>從 N5 基礎句型一路進入 N4 普通形、條件、推測、授受、可能、被動與使役。每個文法都有老師解說、形成方式、易錯提醒、相似文法比較、例句與發音。</p></div></header>
+<header class="hero"><div class="hero-inner"><a href="index.html" class="back-link">⬅️ 返回學習首頁</a><h1>🌱 第三階段：JLPT N5・N4 核心文法 FINAL 學習中心</h1><p>從 N5 基礎句型一路進入 N4 普通形、條件、推測、授受、可能、被動與使役。每個文法都有老師解說、形成方式、易錯提醒、相似文法比較、例句與發音。</p></div></header>
 <main class="wrapper">
 <div class="dashboard"><div class="stat-card"><div class="stat-label">📖 文法項目</div><div class="stat-number" id="totalGrammar">0</div></div><div class="stat-card"><div class="stat-label">🌱 N5</div><div class="stat-number" id="n5Count">0</div></div><div class="stat-card"><div class="stat-label">🚀 N4</div><div class="stat-number" id="n4Count">0</div></div><div class="stat-card"><div class="stat-label">😊 已熟悉</div><div class="stat-number" id="masteredCount">0</div></div></div>
 <div class="progress-panel"><strong>📊 我的文法學習進度</strong><div class="progress-row"><span>N5</span><div class="progress-bg"><div class="progress-bar" id="n5Progress"></div></div><span id="n5ProgressText">0%</span></div><div class="progress-row"><span>N4</span><div class="progress-bg"><div class="progress-bar" id="n4Progress"></div></div><span id="n4ProgressText">0%</span></div></div>
@@ -40,7 +54,20 @@
 <div class="conjugation-card"><h3>⑤ い形容詞</h3><div class="table-wrap"><table><tr><th>基本</th><th>否定</th><th>過去</th><th>過去否定</th><th>連接</th></tr><tr><td>高い</td><td>高くない</td><td>高かった</td><td>高くなかった</td><td>高くて</td></tr><tr><td>いい</td><td>よくない</td><td>よかった</td><td>よくなかった</td><td>よくて</td></tr></table></div></div>
 <div class="conjugation-card"><h3>⑥ な形容詞・名詞普通形</h3><div class="table-wrap"><table><tr><th>詞類</th><th>現在肯定</th><th>現在否定</th><th>過去肯定</th><th>過去否定</th></tr><tr><td>な形容詞</td><td>静かだ</td><td>静かではない</td><td>静かだった</td><td>静かではなかった</td></tr><tr><td>名詞</td><td>学生だ</td><td>学生ではない</td><td>学生だった</td><td>学生ではなかった</td></tr></table></div></div>
 </section>
-<section id="quiz-section" class="section"><div class="quiz-settings"><select id="quizLevel"><option value="ALL">N5＋N4</option><option value="N5">只測 N5</option><option value="N4">只測 N4</option></select><select id="quizCategory"><option value="ALL">全部題型</option><option value="particle">助詞</option><option value="adjective">形容詞</option><option value="conjugation">形變</option><option value="comparison">比較</option><option value="condition">條件</option><option value="pattern">句型</option><option value="time">時間・經驗</option><option value="desire">願望</option><option value="basic">基本句型</option></select><button class="start-btn" onclick="startQuiz()">開始／重新測驗</button></div><div class="quiz-box"><div class="score-board">得分：<span id="score">0</span> ｜ 答對：<span id="correctCount">0</span> ｜ 答錯：<span id="wrongCount">0</span></div><div id="quizPrompt" style="color:#666">請選擇級別與題型後開始。</div><div id="quizQuestion" class="quiz-question">🎌</div><div id="optionsGrid" class="options-grid"></div><div id="feedback" class="feedback"></div><div id="explanation" class="explanation"></div><button id="nextBtn" class="next-btn" onclick="nextQuizQuestion()">下一題 ➜</button></div></section>
+<section id="quiz-section" class="section">
+<div class="final-quiz-panel">
+<h2>🧠 文法 FINAL 綜合訓練中心</h2>
+<p>不再無限出題。可做快速練習、標準驗收、弱點特訓與錯題再測；系統會記錄每個考點的答對、答錯與連續答對狀況。</p>
+<div class="final-quiz-grid">
+<label>級別<select id="quizLevel"><option value="ALL">N5＋N4</option><option value="N5">只測 N5</option><option value="N4">只測 N4</option></select></label>
+<label>考點<select id="quizCategory"><option value="ALL">全部題型</option><option value="particle">助詞</option><option value="adjective">形容詞</option><option value="conjugation">形變</option><option value="comparison">比較</option><option value="condition">條件</option><option value="pattern">句型</option><option value="time">時間・經驗</option><option value="desire">願望</option><option value="basic">基本句型</option></select></label>
+<label>題數<select id="quizCount"><option value="10">10題快速練習</option><option value="20">20題標準</option><option value="full">完整驗收</option></select></label>
+<label>模式<select id="quizMode"><option value="normal">一般練習</option><option value="exam">驗收模式</option></select></label>
+</div>
+<div class="final-actions"><button class="start-btn" onclick="startQuiz('normal')">▶️ 開始測驗</button><button class="weak-btn" onclick="startQuiz('weak')">🎯 弱點特訓</button><button class="wrong-retry-btn" onclick="startQuiz('wrong')">⭐ 錯題再測</button></div>
+</div>
+<div class="quiz-box"><div class="score-board">進度：<span id="quizPos">0/0</span> ｜ 得分：<span id="score">0</span> ｜ 答對：<span id="correctCount">0</span> ｜ 答錯：<span id="wrongCount">0</span></div><div class="quiz-progress-track"><div id="quizProgressFill" class="quiz-progress-fill"></div></div><div id="quizPrompt" style="color:#666">請選擇設定後開始。</div><div id="quizQuestion" class="quiz-question">🎌</div><div id="optionsGrid" class="options-grid"></div><div id="feedback" class="feedback"></div><div id="explanation" class="explanation"></div><button id="nextBtn" class="next-btn" onclick="nextQuizQuestion()">下一題 ➜</button></div>
+</section>
 <section id="wrong-section" class="section"><h2>⭐ 我的文法錯題</h2><p>答錯題目會自動保留在這台裝置，老師詳解也會一起保留供你複習。</p><button class="clear-btn" onclick="clearWrongQuestions()">清除全部錯題</button><div id="wrongContainer"></div></section>
 </div></main>
 <script>
@@ -61,13 +88,55 @@ function openCategory(id){const c=grammarCategories.find(x=>x.id===id);if(!c)ret
 function backToCategories(){renderGrammarCategories();scrollTo({top:0,behavior:"smooth"})}
 function renderGrammarCards(items){grammarContainer.innerHTML="";const p=getProgress();items.forEach(i=>{const d=document.createElement("div");d.className="grammar-card "+(i.level==="N4"?"n4":"");const ex=i.examples.map(e=>{const t=encodeURIComponent(e.read||e.jp);return `<div class="example-box"><div class="ex-jp">${e.jp}</div><div class="ex-read">${e.read}</div><div class="ex-zh">${e.zh}</div><div class="audio-row"><button class="audio-btn" onclick="speak(decodeURIComponent('${t}'),.9)">🔊 正常</button><button class="audio-btn" onclick="speak(decodeURIComponent('${t}'),.68)">🐢 慢速</button></div></div>`}).join("");d.innerHTML=`<span class="level-badge level-${i.level}">${i.level}</span><div class="grammar-title">${i.title}</div><div class="meaning">🇹🇼 中文：${i.meaning}</div><div class="box pattern">🔧 接續：${i.pattern}</div><div class="box teacher">👨‍🏫 <b>老師講解：</b>${i.desc}</div><div class="box formation">🔄 <b>怎麼形成：</b>${i.formation}</div><div class="box mistake">⚠️ <b>最容易錯：</b>${i.mistake}</div><div class="box compare">🆚 <b>比較／記憶：</b>${i.compare}</div>${ex}<div class="status-row"><button class="status-btn ${p[i.id]==="new"?"selected":""}" onclick="setGrammarStatus('${i.id}','new')">😵 不會</button><button class="status-btn ${p[i.id]==="learning"?"selected":""}" onclick="setGrammarStatus('${i.id}','learning')">🤔 有印象</button><button class="status-btn ${p[i.id]==="mastered"?"selected":""}" onclick="setGrammarStatus('${i.id}','mastered')">😊 熟悉</button></div>`;grammarContainer.appendChild(d)})}
 function setGrammarStatus(id,s){const p=getProgress();p[id]=s;saveProgress(p);updateDashboard();const i=allGrammar.find(x=>x.id===id);if(i)openCategory(i.categoryId)}
-let quizScore=0,quizCorrect=0,quizWrong=0,currentQuestion=null,lastQuestionId=null;
-function updateQuizScore(){score.textContent=quizScore;correctCount.textContent=quizCorrect;wrongCount.textContent=quizWrong}
+
+const GRAMMAR_STAT_KEY="jlptGrammarQuizStatsFinal";
+let quizScore=0,quizCorrect=0,quizWrong=0,currentQuestion=null,quizQueue=[],quizIndex=0,quizModeFinal="normal",quizReview=[];
+function getQuizStats(){try{return JSON.parse(localStorage.getItem(GRAMMAR_STAT_KEY)||"{}")}catch{return {}}}
+function saveQuizStats(x){localStorage.setItem(GRAMMAR_STAT_KEY,JSON.stringify(x))}
+function updateQuizScore(){score.textContent=quizScore;correctCount.textContent=quizCorrect;wrongCount.textContent=quizWrong;quizPos.textContent=`${Math.min(quizIndex+1,quizQueue.length)}/${quizQueue.length}`;quizProgressFill.style.width=(quizQueue.length?Math.min(100,quizIndex/quizQueue.length*100):0)+"%"}
 function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
-function startQuiz(){quizScore=quizCorrect=quizWrong=0;lastQuestionId=null;updateQuizScore();nextQuizQuestion()}
-function nextQuizQuestion(){const l=quizLevel.value,c=quizCategory.value;let pool=quizQuestions.filter(q=>(l==="ALL"||q.level===l)&&(c==="ALL"||q.category===c));if(!pool.length){quizQuestion.textContent="目前這個分類還沒有題目。";optionsGrid.innerHTML="";return}const diff=pool.filter(q=>q.id!==lastQuestionId);if(diff.length)pool=diff;currentQuestion=pool[Math.floor(Math.random()*pool.length)];lastQuestionId=currentQuestion.id;quizPrompt.textContent=`${currentQuestion.level}｜請選出最適當的答案`;quizQuestion.textContent=currentQuestion.q;feedback.textContent="";explanation.style.display="none";nextBtn.style.display="none";optionsGrid.innerHTML="";shuffle(currentQuestion.options).forEach(o=>{const b=document.createElement("button");b.className="option-btn";b.textContent=o;b.onclick=()=>checkAnswer(o,b);optionsGrid.appendChild(b)})}
-function checkAnswer(sel,btn){const bs=[...document.querySelectorAll(".option-btn")];bs.forEach(b=>b.disabled=true);const ok=sel===currentQuestion.correct;if(ok){quizScore+=10;quizCorrect++;feedback.style.color="#2e7d32";feedback.textContent="⭕ 答對了！";btn.style.background="#dcedc8"}else{quizWrong++;feedback.style.color="#c62828";feedback.textContent=`❌ 答錯了。正確答案：${currentQuestion.correct}`;btn.style.background="#ffcdd2";bs.forEach(b=>{if(b.textContent===currentQuestion.correct)b.style.background="#dcedc8"});const w=getWrongQuestions();if(!w.includes(currentQuestion.id)){w.push(currentQuestion.id);saveWrongQuestions(w)}}updateQuizScore();const e=encodeURIComponent(currentQuestion.exampleRead||currentQuestion.example);explanation.innerHTML=`<strong>📘 老師詳解</strong><br><br>${currentQuestion.explain}<hr style="border:0;border-top:1px solid #ddd;margin:12px 0"><strong>${currentQuestion.example}</strong><br><span style="color:#777">${currentQuestion.exampleRead}</span><br>${currentQuestion.exampleZh}<br><br><button class="audio-btn" onclick="speak(decodeURIComponent('${e}'),.9)">🔊 聽例句</button> <button class="audio-btn" onclick="speak(decodeURIComponent('${e}'),.68)">🐢 慢速</button>`;explanation.style.display="block";nextBtn.style.display="inline-block"}
-function renderWrongQuestions(){const ids=getWrongQuestions();wrongContainer.innerHTML="";if(!ids.length){wrongContainer.innerHTML='<div class="empty">🎉 目前沒有錯題！<br>繼續保持。</div>';return}ids.forEach(id=>{const q=quizQuestions.find(x=>x.id===id);if(!q)return;const d=document.createElement("div");d.className="wrong-card";d.innerHTML=`<span class="level-badge level-${q.level}">${q.level}</span><div style="font-weight:900;font-size:17px;margin-bottom:7px">${q.q}</div><div>⭕ 正確答案：<b>${q.correct}</b></div><div style="margin-top:7px;line-height:1.7;color:#555">👨‍🏫 ${q.explain}</div>`;wrongContainer.appendChild(d)})}
+function grammarWeakScore(q){const s=getQuizStats()[q.id]||{c:0,w:0,streak:0};return s.w*3-s.c*.4-s.streak}
+function getGrammarPool(){
+ const l=quizLevel.value,c=quizCategory.value;
+ return quizQuestions.filter(q=>(l==="ALL"||q.level===l)&&(c==="ALL"||q.category===c)&&Array.isArray(q.options)&&q.options.length>=4&&q.options.includes(q.correct));
+}
+function startQuiz(mode="normal"){
+ quizModeFinal=mode;quizScore=quizCorrect=quizWrong=0;quizIndex=0;quizReview=[];let pool=getGrammarPool();
+ if(mode==="wrong"){const ids=new Set(getWrongQuestions());pool=pool.filter(q=>ids.has(q.id));if(!pool.length)return alert("目前這個範圍沒有錯題。")}
+ if(mode==="weak")pool=[...pool].sort((a,b)=>grammarWeakScore(b)-grammarWeakScore(a)+((Math.random()-.5)*1.2));else pool=shuffle(pool);
+ const requested=quizCount.value==="full"?pool.length:Number(quizCount.value);quizQueue=pool.slice(0,Math.min(requested,pool.length));
+ if(!quizQueue.length)return alert("目前這個設定沒有可用題目。");
+ updateQuizScore();renderGrammarQuestion();
+}
+function renderGrammarQuestion(){
+ if(quizIndex>=quizQueue.length)return renderGrammarResult();
+ currentQuestion=quizQueue[quizIndex];quizPrompt.textContent=`${currentQuestion.level}｜${quizModeFinal==="weak"?"弱點特訓":quizModeFinal==="wrong"?"錯題再測":quizMode.value==="exam"?"驗收模式":"一般練習"}｜${quizIndex+1}/${quizQueue.length}`;
+ quizQuestion.textContent=currentQuestion.q;feedback.textContent="";explanation.style.display="none";nextBtn.style.display="none";optionsGrid.innerHTML="";
+ shuffle(currentQuestion.options).forEach(o=>{const b=document.createElement("button");b.className="option-btn";b.textContent=o;b.onclick=()=>checkAnswer(o,b);optionsGrid.appendChild(b)});
+ updateQuizScore();
+}
+function updateGrammarStat(q,ok){
+ const all=getQuizStats(),s=all[q.id]||{c:0,w:0,streak:0};s[ok?"c":"w"]++;s.streak=ok?s.streak+1:0;s.last=Date.now();all[q.id]=s;saveQuizStats(all);
+ let ids=getWrongQuestions();if(ok&&s.streak>=2)ids=ids.filter(x=>x!==q.id);if(!ok&&!ids.includes(q.id))ids.push(q.id);saveWrongQuestions(ids)
+}
+function checkAnswer(sel,btn){
+ const bs=[...document.querySelectorAll(".option-btn")];bs.forEach(b=>b.disabled=true);const ok=sel===currentQuestion.correct;
+ if(ok){quizScore+=10;quizCorrect++;feedback.style.color="#2e7d32";feedback.textContent="⭕ 答對了！";btn.style.background="#dcedc8"}else{quizWrong++;feedback.style.color="#c62828";feedback.textContent=`❌ 答錯了。正確答案：${currentQuestion.correct}`;btn.style.background="#ffcdd2";bs.forEach(b=>{if(b.textContent===currentQuestion.correct)b.style.background="#dcedc8"})}
+ updateGrammarStat(currentQuestion,ok);quizReview.push({q:currentQuestion,ok,sel});updateQuizScore();
+ const e=encodeURIComponent(currentQuestion.exampleRead||currentQuestion.example);
+ explanation.innerHTML=`<strong>📘 老師詳解</strong><br><br>${currentQuestion.explain}<hr style="border:0;border-top:1px solid #ddd;margin:12px 0"><strong>${currentQuestion.example}</strong><br><span style="color:#777">${currentQuestion.exampleRead}</span><br>${currentQuestion.exampleZh}<br><br><button class="audio-btn" onclick="speak(decodeURIComponent('${e}'),.9)">🔊 聽例句</button> <button class="audio-btn" onclick="speak(decodeURIComponent('${e}'),.68)">🐢 慢速</button>`;
+ explanation.style.display="block";nextBtn.textContent=quizIndex===quizQueue.length-1?"查看結果":"下一題 ➜";nextBtn.style.display="inline-block";
+}
+function nextQuizQuestion(){quizIndex++;renderGrammarQuestion()}
+function renderGrammarResult(){
+ const total=quizQueue.length,pct=Math.round(quizCorrect/Math.max(1,total)*100),cats={};
+ quizReview.forEach(r=>{const k=r.q.category;cats[k]??={c:0,n:0};cats[k].n++;if(r.ok)cats[k].c++});
+ const labels={particle:"助詞",adjective:"形容詞",conjugation:"形變",comparison:"比較",condition:"條件",pattern:"句型",time:"時間・經驗",desire:"願望",basic:"基本句型"};
+ const weak=Object.entries(cats).map(([k,v])=>({k,p:Math.round(v.c/v.n*100),n:v.n})).sort((a,b)=>a.p-b.p);
+ quizPrompt.textContent="";quizQuestion.textContent="";optionsGrid.innerHTML="";feedback.textContent="";explanation.style.display="block";nextBtn.style.display="none";quizProgressFill.style.width="100%";
+ explanation.innerHTML=`<div class="quiz-result-final"><h2>🎓 文法驗收完成</h2><div class="big-score">${pct}%</div><p>${pct>=90?"文法掌握度很穩定。":pct>=75?"整體不錯，針對低分考點再補強。":"建議依診斷回到對應分類複習後再測。"}</p><div class="diag-grid">${weak.map(x=>`<div class="diag-card"><b>${x.p}%</b>${labels[x.k]||x.k}<br><small>${x.n}題</small></div>`).join("")}</div>${quizReview.some(x=>!x.ok)?`<div class="review-list"><h3>📌 本回錯題</h3>${quizReview.filter(x=>!x.ok).map(x=>`<div class="review-item"><b>${x.q.q}</b><br>你的答案：${x.sel}<br>⭕ ${x.q.correct}<br>👨‍🏫 ${x.q.explain}</div>`).join("")}</div>`:"<p>🌟 本回沒有錯題。</p>"}<div class="final-actions"><button class="start-btn" onclick="startQuiz('normal')">再測一次</button><button class="weak-btn" onclick="startQuiz('weak')">弱點特訓</button><button class="wrong-retry-btn" onclick="startQuiz('wrong')">錯題再測</button></div></div>`;
+}
+function renderWrongQuestions(){const ids=getWrongQuestions(),stats=getQuizStats();wrongContainer.innerHTML="";if(!ids.length){wrongContainer.innerHTML='<div class="empty">🎉 目前沒有錯題！<br>錯題需連續答對兩次才會自動移出。</div>';return}ids.forEach(id=>{const q=quizQuestions.find(x=>x.id===id);if(!q)return;const s=stats[id]||{c:0,w:0,streak:0};const d=document.createElement("div");d.className="wrong-card";d.innerHTML=`<span class="level-badge level-${q.level}">${q.level}</span><div style="font-weight:900;font-size:17px;margin-bottom:7px">${q.q}</div><div>⭕ 正確答案：<b>${q.correct}</b></div><div style="margin-top:7px;line-height:1.7;color:#555">👨‍🏫 ${q.explain}</div><small>作答：答對 ${s.c}｜答錯 ${s.w}｜目前連對 ${s.streak}</small>`;wrongContainer.appendChild(d)})}
 function clearWrongQuestions(){if(confirm("確定要清除全部文法錯題紀錄嗎？")){saveWrongQuestions([]);renderWrongQuestions()}}
 function initialize(){updateDashboard();renderGrammarCategories();if("speechSynthesis"in window){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices()}}
 initialize();
