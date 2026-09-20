@@ -10,7 +10,7 @@
 .wrap{max-width:1100px;margin:auto}.back{display:inline-block;color:#3949ab;text-decoration:none;font-weight:800;margin:4px 0 14px}
 .hero{text-align:center;padding:16px 10px 22px}.hero h1{color:var(--p);margin:0 0 8px;font-size:clamp(25px,4vw,38px)}.hero p{margin:5px auto;color:#5f6368;max-width:850px;line-height:1.7}
 .panel{background:var(--card);border-radius:18px;box-shadow:0 8px 28px rgba(90,20,20,.08);padding:24px;margin-bottom:18px}
-h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.mode{border:2px solid #f1d3d3;background:#fffafa;border-radius:14px;padding:18px;cursor:pointer;text-align:left}.mode:hover,.mode.selected{border-color:var(--p2);background:#ffebee}.mode b{display:block;color:var(--p);font-size:18px;margin-bottom:6px}.mode span{font-size:13px;color:var(--muted);line-height:1.5}
+h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.mode{border:2px solid #f1d3d3;background:#fffafa;border-radius:14px;padding:18px;cursor:pointer;text-align:left}.mode:hover,.mode.selected{border-color:var(--p2);background:#ffebee}.mode b{display:block;color:var(--p);font-size:18px;margin-bottom:6px}.mode span{font-size:13px;color:var(--muted);line-height:1.5}
 .controls{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}.field label{display:block;font-weight:800;margin-bottom:7px}.field select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;background:white;font-size:16px}
 .btn{border:0;border-radius:10px;padding:12px 20px;font-size:16px;font-weight:800;cursor:pointer}.primary{background:var(--p2);color:#fff}.secondary{background:#eceff1;color:#37474f}.blue{background:var(--blue);color:#fff}
 .note{background:#fff8e1;border-left:5px solid #f9a825;padding:12px 14px;border-radius:8px;line-height:1.6;font-size:14px}
@@ -22,6 +22,19 @@ h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);g
 .score-big{text-align:center;font-size:58px;font-weight:900;color:var(--p)}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.metric{border:1px solid #eee;border-radius:12px;padding:14px;background:#fafafa}.metric b{display:block;font-size:23px;color:#263238}.metric span{font-size:13px;color:var(--muted)}
 .review{border:1px solid #e5e7eb;border-radius:12px;padding:15px;margin:12px 0}.review.good{border-left:6px solid var(--good)}.review.bad{border-left:6px solid var(--bad)}.review .rq{font-weight:800;line-height:1.6}.small{font-size:13px;color:var(--muted)}.weak{background:#fff3e0;border-left:5px solid var(--warn);padding:14px;border-radius:9px;margin:12px 0}
 @media(max-width:760px){body{padding:10px}.panel{padding:16px}.mode-grid,.controls,.result-grid{grid-template-columns:1fr}.qbox{font-size:18px}.navrow{flex-direction:column}.navrow .btn{width:100%}}
+
+.navigator{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.navdot{width:34px;height:34px;border-radius:8px;border:1px solid #ddd;background:#fff;font-weight:800;cursor:pointer}
+.navdot.now{outline:3px solid #ffcdd2;border-color:var(--p)}
+.navdot.done{background:#eceff1}.navdot.flag{background:#fff3e0;border-color:#ffb74d}
+.confidence{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.confidence button{border:1px solid #ddd;background:#fff;border-radius:999px;padding:7px 11px;cursor:pointer}
+.confidence button.on{background:#e3f2fd;border-color:#64b5f6;color:#0d47a1;font-weight:800}
+.flagbtn{border:1px solid #ffcc80;background:#fff8e1;color:#e65100;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}
+.section-head{padding:10px 12px;border-radius:10px;background:#fce4ec;color:#880e4f;font-weight:900;margin:10px 0}
+.mastery{height:8px;background:#eee;border-radius:99px;overflow:hidden;margin-top:7px}.mastery i{display:block;height:100%;background:#43a047}
+.quality{font-size:12px;color:#607d8b;margin-top:5px}
+
 </style>
 </head>
 <body>
@@ -37,12 +50,13 @@ h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);g
 <div class="mode-grid">
 <div class="mode selected" data-mode="practice" onclick="chooseMode(this)"><b>📘 練習模式</b><span>每題作答後立即顯示老師解析，適合學習與訂正。</span></div>
 <div class="mode" data-mode="exam" onclick="chooseMode(this)"><b>🧪 模擬考模式</b><span>考試途中不公布答案，完成後一次批改。</span></div>
-<div class="mode" data-mode="weak" onclick="chooseMode(this)"><b>🎯 弱點特訓</b><span>優先抽取曾經答錯的考點，再搭配同類變化題。</span></div>
-<div class="mode" data-mode="wrong" onclick="chooseMode(this)"><b>⭐ 錯題再測</b><span>直接重做保存在本機的錯題；答對後可逐步清除。</span></div>
+<div class="mode" data-mode="official" onclick="chooseMode(this)"><b>🏫 仿正式模式</b><span>依文字語彙、文法讀解、聽解分區組卷，考後一次解析。</span></div>
+<div class="mode" data-mode="weak" onclick="chooseMode(this)"><b>🎯 弱點特訓</b><span>依歷史正確率與熟練度優先抽取薄弱考點。</span></div>
+<div class="mode" data-mode="wrong" onclick="chooseMode(this)"><b>⭐ 錯題再測</b><span>錯題需不同題型連續答對 2 次才視為穩定掌握。</span></div>
 </div>
 <div class="controls">
 <div class="field"><label>程度</label><select id="level"><option value="N5">N5</option><option value="N4">N4</option><option value="ALL" selected>N5＋N4 綜合</option></select></div>
-<div class="field"><label>題數</label><select id="count"><option>20</option><option selected>30</option><option>50</option></select></div>
+<div class="field"><label>題數</label><select id="count"><option>20</option><option selected>30</option><option>50</option><option>80</option></select></div>
 <div class="field"><label>範圍</label><select id="scope"><option value="ALL">全領域</option><option value="kana">50音・文字</option><option value="vocab">核心單字</option><option value="grammar">文法・形變</option><option value="phrase">生活片語</option><option value="dialogue">情境對話</option><option value="reading">閱讀・資訊</option><option value="listening">聽解</option></select></div>
 </div>
 <div class="note">💡 題目會在顯示時重新洗牌選項，因此正確答案不會固定在 A。干擾選項盡量採「同類型、看起來也合理」的設計，避免靠題型外觀猜答案。<br><b id="bankSummary"></b></div>
@@ -52,9 +66,17 @@ h2,h3{margin-top:0}.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);g
 <section id="exam" class="panel hidden">
 <div class="topbar"><div><span id="partPill" class="pill"></span> <span id="levelPill" class="pill"></span></div><div id="timer" class="timer"></div></div>
 <div id="progressText" class="small"></div><div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+<div id="sectionHead" class="section-head hidden"></div>
 <div id="qMeta" class="qmeta"></div><div id="passage" class="passage hidden"></div><div id="question" class="qbox"></div>
 <div id="listen" class="listen hidden"><button onclick="playListening()">🔊 播放日語</button> <button onclick="playListening(.72)">🐢 慢速</button></div>
-<div id="options" class="options"></div><div id="explanation" class="explain hidden"></div>
+<div id="options" class="options"></div>
+<div class="confidence"><span class="small" style="align-self:center">作答把握：</span>
+<button data-c="guess" onclick="setConfidence(this)">😵 猜的</button>
+<button data-c="unsure" onclick="setConfidence(this)">🤔 不確定</button>
+<button data-c="sure" onclick="setConfidence(this)">😊 有把握</button>
+<button id="flagBtn" class="flagbtn" onclick="toggleFlag()">🚩 標記複查</button></div>
+<div id="navigator" class="navigator"></div>
+<div id="explanation" class="explain hidden"></div>
 <div class="navrow"><button class="btn secondary" onclick="quitExam()">返回設定</button><button id="nextBtn" class="btn primary hidden" onclick="nextQuestion()">下一題</button></div>
 </section>
 
@@ -250,63 +272,207 @@ Object.assign(bank.find(q=>q.id==="R004"),{passage:"田中さんは来月、京�
 Object.assign(bank.find(q=>q.id==="R005"),{passage:"【市民プール】\n平日 10:00～20:00\n土日 9:00～18:00\n水曜日は休館。\n高校生以上 500円／中学生以下 300円。\n17:00以降は100円引き（平日のみ）。",prompt:"星期五下午5:30，一名國中生入場要多少錢？"});
 Object.assign(bank.find(q=>q.id==="R006"),{passage:"私は日本へ来たとき、日本語がほとんど話せませんでした。毎日学校で勉強して、家でも日本のドラマを見るようにしました。（　）、少しずつ会話ができるようになりました。",prompt:"最適合放入空格的是？"});
 
+
+// ===== PRO 題庫擴充：V3 =====
+const proBank = [
+Q("K017","N5","kana","orthography","易混片假名","哪一個片假名讀作「n」？",["ン","ソ","シ","ツ"],"ン","ン＝n；與ソ字形相近，注意筆畫方向。"),
+Q("K018","N5","kana","orthography","易混片假名","哪一個片假名讀作「tsu」？",["ツ","シ","ソ","ン"],"ツ","ツ＝tsu；與シ常被初學者混淆。"),
+Q("K019","N5","kana","sound","拍數","「がっこう」共有幾拍（mora）？",["4拍","3拍","5拍","6拍"],"4拍","が・っ・こ・う，共4拍；促音與長音各占一拍。"),
+Q("K020","N5","kana","sound","拍數","「きょう」共有幾拍（mora）？",["2拍","1拍","3拍","4拍"],"2拍","きょ是一拍，う作長音再一拍，共2拍。"),
+Q("K021","N5","kana","particle-sound","助詞讀音","「何を食べますか」中的「を」通常讀作？",["o","wo","ho","yo"],"o","現代標準日語中，助詞「を」通常發音為 o。"),
+Q("K022","N5","kana","katakana","外來語","「コンビニ」最接近哪個意思？",["便利商店","百貨公司","車站","銀行"],"便利商店","コンビニ是 convenience store 的縮略外來語。"),
+Q("K023","N5","kana","katakana","外來語","「エレベーター」是？",["電梯","手扶梯","樓梯","入口"],"電梯","エレベーター＝elevator。"),
+Q("K024","N5","kana","sound","濁音","「ざ」的羅馬字是？",["za","sa","ja","da"],"za","ざ是さ行的濁音，讀 za。"),
+
+Q("V029","N5","vocab","context","位置詞","猫は机の（　）にいます。机より低い位置です。",["下","上","中","前"],"下","題幹說比桌子低，因此是「机の下」。"),
+Q("V030","N5","vocab","context","天氣","雨が降っていますから、（　）を持って行きます。",["傘","帽子だけ","財布だけ","辞書"],"傘","下雨時最直接需要的是傘。"),
+Q("V031","N5","vocab","context","服裝","寒いので、厚いコートを（　）。",["着ます","履きます","かぶります","持ちますだけ"],"着ます","上半身衣物用「着る」；鞋襪用履く，帽子用かぶる。"),
+Q("V032","N5","vocab","context","穿戴動詞","出かける前に靴を（　）。",["履きます","着ます","かぶります","締めます"],"履きます","鞋、襪、褲子等下半身穿著常用履く。"),
+Q("V033","N5","vocab","context","開關動詞","部屋が暗いので、電気を（　）。",["つけます","消します","閉めます","開けます"],"つけます","電気をつける＝開燈。"),
+Q("V034","N5","vocab","context","開關動詞","寝る前に電気を（　）。",["消します","つけます","開けます","始めます"],"消します","電気を消す＝關燈。"),
+Q("V035","N5","vocab","context","家事","日曜日に部屋を（　）。",["掃除します","洗濯を着ます","料理を開けます","勉強が閉めます"],"掃除します","部屋を掃除する＝打掃房間。"),
+Q("V036","N5","vocab","context","健康","風邪をひいたので、今日は会社を（　）。",["休みます","止まります","降ります","消します"],"休みます","会社／学校を休む＝請假、不去上班上課。"),
+Q("V037","N5","vocab","paraphrase","近義改寫","「もう一度言ってください。」最接近哪個意思？",["請再說一次","請說慢一點","請不要說","請寫下來"],"請再說一次","もう一度＝再一次。"),
+Q("V038","N5","vocab","context","數量詞","教室に学生が（　）います。",["二十人","二十本","二十枚","二十冊"],"二十人","計算人數用「人」。"),
+Q("V039","N5","vocab","context","量詞","紙を三（　）ください。",["枚","本","冊","台"],"枚","薄平物品如紙、票常用「枚」。"),
+Q("V040","N5","vocab","context","量詞","鉛筆を二（　）買いました。",["本","枚","冊","匹"],"本","細長物品如鉛筆、瓶子常用「本」。"),
+Q("V041","N4","vocab","context","自他動詞","風でドアが（　）。",["開きました","開けました","開かせました","開けられました"],"開きました","門自己打開用自動詞「開く」。"),
+Q("V042","N4","vocab","context","自他動詞","暑いので、私は窓を（　）。",["開けました","開きました","開いていました","開かれました"],"開けました","人主動把窗戶打開，用他動詞「開ける」。"),
+Q("V043","N4","vocab","context","感情","試験に合格して、とても（　）です。",["うれしい","さびしい","こわい","ねむい"],"うれしい","合格後感到高興，最自然是うれしい。"),
+Q("V044","N4","vocab","context","狀態","この道は夜になると暗くて（　）です。",["危ない","細かい","深い","珍しい"],"危ない","夜晚道路昏暗，語境最合理是危險。"),
+Q("V045","N4","vocab","context","副詞","宿題は（　）終わりました。今から遊べます。",["やっと","ずっと","もっと","きっと"],"やっと","やっと＝終於，好不容易完成。"),
+Q("V046","N4","vocab","context","副詞","この町には十年前から（　）住んでいます。",["ずっと","やっと","ぜひ","たぶん"],"ずっと","ずっと表示從過去持續到現在。"),
+Q("V047","N4","vocab","context","副詞","時間がありませんから、（　）してください。",["急いで","驚いて","喜んで","眠って"],"急いで","沒有時間，所以請快一點：急ぐ。"),
+Q("V048","N4","vocab","usage","詞彙用法","「連絡」使用最自然的是？",["着いたら連絡してください。","連絡を駅で乗ります。","連絡がご飯を食べます。","先生を連絡に読みます。"],"着いたら連絡してください。","連絡する＝聯絡；「到了之後請聯絡」。"),
+
+Q("G051","N5","grammar","particle","工具助詞","はさみ（　）紙を切ります。",["で","に","を","へ"],"で","工具、手段也使用助詞「で」。"),
+Q("G052","N5","grammar","particle","時間助詞","授業は九時（　）始まります。",["に","で","を","へ"],"に","明確時間點＋に。"),
+Q("G053","N5","grammar","particle","頻率時間","私は毎朝六時（　）起きます。",["に","を","で","からを"],"に","具體時刻六時用「に」。"),
+Q("G054","N5","grammar","question","疑問詞","A：これは（　）の傘ですか。 B：田中さんのです。",["だれ","どこ","いつ","いくら"],"だれ","回答是田中先生的，因此詢問所有者「だれの」。"),
+Q("G055","N5","grammar","question","疑問詞","A：誕生日は（　）ですか。 B：五月三日です。",["いつ","どこ","だれ","どれ"],"いつ","詢問日期、時間用いつ。"),
+Q("G056","N5","grammar","demonstrative","指示詞","A：田中さんの傘はどれですか。 B：（　）です。",["これ","ここ","この","こちらの人"],"これ","「どれ」詢問物品，回答可用これ／それ／あれ。"),
+Q("G057","N5","grammar","adjective","い形容詞否定","この本はあまり（　）。",["おもしろくないです","おもしろいないです","おもしろくありませんでしたか","おもしろいではありません"],"おもしろくないです","い形容詞否定：～くないです。"),
+Q("G058","N5","grammar","adjective","な形容詞過去","昨日の図書館はとても（　）。",["静かでした","静かなでした","静かかったです","静かにでした"],"静かでした","な形容詞禮貌過去：静かでした。"),
+Q("G059","N5","grammar","verb","ます形過去","昨日、映画を（　）。",["見ました","見ますでした","見るました","見てましたです"],"見ました","ます形過去肯定為～ました。"),
+Q("G060","N5","grammar","verb","ます形否定過去","昨日は朝ご飯を（　）。",["食べませんでした","食べないでした","食べませんです","食べなかったます"],"食べませんでした","禮貌否定過去：～ませんでした。"),
+Q("G061","N5","grammar","request","てください","ここに名前を（　）ください。",["書いて","書く","書きます","書いた"],"書いて","請求某人做事：て形＋ください。"),
+Q("G062","N5","grammar","progressive","ている","今、弟は部屋で本を（　）。",["読んでいます","読みます今","読んだです","読むています"],"読んでいます","正在進行：て形＋います。"),
+Q("G063","N5","grammar","frequency","たり～たり","日曜日は本を読んだり、音楽を（　）します。",["聞いたり","聞いてり","聞くたり","聞きたり"],"聞いたり","た形＋り：聞く→聞いた→聞いたり。"),
+Q("G064","N5","grammar","reason","から","今日は寒いです（　）、コートを着ます。",["から","まで","より","しか"],"から","句子＋から表示理由。"),
+Q("G065","N4","grammar","try","てみる","この料理は初めてです。少し食べて（　）。",["みます","おきます","あります","しまいますだけ"],"みます","～てみる＝試著做看看。"),
+Q("G066","N4","grammar","completion","てしまう","大切な財布をなくして（　）。",["しまいました","みました","おきました","ありました"],"しまいました","～てしまう可表示完成，也常帶遺憾語氣。"),
+Q("G067","N4","grammar","preparation","ておく","明日の朝早いので、今夜荷物を準備して（　）。",["おきます","みます","しまいますだけ","います"],"おきます","為明天預先準備：～ておく。"),
+Q("G068","N4","grammar","state","てある","会議室の机の上に資料が並べて（　）。",["あります","います","みます","おきますか"],"あります","他動詞て形＋ある表示有人事先做完後留下的狀態。"),
+Q("G069","N4","grammar","change","くなる","春になって、だんだん暖か（　）。",["くなりました","になりました","くしました","なりましたく"],"くなりました","い形容詞變化：暖かい→暖かくなる。"),
+Q("G070","N4","grammar","change","になる","妹は来年大学生（　）。",["になります","くなります","をなります","でします"],"になります","名詞／な形容詞＋になる。"),
+Q("G071","N4","grammar","comparison","ほど～ない","今日は昨日（　）寒くありません。",["ほど","よりも一番","しか","だけで"],"ほど","AはBほど～ない＝A沒有B那麼……。"),
+Q("G072","N4","grammar","limitation","しか～ない","財布に千円（　）ありません。",["しか","だけを","ほど","まで"],"しか","しか必須搭配否定，表示「只有……」。"),
+Q("G073","N4","grammar","excess","ばかり","弟はゲーム（　）して、勉強しません。",["ばかり","までに","ながらを","ほどに"],"ばかり","名詞＋ばかり表示總是／淨是某事，依語境常帶負面語氣。"),
+Q("G074","N4","grammar","experience","たばかり","さっき昼ご飯を食べた（　）です。",["ばかり","ところに","まで","ほど"],"ばかり","た形＋ばかり＝才剛做完。"),
+Q("G075","N4","grammar","time","ところ","今から出かける（　）です。",["ところ","ばかり","ため","よう"],"ところ","辭書形＋ところ＝正要做。"),
+Q("G076","N4","grammar","time","ているところ","A：今、何をしていますか。 B：夕飯を作っている（　）です。",["ところ","ばかり","つもり","そう"],"ところ","ているところ＝正在做。"),
+Q("G077","N4","grammar","time","たところ","今、駅に着いた（　）です。",["ところ","ながら","よう","ため"],"ところ","た形＋ところ＝剛剛完成某動作。"),
+Q("G078","N4","grammar","conditional","なら","A：京都へ行きたいです。 B：京都へ行く（　）、秋がおすすめです。",["なら","ときまで","のでに","ながら"],"なら","～なら可承接對方提出的話題：「如果要去京都的話……」。"),
+Q("G079","N4","grammar","conditional","ば","このボタンを押せ（　）、ドアが開きます。",["ば","たらを","ならに","とを"],"ば","押す→押せば，是ば條件形。"),
+Q("G080","N4","grammar","intention","意向形","週末、みんなで海へ（　）。",["行こう","行けば","行かれる","行かせる"],"行こう","意向形「行こう」可表示「一起去吧／我打算去」。"),
+
+Q("P019","N5","phrase","airport","機場","想問登機門在哪裡，應說？",["搭乗口はどこですか。","荷物はいくらですか。","飛行機をどこですか。","搭乗口を食べますか。"],"搭乗口はどこですか。","搭乗口＝登機門。"),
+Q("P020","N5","phrase","airport","行李","想說「這是我的行李」，最自然的是？",["これは私の荷物です。","これは私を荷物です。","荷物が私にです。","私で荷物があります。"],"これは私の荷物です。","AのB表示所有：私の荷物。"),
+Q("P021","N5","phrase","cafe","咖啡店","想點一杯熱咖啡，應說？",["ホットコーヒーを一つお願いします。","コーヒーが熱い一人です。","ホットを一枚ください。","コーヒーに一冊です。"],"ホットコーヒーを一つお願いします。","點一份／一杯可用「一つお願いします」。"),
+Q("P022","N5","phrase","drugstore","藥妝","想找眼藥水，應說？",["目薬はどこですか。","目薬を何時ですか。","目薬は誰ですか。","目薬に乗りますか。"],"目薬はどこですか。","尋找商品位置：～はどこですか。"),
+Q("P023","N5","phrase","taxi","計程車","上計程車後想說「請到東京車站」，最自然的是？",["東京駅までお願いします。","東京駅からお願いします。","東京駅を一枚ください。","東京駅が食べたいです。"],"東京駅までお願いします。","計程車常用「目的地＋までお願いします」。"),
+Q("P024","N5","phrase","phone","網路","想問飯店有沒有 Wi-Fi，應說？",["Wi-Fiはありますか。","Wi-Fiを行きますか。","Wi-Fiは何人ですか。","Wi-Fiが食べられますか。"],"Wi-Fiはありますか。","詢問設施／物品是否存在：～はありますか。"),
+Q("P025","N4","phrase","airport","行李寄存","想問「可以把行李放在這裡嗎？」最自然的是？",["ここに荷物を置いてもいいですか。","ここを荷物に置きますか。","荷物がここを置けますか。","ここに荷物が食べられますか。"],"ここに荷物を置いてもいいですか。","～てもいいですか＝可以……嗎。"),
+Q("P026","N4","phrase","shopping","尺寸","衣服太小，想問有沒有大一號，應說？",["もう一つ大きいサイズはありますか。","もっと一人サイズですか。","大きいを一枚ありますか。","サイズが高くなりますか。"],"もう一つ大きいサイズはありますか。","もう一つ大きいサイズ＝再大一號的尺寸。"),
+Q("P027","N4","phrase","restaurant","忌口","想說「我不吃生魚」，最自然的是？",["生の魚は食べません。","魚を生きません。","生魚が食べるではありません。","魚は飲みません。"],"生の魚は食べません。","生の魚＝生魚；食べません表示不吃。"),
+Q("P028","N4","phrase","emergency","遺失物","錢包不見了，向工作人員說？",["財布をなくしました。","財布が休みました。","財布を遅れました。","財布に乗りました。"],"財布をなくしました。","なくす＝弄丟；財布をなくしました＝錢包弄丟了。"),
+
+Q("D015","N5","dialogue","convenience","便利商店","店員：袋は要りますか。\n客：いいえ、（　）。",["大丈夫です","お願いします","袋です","何名です"],"大丈夫です","在此「大丈夫です」可表示不用了。"),
+Q("D016","N5","dialogue","hotel","飯店","櫃檯：お名前をお願いします。\n客人最自然的回答是？",["王です。","三人です。","九時です。","台湾までです。"],"王です。","對方詢問姓名，直接回答姓氏＋です即可。"),
+Q("D017","N5","dialogue","station","車站","A：すみません。新宿へ行きたいんですが。\nB：この電車に乗ってください。\nB 的意思是？",["請搭這班電車","請在新宿下車後走路","這班車不到新宿","請先買巴士票"],"請搭這班電車","この電車に乗ってください＝請搭這班電車。"),
+Q("D018","N5","dialogue","restaurant","餐廳","店員：お会計は1,800円です。\n客人想刷卡，最自然的是？",["カードでお願いします。","カードを一人です。","現金がカードです。","カードに食べます。"],"カードでお願いします。","付款方式＋でお願いします。"),
+Q("D019","N4","dialogue","apology","道歉","A：すみません、電車が遅れて、遅くなりました。\nB 最自然的回應是？",["大丈夫ですよ。","いただきます。","おかえりなさい。","いらっしゃいませ。"],"大丈夫ですよ。","對方因遲到道歉，回「沒關係」自然。"),
+Q("D020","N4","dialogue","request","請求","A：この漢字の読み方を教えていただけませんか。\nB：（　）",["もちろんです。","読み方は食べます。","いいえ、三時です。","駅までです。"],"もちろんです。","禮貌請求後，接受可回答「もちろんです」。"),
+Q("D021","N4","dialogue","recommendation","推薦","A：この近くで、おいしいラーメン屋を知っていますか。\nB 最自然的是？",["駅の前の店がおすすめですよ。","ラーメンは昨日でした。","駅を三人でください。","近くが高いです。"],"駅の前の店がおすすめですよ。","對方詢問推薦餐廳，直接推薦店家最符合對話。"),
+Q("D022","N4","dialogue","condition","條件","A：明日、雨が降ったらどうしますか。\nB：雨なら、家で映画を見ます。\nB 的計畫是？",["下雨就待在家看電影","下雨也一定出門","去電影院工作","明天不看電影"],"下雨就待在家看電影","雨なら＝如果下雨；家で映画を見る＝在家看電影。"),
+
+Q("R015","N5","reading","information","資訊檢索","",["17:00前進館","17:30前進館","18:00前進館","星期一進館"],"17:00前進館","閉館17:30，且入館到閉館30分鐘前，因此17:00截止。",{prompt:"星期六最晚幾點前可以入館？",passage:"【市立博物館】\n火～金 9:30～18:00\n土・日 9:30～17:30\n月曜休館\n入館は閉館30分前まで"}),
+Q("R016","N5","reading","short","短文理解","",["因為下雨，所以改搭公車","因為公車停駛，所以走路","因為忘了帶傘，所以回家","因為天氣好，所以騎腳踏車"],"因為下雨，所以改搭公車","文中明確說平常騎車，但今天下雨所以搭公車。",{prompt:"今天和平常有什麼不同？",passage:"私はいつも自転車で学校へ行きます。でも、今日は朝から雨が降っています。それで、自転車に乗らないで、バスで学校へ行きました。"}),
+Q("R017","N5","reading","message","訊息理解","",["媽媽會晚回家，請先吃冰箱裡的晚餐","媽媽已經在家等孩子","要孩子去超市買晚餐","今晚全家去餐廳"],"媽媽會晚回家，請先吃冰箱裡的晚餐","訊息說會晚回家，晚餐已放冰箱，可先吃。",{prompt:"這則訊息主要告訴孩子什麼？",passage:"ゆうきへ\n今日は仕事が忙しいので、帰るのが遅くなります。晩ご飯は冷蔵庫に入れてあります。先に食べてください。\n母"}),
+Q("R018","N5","reading","information","資訊檢索","",["A套餐","B套餐","兩個都可以","兩個都不可以"],"A套餐","A 850円符合1000円以下；B 1100円超過預算。",{prompt:"只有1000円，而且想吃魚，應選哪一個？",passage:"【ランチメニュー】\nA 焼き魚定食　850円\nB 刺身定食　1,100円\nC カレー　750円\nD うどん　650円"}),
+Q("R019","N4","reading","short","主旨理解","",["作者發現短時間每天持續比週末一次讀很久更適合自己","作者決定不再學日文","作者只在星期日學習","作者認為每天三小時最好"],"作者發現短時間每天持續比週末一次讀很久更適合自己","文章對比兩種方法，結論是每天30分鐘更容易持續且記得牢。",{prompt:"作者最想表達什麼？",passage:"以前は週末に三時間ぐらいまとめて日本語を勉強していました。でも、月曜日になると、覚えた言葉をかなり忘れていました。今は毎日30分だけ勉強しています。短い時間でも毎日続けるほうが、私には合っているようです。"}),
+Q("R020","N4","reading","information","資訊檢索","",["星期六15:00的初級課","星期二19:00的中級課","星期日上午的文化課","星期四19:00的中級課"],"星期六15:00的初級課","需求是初級＋週末；只有星期六15:00初級符合。",{prompt:"初學者只能週末參加，最適合哪一堂？",passage:"【日本語センター】\n初級：月・水 18:30／土 15:00\n中級：火・木 19:00\n会話：金 18:30\n文化クラス：日 10:00（日本語中級以上）"}),
+Q("R021","N4","reading","reason","原因理解","",["因為網路會議改期","因為忘記會議時間","因為公司今天休假","因為電腦壞了"],"因為網路會議改期","郵件說原定週三的線上會議改到週五。",{prompt:"收件人星期三為什麼不用參加會議？",passage:"山本さん\n水曜日に予定していたオンライン会議ですが、取引先の都合で金曜日の午後2時に変更になりました。会議のURLは同じです。よろしくお願いします。\n佐藤"}),
+Q("R022","N4","reading","inference","推論理解","",["最好提早出門","可以比平常晚出門","不需要搭電車","車站今天關閉"],"最好提早出門","電車因施工班次減少，公告建議預留時間，因此最好提早。",{prompt:"依公告，乘客今天應該怎麼做比較好？",passage:"【お知らせ】\n本日は工事のため、午後1時から5時まで電車の本数が少なくなります。通常より待ち時間が長くなる場合がありますので、時間に余裕を持ってご利用ください。"}),
+
+Q("L015","N5","listening","quick-response","即時應答","",["はい、わかりました。","いいえ、三人です。","駅は左です。","千円でした。"],"はい、わかりました。","對方說「請在這裡等」，自然回應是「好的，知道了」。",{audio:"ここで少し待ってください。"}),
+Q("L016","N5","listening","key-point","地點資訊","",["二樓","一樓","三樓","地下"],"二樓","語音明確說餐廳在二樓。",{audio:"レストランは二階にあります。エレベーターで上がってください。"}),
+Q("L017","N5","listening","task","行動順序","",["先洗手，再吃飯","先吃飯，再洗手","先睡覺，再洗手","不用洗手"],"先洗手，再吃飯","「手を洗ってから、ご飯」表示先洗手。",{audio:"外から帰ったら、まず手を洗ってください。それから、ご飯を食べましょう。"}),
+Q("L018","N5","listening","key-point","數量資訊","",["2張","1張","3張","4張"],"2張","「大人二枚」表示成人票兩張。",{audio:"大人の切符を二枚お願いします。"}),
+Q("L019","N4","listening","key-point","修正資訊","",["星期五下午3點","星期四下午3點","星期五下午2點","星期六下午3點"],"星期五下午3點","語音先說週四，再修正為週五15:00。",{audio:"会議は木曜日ではなく、金曜日の午後三時になりました。"}),
+Q("L020","N4","listening","reason","原因理解","",["因為公車塞車","因為睡過頭","因為下雨走路","因為忘了買票"],"因為公車塞車","語音說雖然準時出門，但公車因塞車晚到。",{audio:"家はいつもどおり出たんですが、バスが渋滞で遅れて、学校に遅刻しました。"}),
+Q("L021","N4","listening","task","行動理解","",["帶傘出門","不要出門","把傘留在公司","只穿短袖"],"帶傘出門","下午可能下雨，所以說「傘を持って出かけたほうがいい」。",{audio:"朝は晴れていますが、午後は雨が降るかもしれません。傘を持って出かけたほうがいいですよ。"}),
+Q("L022","N4","listening","quick-response","即時應答","",["すみません、今日はちょっと……。","はい、昨日でした。","いいえ、駅です。","三冊あります。"],"すみません、今日はちょっと……。","對方邀約今晚吃飯，這是自然的婉拒。",{audio:"今晩、一緒に食事に行きませんか。"})
+];
+bank.push(...proBank);
+
 const sourceNames={kana:"50音・文字",vocab:"核心單字",grammar:"文法・形變",phrase:"生活片語",dialogue:"情境對話",reading:"閱讀・資訊",listening:"聽解"};
 let mode="practice", active=[], idx=0, answers=[], selected=null, startedAt=0, timerId=null, retryPool=null;
-const wrongKey="jlptExamWrongIds", statKey="jlptExamSkillStats";
+let confidence={}, flags=new Set(), optionOrders={};
+const wrongKey="jlptExamWrongIds", statKey="jlptExamSkillStats", masteryKey="jlptExamMasteryV3", historyKey="jlptExamHistoryV3";
 const $=id=>document.getElementById(id);
 function shuffle(a){let x=[...a];for(let i=x.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 function chooseMode(el){document.querySelectorAll(".mode").forEach(x=>x.classList.remove("selected"));el.classList.add("selected");mode=el.dataset.mode}
+function getMastery(){return JSON.parse(localStorage.getItem(masteryKey)||"{}")}
 function filteredPool(){
  let p=bank.filter(q=>($("level").value==="ALL"||q.level===$("level").value)&&($("scope").value==="ALL"||q.source===$("scope").value));
  const wrong=new Set(JSON.parse(localStorage.getItem(wrongKey)||"[]"));
  if(mode==="wrong") p=p.filter(q=>wrong.has(q.id));
  if(mode==="weak"){
-   const st=JSON.parse(localStorage.getItem(statKey)||"{}");
-   const weakSkills=Object.entries(st).filter(([k,v])=>v.w>v.c).map(([k])=>k);
-   let w=p.filter(q=>weakSkills.includes(q.skill)||wrong.has(q.id)); if(w.length) p=w.concat(p.filter(q=>!w.includes(q)));
+   const m=getMastery();
+   p=p.sort((a,b)=>{
+     const A=m[a.skill]||{c:0,w:0,streak:0}, B=m[b.skill]||{c:0,w:0,streak:0};
+     const ar=(A.c+1)/(A.c+A.w+2), br=(B.c+1)/(B.c+B.w+2);
+     return ar-br || A.streak-B.streak;
+   });
  }
  return p;
 }
+function officialBlueprint(pool,n){
+ const sections=[
+   {name:"文字・語彙",sources:["kana","vocab"],ratio:.34},
+   {name:"文法・読解",sources:["grammar","reading","phrase","dialogue"],ratio:.43},
+   {name:"聴解",sources:["listening"],ratio:.23}
+ ];
+ let out=[];
+ sections.forEach((sec,i)=>{
+   let need=i===sections.length-1?n-out.length:Math.round(n*sec.ratio);
+   let candidates=shuffle(pool.filter(q=>sec.sources.includes(q.source)));
+   out.push(...candidates.slice(0,Math.min(need,candidates.length)).map(q=>({...q,examSection:sec.name})));
+ });
+ if(out.length<n){
+   const used=new Set(out.map(q=>q.id));
+   out.push(...shuffle(pool.filter(q=>!used.has(q.id))).slice(0,n-out.length));
+ }
+ return out.slice(0,n);
+}
 function balancedSelect(pool,n){
  if(retryPool){let r=retryPool;retryPool=null;return shuffle(r)}
- const groups={};pool.forEach(q=>(groups[q.source]??=[]).push(q));Object.values(groups).forEach(g=>{let s=shuffle(g);g.splice(0,g.length,...s)});
- let out=[], keys=shuffle(Object.keys(groups));
- while(out.length<n && keys.some(k=>groups[k].length)){for(const k of keys){if(groups[k].length&&out.length<n)out.push(groups[k].pop())}}
- return shuffle(out);
+ if(mode==="official") return officialBlueprint(pool,n);
+ const groups={};pool.forEach(q=>(groups[q.source]??=[]).push(q));
+ Object.values(groups).forEach(g=>{let ss=mode==="weak"?g:shuffle(g);g.splice(0,g.length,...ss)});
+ let out=[],keys=shuffle(Object.keys(groups));
+ while(out.length<n&&keys.some(k=>groups[k].length)){for(const k of keys){if(groups[k].length&&out.length<n)out.push(groups[k].shift())}}
+ return mode==="weak"?out:shuffle(out);
 }
 function startExam(){
  let pool=filteredPool(), n=Math.min(parseInt($("count").value),pool.length);
  if(!pool.length){alert("目前這個條件沒有可用題目；若是錯題模式，可能還沒有錯題紀錄。");return}
- active=balancedSelect(pool,n);idx=0;answers=[];selected=null;startedAt=Date.now();
+ active=balancedSelect(pool,n);idx=0;answers=[];selected=null;confidence={};flags=new Set();optionOrders={};startedAt=Date.now();
  $("setup").classList.add("hidden");$("result").classList.add("hidden");$("exam").classList.remove("hidden");
  clearInterval(timerId);timerId=setInterval(updateTimer,1000);updateTimer();renderQ();
 }
 function updateTimer(){let s=Math.floor((Date.now()-startedAt)/1000),m=Math.floor(s/60);$("timer").textContent=`⏱ ${m}:${String(s%60).padStart(2,"0")}`}
+function renderNavigator(){
+ $("navigator").innerHTML=active.map((q,i)=>{
+   const a=answers.find(x=>x.q.id===q.id);
+   const cls=["navdot",i===idx?"now":"",a?"done":"",flags.has(q.id)?"flag":""].filter(Boolean).join(" ");
+   return `<button class="${cls}" onclick="jumpQuestion(${i})">${i+1}</button>`;
+ }).join("");
+}
+function jumpQuestion(i){
+ if(mode==="practice" && answers.find(x=>x.q.id===active[idx].id)) { idx=i; renderQ(); return; }
+ if(mode!=="practice"){idx=i;renderQ()}
+}
 function renderQ(){
- const q=active[idx];selected=null;$("nextBtn").classList.add("hidden");$("explanation").classList.add("hidden");
+ const q=active[idx]; const prior=answers.find(a=>a.q.id===q.id); selected=prior?prior.selected:null;
+ $("nextBtn").classList.add("hidden");$("explanation").classList.add("hidden");
  $("partPill").textContent=sourceNames[q.source];$("levelPill").textContent=q.level;
  $("progressText").textContent=`第 ${idx+1} / ${active.length} 題`;$("progressFill").style.width=`${idx/active.length*100}%`;
  $("qMeta").textContent=`題型：${q.type}　｜　考點：${q.skill}`;
- if(q.source==="reading"){
-   $("passage").textContent=q.passage||q.q;
-   $("passage").classList.remove("hidden");
-   $("question").textContent=q.prompt||"請依文章內容選出最適合的答案。";
- }else{
-   $("passage").classList.add("hidden");
-   $("question").textContent=q.q;
- }
- if(q.audio){
-   $("listen").classList.remove("hidden");
-   $("question").textContent="請先聆聽日語，再選出最適合的答案。";
- }else $("listen").classList.add("hidden");
- const opts=shuffle(q.options.map(t=>({t,correct:t===q.answer})));$("options").innerHTML="";
- opts.forEach(o=>{let b=document.createElement("button");b.className="opt";b.textContent=o.t;b.onclick=()=>answer(o.t,b);$("options").appendChild(b)});
+ if(q.examSection){$("sectionHead").textContent=`📚 ${q.examSection}`;$("sectionHead").classList.remove("hidden")}else $("sectionHead").classList.add("hidden");
+ if(q.source==="reading"){$("passage").textContent=q.passage||q.q;$("passage").classList.remove("hidden");$("question").textContent=q.prompt||"請依文章內容選出最適合的答案。"}
+ else{$("passage").classList.add("hidden");$("question").textContent=q.q}
+ if(q.audio){$("listen").classList.remove("hidden");$("question").textContent="請先聆聽日語，再選出最適合的答案。"}else $("listen").classList.add("hidden");
+ if(!optionOrders[q.id]) optionOrders[q.id]=shuffle(q.options);
+ $("options").innerHTML="";
+ optionOrders[q.id].forEach(t=>{let btn=document.createElement("button");btn.className="opt";btn.textContent=t;
+   if(prior){btn.disabled=true;if(mode==="practice"&&t===q.answer)btn.classList.add("correct");if(t===prior.selected&&!prior.ok)btn.classList.add("wrong")}
+   btn.onclick=()=>answer(t,btn);$("options").appendChild(btn)});
+ document.querySelectorAll(".confidence button[data-c]").forEach(b=>b.classList.toggle("on",confidence[q.id]===b.dataset.c));
+ $("flagBtn").textContent=flags.has(q.id)?"🚩 已標記":"🚩 標記複查";
+ if(prior&&mode==="practice"){showExplain(q,prior.selected,prior.ok);$("nextBtn").classList.remove("hidden")}
+ renderNavigator();
 }
+function setConfidence(btn){confidence[active[idx].id]=btn.dataset.c;document.querySelectorAll(".confidence button[data-c]").forEach(b=>b.classList.toggle("on",b===btn))}
+function toggleFlag(){const id=active[idx].id;flags.has(id)?flags.delete(id):flags.add(id);renderNavigator();$("flagBtn").textContent=flags.has(id)?"🚩 已標記":"🚩 標記複查"}
 function answer(text,btn){
- if(selected!==null)return;selected=text;const q=active[idx],ok=text===q.answer;
- answers.push({q,selected:text,ok});document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(mode==="practice"&&b.textContent===q.answer)b.classList.add("correct")});
- btn.classList.add(ok?"correct":"wrong");updateMemory(q,ok);
- if(mode==="practice"){showExplain(q,text,ok);$("nextBtn").classList.remove("hidden")}else setTimeout(nextQuestion,180);
+ const q=active[idx]; if(answers.find(a=>a.q.id===q.id))return;
+ selected=text;const ok=text===q.answer;
+ answers.push({q,selected:text,ok,confidence:confidence[q.id]||"unset"});updateMemory(q,ok);
+ document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(mode==="practice"&&b.textContent===q.answer)b.classList.add("correct")});
+ if(mode==="practice"){btn.classList.add(ok?"correct":"wrong");showExplain(q,text,ok);$("nextBtn").classList.remove("hidden");renderNavigator()}
+ else {renderNavigator();setTimeout(()=>{if(idx<active.length-1){idx++;renderQ()}else if(answers.length===active.length)finish();},140)}
 }
 function showExplain(q,sel,ok){
  let why="";if(q.why&&!ok&&q.why[sel])why=`<div class="why">❌ 你選的「${sel}」：${q.why[sel]}</div>`;
@@ -314,29 +480,45 @@ function showExplain(q,sel,ok){
  $("explanation").classList.remove("hidden");
 }
 function updateMemory(q,ok){
- let wrong=new Set(JSON.parse(localStorage.getItem(wrongKey)||"[]"));ok?wrong.delete(q.id):wrong.add(q.id);localStorage.setItem(wrongKey,JSON.stringify([...wrong]));
+ let wrong=new Set(JSON.parse(localStorage.getItem(wrongKey)||"[]"));
+ let m=getMastery();m[q.skill]??={c:0,w:0,streak:0,last:0};m[q.skill][ok?"c":"w"]++;m[q.skill].streak=ok?m[q.skill].streak+1:0;m[q.skill].last=Date.now();
+ if(ok){
+   const item=m["ITEM:"+q.id]||{streak:0};item.streak++;m["ITEM:"+q.id]=item;
+   if(item.streak>=2)wrong.delete(q.id);
+ }else{
+   wrong.add(q.id);m["ITEM:"+q.id]={streak:0};
+ }
+ localStorage.setItem(wrongKey,JSON.stringify([...wrong]));localStorage.setItem(masteryKey,JSON.stringify(m));
  let st=JSON.parse(localStorage.getItem(statKey)||"{}");st[q.skill]??={c:0,w:0};st[q.skill][ok?"c":"w"]++;localStorage.setItem(statKey,JSON.stringify(st));
 }
-function nextQuestion(){idx++;if(idx>=active.length)finish();else renderQ()}
-function finish(){clearInterval(timerId);$("exam").classList.add("hidden");$("result").classList.remove("hidden");$("progressFill").style.width="100%";
- const correct=answers.filter(a=>a.ok).length, pct=Math.round(correct/answers.length*100);$("scoreBig").textContent=`${pct} 分`;
- $("comment").textContent=pct>=90?"🏆 掌握度很高，接下來可增加閱讀、聽解與易混淆題。":pct>=75?"👍 基礎已具備，建議針對下方弱點做變化題再測。":"📘 建議依弱點回到前五階段複習，再使用「弱點特訓」。";
+function nextQuestion(){if(idx<active.length-1){idx++;renderQ()}else if(answers.length===active.length)finish();else{const next=active.findIndex((q,i)=>i>idx&&!answers.some(a=>a.q.id===q.id));if(next>=0){idx=next;renderQ()}else finish()}}
+function finish(){
+ clearInterval(timerId);
+ if(answers.length<active.length && mode!=="practice"){alert(`還有 ${active.length-answers.length} 題尚未作答，請先完成。`);return}
+ $("exam").classList.add("hidden");$("result").classList.remove("hidden");$("progressFill").style.width="100%";
+ const correct=answers.filter(a=>a.ok).length,pct=Math.round(correct/Math.max(1,answers.length)*100);
+ $("scoreBig").textContent=`${pct} 分`;
+ const unsureWrong=answers.filter(a=>!a.ok&&(a.confidence==="sure")).length;
+ $("comment").textContent=pct>=90?"🏆 掌握度很高；請特別檢查「有把握卻答錯」的題目。":pct>=75?"👍 基礎穩定，下一步針對弱點與不確定題型再測。":"📘 建議依弱點回到前五階段複習，再進行弱點特訓。";
  const by={};answers.forEach(a=>{let k=a.q.source;by[k]??={n:0,c:0};by[k].n++;if(a.ok)by[k].c++});
- $("resultGrid").innerHTML=Object.entries(by).map(([k,v])=>`<div class="metric"><b>${Math.round(v.c/v.n*100)}%</b><span>${sourceNames[k]}　${v.c}/${v.n}</span></div>`).join("");
- const skill={};answers.filter(a=>!a.ok).forEach(a=>skill[a.q.skill]=(skill[a.q.skill]||0)+1);let weak=Object.entries(skill).sort((a,b)=>b[1]-a[1]).slice(0,4);
- $("weakness").innerHTML=weak.length?`<div class="weak"><b>🎯 本次優先複習：</b> ${weak.map(x=>`${x[0]}（錯 ${x[1]} 題）`).join("、")}</div>`:`<div class="weak"><b>🎉 本次沒有錯題。</b></div>`;
- $("review").innerHTML=answers.map((a,i)=>`<div class="review ${a.ok?"good":"bad"}"><div class="rq">第 ${i+1} 題［${sourceNames[a.q.source]}・${a.q.level}］ ${a.q.source==="reading"?"閱讀題":a.q.q}</div><div class="small">你的答案：${a.selected} ${a.ok?"⭕":"❌"}<br>正確答案：${a.q.answer}</div><div style="margin-top:7px">${a.q.explanation}</div><div class="small">考點：${a.q.skill}</div></div>`).join("");
+ $("resultGrid").innerHTML=Object.entries(by).map(([k,v])=>`<div class="metric"><b>${Math.round(v.c/v.n*100)}%</b><span>${sourceNames[k]}　${v.c}/${v.n}</span><div class="mastery"><i style="width:${Math.round(v.c/v.n*100)}%"></i></div></div>`).join("");
+ const skill={};answers.filter(a=>!a.ok).forEach(a=>skill[a.q.skill]=(skill[a.q.skill]||0)+1);let weak=Object.entries(skill).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ $("weakness").innerHTML=(weak.length?`<div class="weak"><b>🎯 本次優先複習：</b> ${weak.map(x=>`${x[0]}（錯 ${x[1]} 題）`).join("、")}<br><span class="small">其中「有把握卻答錯」${unsureWrong} 題，這類題目最值得優先訂正。</span></div>`:`<div class="weak"><b>🎉 本次沒有錯題。</b></div>`);
+ $("review").innerHTML=answers.map((a,i)=>`<div class="review ${a.ok?"good":"bad"}"><div class="rq">第 ${i+1} 題［${sourceNames[a.q.source]}・${a.q.level}］ ${a.q.source==="reading"?(a.q.prompt||"閱讀題"):a.q.q}</div><div class="small">你的答案：${a.selected} ${a.ok?"⭕":"❌"}　｜　把握：${a.confidence==="sure"?"有把握":a.confidence==="unsure"?"不確定":a.confidence==="guess"?"猜的":"未標記"}<br>正確答案：${a.q.answer}</div><div style="margin-top:7px">${a.q.explanation}</div><div class="small">📌 考點：${a.q.skill}｜建議回看：${sourceNames[a.q.source]}</div></div>`).join("");
+ let hist=JSON.parse(localStorage.getItem(historyKey)||"[]");hist.unshift({time:Date.now(),mode,level:$("level").value,count:answers.length,score:pct,wrong:answers.length-correct});localStorage.setItem(historyKey,JSON.stringify(hist.slice(0,30)));
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function playListening(rate=.9){let q=active[idx];if(!q.audio||!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(q.audio);u.lang="ja-JP";u.rate=rate;let vs=speechSynthesis.getVoices();let v=vs.find(x=>x.lang&&x.lang.toLowerCase().startsWith("ja"));if(v)u.voice=v;speechSynthesis.speak(u)}
 function quitExam(){clearInterval(timerId);speechSynthesis?.cancel();$("exam").classList.add("hidden");$("setup").classList.remove("hidden")}
 function backSetup(){$("result").classList.add("hidden");$("setup").classList.remove("hidden")}
-function retryWrong(){let r=answers.filter(a=>!a.ok).map(a=>a.q);if(!r.length){alert("本次沒有錯題。");return}retryPool=r;mode="practice";startExam()}
+function retryWrong(){let r=answers.filter(a=>!a.ok).map(a=>a.q);if(!r.length){alert("本次沒有錯題。");return}retryPool=r;mode="practice";$("count").value=[20,30,50,80].find(x=>x>=r.length)||80;startExam()}
 
 function updateBankSummary(){
  const n5=bank.filter(q=>q.level==="N5").length,n4=bank.filter(q=>q.level==="N4").length;
- const types=new Set(bank.map(q=>q.type)).size;
- const el=$("bankSummary"); if(el)el.textContent=`目前母題庫：${bank.length} 題（N5：${n5}／N4：${n4}），涵蓋 ${types} 種題型。`;
+ const types=new Set(bank.map(q=>q.type)).size,ids=bank.map(q=>q.id);
+ const dup=ids.filter((x,i)=>ids.indexOf(x)!==i).length;
+ const invalid=bank.filter(q=>!q.answer||!q.options.includes(q.answer)||new Set(q.options).size!==q.options.length).length;
+ const el=$("bankSummary");if(el)el.innerHTML=`目前母題庫：${bank.length} 題（N5：${n5}／N4：${n4}），涵蓋 ${types} 種題型。<br><span class="quality">題庫自我檢查：重複 ID ${dup}／答案或選項異常 ${invalid}</span>`;
 }
 updateBankSummary();
 
