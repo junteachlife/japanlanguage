@@ -79,11 +79,29 @@ function saveProgress(x){localStorage.setItem("jlptPhraseProgress",JSON.stringif
 function getWrong(){try{return JSON.parse(localStorage.getItem("jlptPhraseWrong")||"[]")}catch{return []}}
 function saveWrong(x){localStorage.setItem("jlptPhraseWrong",JSON.stringify([...new Set(x)]))}
 function getVoice(){return speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith("ja"))}
-function speak(text,rate=.9){if(!("speechSynthesis" in window))return alert("目前瀏覽器不支援語音朗讀。");speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=rate;const v=getVoice();if(v)u.voice=v;speechSynthesis.speak(u)}
+function normalizeTtsText(text){
+  if(!text)return "";
+  const exactReadings={
+    "張の名前で予約しています。":"チャンの名前で予約しています。",
+    "張の名前で予約しています":"チャンの名前で予約しています"
+  };
+  if(exactReadings[text])return exactReadings[text];
+  return text;
+}
+function speak(text,rate=.9){
+  if(!("speechSynthesis" in window))return alert("目前瀏覽器不支援語音朗讀。");
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(normalizeTtsText(text));
+  u.lang="ja-JP";
+  u.rate=rate;
+  const v=getVoice();
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
 function updateDashboard(){const p=getProgress();$("total").textContent=allPhrases.length;$("catCount").textContent=phraseCategories.length;$("mastered").textContent=allPhrases.filter(x=>p[x.id]==="mastered").length;$("wrongCount").textContent=getWrong().length}
 function filtered(items=allPhrases){const q=$("search").value.trim().toLowerCase(),c=$("catFilter").value,s=$("statusFilter").value,p=getProgress();return items.filter(x=>{const text=[x.jp,x.read,x.romaji,x.zh,x.tip,x.explain,x.variation,x.category].join(" ").toLowerCase();return(!q||text.includes(q))&&(c==="ALL"||x.categoryId===c)&&(s==="ALL"||(s==="new"?!p[x.id]:p[x.id]===s))})}
 function renderCategories(){$("categoryView").style.display="block";$("detailView").style.display="none";const list=filtered();$("summary").textContent=`📚 目前條件共有 ${list.length} 個實用片語`;const grid=$("categoryGrid");grid.innerHTML="";phraseCategories.forEach(c=>{const items=list.filter(x=>x.categoryId===c.id);if(!items.length)return;const d=document.createElement("div");d.className="cat";d.innerHTML=`<div class="cat-icon">${c.name.split(" ")[0]}</div><div class="cat-title">${c.name.replace(/^\S+\s/,"")}</div><div class="cat-count">${items.length} 個片語</div>`;d.onclick=()=>openCategory(c.id);grid.appendChild(d)});if(!list.length)grid.innerHTML='<div class="empty">找不到符合條件的片語。</div>'}
-function openCategory(id){const c=phraseCategories.find(x=>x.id===id);const items=filtered(c.items);$("categoryView").style.display="none";$("detailView").style.display="block";$("detailTitle").textContent=`${c.name}（${items.length}）`;$("phraseContainer").innerHTML="";const p=getProgress();items.forEach(x=>{const d=document.createElement("div");d.className="phrase-card";d.innerHTML=`<div class="phrase-jp">${x.jp}</div><div class="read">${x.read} ｜ ${x.romaji}</div><div class="zh">🇹🇼 ${x.zh}</div><div class="teacher">👨‍🏫 <b>老師提醒：</b>${x.tip}</div><div class="explain"><b>🔍 句子拆解／用法：</b><br>${x.explain}</div><div class="variation"><b>🔄 替換練習：</b><br><b>${x.variation}</b><br>${x.variationZh}</div><div class="audio-row"><button class="audio-btn">🔊 正常</button><button class="audio-btn slow">🐢 慢速</button></div><div class="status-row"><button class="status-btn ${p[x.id]==="new"?"selected":""}" data-s="new">😵 不會</button><button class="status-btn ${p[x.id]==="learning"?"selected":""}" data-s="learning">🤔 學習中</button><button class="status-btn ${p[x.id]==="mastered"?"selected":""}" data-s="mastered">😊 熟悉</button></div>`;const aud=d.querySelectorAll(".audio-btn");aud[0].onclick=()=>speak(x.read,.9);aud[1].onclick=()=>speak(x.read,.68);d.querySelectorAll(".status-btn").forEach(b=>b.onclick=()=>setStatus(x.id,b.dataset.s,id));$("phraseContainer").appendChild(d)})}
+function openCategory(id){const c=phraseCategories.find(x=>x.id===id);const items=filtered(c.items);$("categoryView").style.display="none";$("detailView").style.display="block";$("detailTitle").textContent=`${c.name}（${items.length}）`;$("phraseContainer").innerHTML="";const p=getProgress();items.forEach(x=>{const d=document.createElement("div");d.className="phrase-card";d.innerHTML=`<div class="phrase-jp">${x.jp}</div><div class="read">${x.read} ｜ ${x.romaji}</div><div class="zh">🇹🇼 ${x.zh}</div><div class="audio-row"><button class="audio-btn main-audio">🔊 主句正常</button><button class="audio-btn slow main-audio">🐢 主句慢速</button></div><div class="teacher">👨‍🏫 <b>老師提醒：</b>${x.tip}</div><div class="explain"><b>🔍 句子拆解／用法：</b><br>${x.explain}</div><div class="variation"><b>🔄 替換練習：</b><br><b>${x.variation}</b><br>${x.variationZh}<div class="audio-row"><button class="audio-btn variation-audio">🔊 替換句正常</button><button class="audio-btn slow variation-audio">🐢 替換句慢速</button></div></div><div class="status-row"><button class="status-btn ${p[x.id]==="new"?"selected":""}" data-s="new">😵 不會</button><button class="status-btn ${p[x.id]==="learning"?"selected":""}" data-s="learning">🤔 學習中</button><button class="status-btn ${p[x.id]==="mastered"?"selected":""}" data-s="mastered">😊 熟悉</button></div>`;const aud=d.querySelectorAll(".audio-btn");aud[0].onclick=()=>speak(x.read,.9);aud[1].onclick=()=>speak(x.read,.68);aud[2].onclick=()=>speak(x.variation,.9);aud[3].onclick=()=>speak(x.variation,.68);d.querySelectorAll(".status-btn").forEach(b=>b.onclick=()=>setStatus(x.id,b.dataset.s,id));$("phraseContainer").appendChild(d)})}
 function setStatus(id,status,cat){const p=getProgress();p[id]=status;saveProgress(p);updateDashboard();openCategory(cat)}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab+"-section").classList.add("active");if(b.dataset.tab==="wrong")renderWrong()})
 
@@ -123,7 +141,7 @@ function checkAnswer(sel,btn,ans){
  const bs=$("options").querySelectorAll(".option");bs.forEach(b=>b.disabled=true);const ok=sel===ans;
  if(ok){score+=10;correct++;$("feedback").style.color="#2e7d32";$("feedback").textContent="⭕ 答對了！";btn.style.background="#dcedc8"}else{wrong++;$("feedback").style.color="#c62828";$("feedback").textContent=`❌ 答錯了。正確答案：${ans}`;btn.style.background="#ffcdd2";bs.forEach(b=>{if(b.textContent===ans)b.style.background="#dcedc8"})}
  updatePhraseStat(current,ok);quizReview.push({x:current,ok,sel,ans});updateScore();updateDashboard();
- $("quizExplain").innerHTML=`<b>📘 老師詳解</b><br><br><b>${current.jp}</b><br><span style="color:#777">${current.read} ｜ ${current.romaji}</span><br>🇹🇼 ${current.zh}<br><br>💡 ${current.tip}<br><br>🔍 ${current.explain}<br><br>🔄 <b>${current.variation}</b><br>${current.variationZh}<div class="audio-row"><button class="audio-btn" onclick="speak(current.read,.9)">🔊 正常</button><button class="audio-btn slow" onclick="speak(current.read,.68)">🐢 慢速</button></div>`;
+ $("quizExplain").innerHTML=`<b>📘 老師詳解</b><br><br><b>${current.jp}</b><br><span style="color:#777">${current.read} ｜ ${current.romaji}</span><br>🇹🇼 ${current.zh}<br><br>💡 ${current.tip}<br><br>🔍 ${current.explain}<br><br>🔄 <b>${current.variation}</b><br>${current.variationZh}<div class="audio-row"><button class="audio-btn" onclick="speak(current.read,.9)">🔊 主句正常</button><button class="audio-btn slow" onclick="speak(current.read,.68)">🐢 主句慢速</button><button class="audio-btn" onclick="speak(current.variation,.9)">🔊 替換句正常</button><button class="audio-btn slow" onclick="speak(current.variation,.68)">🐢 替換句慢速</button></div>`;
  $("quizExplain").style.display="block";$("nextBtn").textContent=quizIndex===quizQueue.length-1?"查看結果":"下一題 ➜";$("nextBtn").style.display="inline-block"
 }
 function nextQuestion(){quizIndex++;renderPhraseQuestion()}
