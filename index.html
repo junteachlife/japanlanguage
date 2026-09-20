@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JLPT N5 日語互動學習中心</title>
+
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -12,8 +13,14 @@
             --card-bg: #ffffff;
             --text-color: #333333;
         }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -22,6 +29,11 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
+        /* =========================
+           頁首
+        ========================= */
+
         header {
             background: linear-gradient(135deg, #2c3e50, #4ca1af);
             color: white;
@@ -29,28 +41,213 @@
             padding: 40px 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+
         header h1 {
             margin: 0 0 10px 0;
             font-size: 32px;
         }
+
         header p {
             margin: 0;
             font-size: 16px;
             opacity: 0.9;
+            line-height: 1.7;
         }
+
         .main-container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 35px auto 40px;
             padding: 0 20px;
             flex: 1;
             width: 100%;
-            box-sizing: border-box;
         }
+
+        /* =========================
+           50 音學習區
+        ========================= */
+
+        .kana-section {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 38px;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.07);
+        }
+
+        .kana-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .kana-header h2 {
+            margin: 0 0 8px;
+            color: #2c3e50;
+            font-size: 27px;
+        }
+
+        .kana-header p {
+            margin: 0;
+            color: #6c757d;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .kana-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 22px 0 25px;
+            flex-wrap: wrap;
+        }
+
+        .kana-tab {
+            border: none;
+            background: #eef2f5;
+            color: #555;
+            padding: 11px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .kana-tab:hover {
+            transform: translateY(-2px);
+        }
+
+        .kana-tab.active {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 4px 10px rgba(231,76,60,0.25);
+        }
+
+        .kana-tip {
+            background: #fff7e8;
+            border: 1px solid #ffe0a3;
+            color: #805b16;
+            border-radius: 10px;
+            padding: 11px 15px;
+            margin-bottom: 22px;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .kana-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .kana-row {
+            display: grid;
+            grid-template-columns: 72px repeat(5, minmax(70px, 1fr));
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .row-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f4f6;
+            border-radius: 10px;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 15px;
+            min-height: 76px;
+        }
+
+        .kana-card {
+            border: 1px solid #e1e5e8;
+            background: #ffffff;
+            border-radius: 12px;
+            min-height: 76px;
+            padding: 8px 4px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                border-color 0.18s ease,
+                background 0.18s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .kana-card:hover {
+            transform: translateY(-3px);
+            border-color: #e74c3c;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+            background: #fffafa;
+        }
+
+        .kana-card:active {
+            transform: scale(0.96);
+        }
+
+        .kana-card.speaking {
+            background: #fff0ed;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231,76,60,0.12);
+        }
+
+        .kana-char {
+            font-family:
+                "Noto Sans JP",
+                "Yu Gothic",
+                "Hiragino Kaku Gothic ProN",
+                sans-serif;
+            font-size: 29px;
+            font-weight: 600;
+            line-height: 1.15;
+            color: #253746;
+        }
+
+        .kana-romaji {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #8a969f;
+            font-weight: 600;
+        }
+
+        .kana-empty {
+            border-radius: 12px;
+            min-height: 76px;
+            background: #fafafa;
+            border: 1px dashed #e8e8e8;
+        }
+
+        /* =========================
+           六大學習階段
+        ========================= */
+
+        .modules-title {
+            text-align: center;
+            margin: 0 0 25px;
+        }
+
+        .modules-title h2 {
+            color: #2c3e50;
+            font-size: 27px;
+            margin: 0 0 7px;
+        }
+
+        .modules-title p {
+            color: #777;
+            margin: 0;
+            font-size: 15px;
+        }
+
         .grid-menu {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
         }
+
         .module-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -64,10 +261,12 @@
             text-decoration: none;
             color: inherit;
         }
+
         .module-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 25px rgba(0,0,0,0.1);
         }
+
         .card-content h3 {
             margin-top: 0;
             color: var(--primary-color);
@@ -76,16 +275,19 @@
             align-items: center;
             gap: 10px;
         }
+
         .card-content p {
             color: #666;
             font-size: 15px;
             line-height: 1.6;
             margin-bottom: 20px;
         }
+
         .card-footer {
             display: flex;
             justify-content: flex-end;
         }
+
         .action-btn {
             background-color: var(--accent-color);
             color: white;
@@ -95,9 +297,15 @@
             font-size: 14px;
             transition: background 0.2s;
         }
+
         .module-card:hover .action-btn {
-            background-color: #2980b9;
+            filter: brightness(0.93);
         }
+
+        /* =========================
+           Footer
+        ========================= */
+
         footer {
             text-align: center;
             padding: 20px;
@@ -106,90 +314,760 @@
             font-size: 14px;
             margin-top: auto;
         }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* =========================
+           手機 / 平板
+        ========================= */
+
+        @media (max-width: 760px) {
+
+            header {
+                padding: 30px 16px;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+
+            header p {
+                font-size: 14px;
+            }
+
+            .main-container {
+                margin-top: 22px;
+                padding: 0 12px;
+            }
+
+            .kana-section {
+                padding: 20px 12px;
+                border-radius: 14px;
+            }
+
+            .kana-header h2,
+            .modules-title h2 {
+                font-size: 23px;
+            }
+
+            .kana-row {
+                grid-template-columns: 48px repeat(5, minmax(48px, 1fr));
+                gap: 5px;
+            }
+
+            .row-label {
+                min-height: 65px;
+                font-size: 12px;
+                padding: 3px;
+            }
+
+            .kana-card,
+            .kana-empty {
+                min-height: 65px;
+            }
+
+            .kana-char {
+                font-size: 24px;
+            }
+
+            .kana-romaji {
+                font-size: 10px;
+            }
+
+            .grid-menu {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .module-card {
+                padding: 21px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .kana-row {
+                grid-template-columns: 42px repeat(5, minmax(43px, 1fr));
+                gap: 4px;
+            }
+
+            .kana-card,
+            .kana-empty,
+            .row-label {
+                min-height: 61px;
+            }
+
+            .kana-char {
+                font-size: 22px;
+            }
+
+            .kana-romaji {
+                font-size: 9px;
+            }
+        }
     </style>
 </head>
+
 <body>
+
+    <!-- =========================
+         頁首
+    ========================== -->
 
     <header>
         <h1>🌸 JLPT N5 日語互動學習中心</h1>
-        <p>從 50音、800核心單字、文法解析、實境片語、AI 對話到模擬大考的完整學習旅程</p>
+        <p>
+            從 50音、800+ 核心單字、文法解析、實境片語、
+            AI 對話到模擬大考的完整學習旅程
+        </p>
     </header>
 
+
     <div class="main-container">
+
+        <!-- ==================================================
+             首頁 50 音快速學習區
+        =================================================== -->
+
+        <section class="kana-section">
+
+            <div class="kana-header">
+                <h2>🇯🇵 50 音快速學習</h2>
+                <p>
+                    依「あ・か・さ・た・な・は・ま・や・ら・わ行」分類，
+                    點擊任何假名即可聆聽日語發音。
+                </p>
+            </div>
+
+            <div class="kana-tabs">
+                <button
+                    class="kana-tab active"
+                    id="hiraganaBtn"
+                    type="button"
+                    onclick="switchKana('hiragana')"
+                >
+                    あ 平假名
+                </button>
+
+                <button
+                    class="kana-tab"
+                    id="katakanaBtn"
+                    type="button"
+                    onclick="switchKana('katakana')"
+                >
+                    ア 片假名
+                </button>
+            </div>
+
+            <div class="kana-tip">
+                🔊 點擊假名即可發音，例如：
+                <strong>あ → a</strong>、
+                <strong>か → ka</strong>、
+                <strong>さ → sa</strong>
+            </div>
+
+            <div id="kanaTable" class="kana-rows"></div>
+
+        </section>
+
+
+        <!-- ==================================================
+             六大學習階段
+        =================================================== -->
+
+        <div class="modules-title">
+            <h2>📚 六大學習階段</h2>
+            <p>依照自己的進度選擇學習內容</p>
+        </div>
+
         <div class="grid-menu">
-            
+
             <!-- 第一階段 -->
-            <a href="index.html" class="module-card" style="border-top-color: #e74c3c;">
+            <a
+                href="index.html"
+                class="module-card"
+                style="border-top-color:#e74c3c;"
+            >
                 <div class="card-content">
                     <h3>🇯🇵 第一階段：50音聲韻表</h3>
-                    <p>完整收錄清音、濁音、拗音。支援雙向互動測驗與點擊發音練習，打好日語根基。</p>
+                    <p>
+                        完整收錄清音、濁音、半濁音與拗音。
+                        支援雙向互動測驗與點擊發音練習，
+                        打好日語根基。
+                    </p>
                 </div>
+
                 <div class="card-footer">
-                    <span class="action-btn" style="background:#e74c3c;">進入學習</span>
+                    <span
+                        class="action-btn"
+                        style="background:#e74c3c;"
+                    >
+                        進入學習
+                    </span>
                 </div>
             </a>
+
 
             <!-- 第二階段 -->
-            <a href="vocab.html" class="module-card" style="border-top-color: #3498db;">
+            <a
+                href="vocab.html"
+                class="module-card"
+                style="border-top-color:#3498db;"
+            >
                 <div class="card-content">
                     <h3>📘 第二階段：800+ 核心單字圖卡</h3>
-                    <p>按主題分類的豐富單字庫，每字皆附帶專屬日文例句、真人朗讀與隨機測驗挑戰。</p>
+                    <p>
+                        按主題分類的豐富單字庫，
+                        每字皆附帶專屬日文例句、真人朗讀與隨機測驗挑戰。
+                    </p>
                 </div>
+
                 <div class="card-footer">
-                    <span class="action-btn" style="background:#3498db;">進入單字網</span>
+                    <span
+                        class="action-btn"
+                        style="background:#3498db;"
+                    >
+                        進入單字網
+                    </span>
                 </div>
             </a>
+
 
             <!-- 第三階段 -->
-            <a href="grammar.html" class="module-card" style="border-top-color: #2ecc71;">
+            <a
+                href="grammar.html"
+                class="module-card"
+                style="border-top-color:#2ecc71;"
+            >
                 <div class="card-content">
                     <h3>🌱 第三階段：N5 核心文法解說</h3>
-                    <p>系統化掌握必備助詞與句型。內含白話生動的「老師記憶筆記」及克漏字測驗。</p>
+                    <p>
+                        系統化掌握必備助詞與句型。
+                        內含白話生動的「老師記憶筆記」及克漏字測驗。
+                    </p>
                 </div>
+
                 <div class="card-footer">
-                    <span class="action-btn" style="background:#2ecc71;">進入文法網</span>
+                    <span
+                        class="action-btn"
+                        style="background:#2ecc71;"
+                    >
+                        進入文法網
+                    </span>
                 </div>
             </a>
+
 
             <!-- 第四階段 -->
-            <a href="phrases.html" class="module-card" style="border-top-color: #e91e63;">
+            <a
+                href="phrases.html"
+                class="module-card"
+                style="border-top-color:#e91e63;"
+            >
                 <div class="card-content">
                     <h3>🗣️ 第四階段：實用生活旅遊片語</h3>
-                    <p>涵蓋購物結帳、餐廳點餐、問路求助與社交禮儀的高頻實境對話與挑戰。</p>
+                    <p>
+                        涵蓋購物結帳、餐廳點餐、問路求助與社交禮儀的
+                        高頻實境對話與挑戰。
+                    </p>
                 </div>
+
                 <div class="card-footer">
-                    <span class="action-btn" style="background:#e91e63;">進入片語網</span>
+                    <span
+                        class="action-btn"
+                        style="background:#e91e63;"
+                    >
+                        進入片語網
+                    </span>
                 </div>
             </a>
+
 
             <!-- 第五階段 -->
-            <a href="roleplay.html" class="module-card" style="border-top-color: #9b59b6;">
+            <a
+                href="roleplay.html"
+                class="module-card"
+                style="border-top-color:#9b59b6;"
+            >
                 <div class="card-content">
                     <h3>🤖 第五階段：AI 情境角色扮演</h3>
-                    <p>解鎖 6 大日本旅遊真實情境，與超商、飯店、藥妝店員進行選項式互動對話。</p>
+                    <p>
+                        解鎖 6 大日本旅遊真實情境，
+                        與超商、飯店、藥妝店員進行選項式互動對話。
+                    </p>
                 </div>
+
                 <div class="card-footer">
-                    <span class="action-btn" style="background:#9b59b6;">進入對話網</span>
+                    <span
+                        class="action-btn"
+                        style="background:#9b59b6;"
+                    >
+                        進入對話網
+                    </span>
                 </div>
             </a>
 
+
             <!-- 第六階段 -->
-            <a href="exam.html" class="module-card" style="border-top-color: #f39c12;">
+            <a
+                href="exam.html"
+                class="module-card"
+                style="border-top-color:#f39c12;"
+            >
                 <div class="card-content">
                     <h3>📝 第六階段：JLPT N5 綜合模擬大考</h3>
-                    <p>結合字彙、文法與閱讀的 10 題正式模擬考，即時計分與評語，驗收學習成果。</p>
+                    <p>
+                        結合字彙、文法與閱讀的 10 題正式模擬考，
+                        即時計分與評語，驗收學習成果。
+                    </p>
                 </div>
+
                 <div class="card-footer">
-                    <span class="action-btn" style="background:#f39c12;">進行模擬考</span>
+                    <span
+                        class="action-btn"
+                        style="background:#f39c12;"
+                    >
+                        進行模擬考
+                    </span>
                 </div>
             </a>
 
         </div>
     </div>
 
+
     <footer>
-        <p>&copy; 2026 JLPT N5 Online Learning Course. All rights reserved.</p>
+        <p>
+            &copy; 2026 JLPT N5 Online Learning Course.
+            All rights reserved.
+        </p>
     </footer>
+
+
+    <script>
+
+        /* =====================================================
+           50 音資料
+        ===================================================== */
+
+        const kanaRows = [
+
+            {
+                name: "あ行",
+                hiragana: [
+                    ["あ", "a"],
+                    ["い", "i"],
+                    ["う", "u"],
+                    ["え", "e"],
+                    ["お", "o"]
+                ],
+                katakana: [
+                    ["ア", "a"],
+                    ["イ", "i"],
+                    ["ウ", "u"],
+                    ["エ", "e"],
+                    ["オ", "o"]
+                ]
+            },
+
+            {
+                name: "か行",
+                hiragana: [
+                    ["か", "ka"],
+                    ["き", "ki"],
+                    ["く", "ku"],
+                    ["け", "ke"],
+                    ["こ", "ko"]
+                ],
+                katakana: [
+                    ["カ", "ka"],
+                    ["キ", "ki"],
+                    ["ク", "ku"],
+                    ["ケ", "ke"],
+                    ["コ", "ko"]
+                ]
+            },
+
+            {
+                name: "さ行",
+                hiragana: [
+                    ["さ", "sa"],
+                    ["し", "shi"],
+                    ["す", "su"],
+                    ["せ", "se"],
+                    ["そ", "so"]
+                ],
+                katakana: [
+                    ["サ", "sa"],
+                    ["シ", "shi"],
+                    ["ス", "su"],
+                    ["セ", "se"],
+                    ["ソ", "so"]
+                ]
+            },
+
+            {
+                name: "た行",
+                hiragana: [
+                    ["た", "ta"],
+                    ["ち", "chi"],
+                    ["つ", "tsu"],
+                    ["て", "te"],
+                    ["と", "to"]
+                ],
+                katakana: [
+                    ["タ", "ta"],
+                    ["チ", "chi"],
+                    ["ツ", "tsu"],
+                    ["テ", "te"],
+                    ["ト", "to"]
+                ]
+            },
+
+            {
+                name: "な行",
+                hiragana: [
+                    ["な", "na"],
+                    ["に", "ni"],
+                    ["ぬ", "nu"],
+                    ["ね", "ne"],
+                    ["の", "no"]
+                ],
+                katakana: [
+                    ["ナ", "na"],
+                    ["ニ", "ni"],
+                    ["ヌ", "nu"],
+                    ["ネ", "ne"],
+                    ["ノ", "no"]
+                ]
+            },
+
+            {
+                name: "は行",
+                hiragana: [
+                    ["は", "ha"],
+                    ["ひ", "hi"],
+                    ["ふ", "fu"],
+                    ["へ", "he"],
+                    ["ほ", "ho"]
+                ],
+                katakana: [
+                    ["ハ", "ha"],
+                    ["ヒ", "hi"],
+                    ["フ", "fu"],
+                    ["ヘ", "he"],
+                    ["ホ", "ho"]
+                ]
+            },
+
+            {
+                name: "ま行",
+                hiragana: [
+                    ["ま", "ma"],
+                    ["み", "mi"],
+                    ["む", "mu"],
+                    ["め", "me"],
+                    ["も", "mo"]
+                ],
+                katakana: [
+                    ["マ", "ma"],
+                    ["ミ", "mi"],
+                    ["ム", "mu"],
+                    ["メ", "me"],
+                    ["モ", "mo"]
+                ]
+            },
+
+            {
+                name: "や行",
+                hiragana: [
+                    ["や", "ya"],
+                    null,
+                    ["ゆ", "yu"],
+                    null,
+                    ["よ", "yo"]
+                ],
+                katakana: [
+                    ["ヤ", "ya"],
+                    null,
+                    ["ユ", "yu"],
+                    null,
+                    ["ヨ", "yo"]
+                ]
+            },
+
+            {
+                name: "ら行",
+                hiragana: [
+                    ["ら", "ra"],
+                    ["り", "ri"],
+                    ["る", "ru"],
+                    ["れ", "re"],
+                    ["ろ", "ro"]
+                ],
+                katakana: [
+                    ["ラ", "ra"],
+                    ["リ", "ri"],
+                    ["ル", "ru"],
+                    ["レ", "re"],
+                    ["ロ", "ro"]
+                ]
+            },
+
+            {
+                name: "わ行",
+                hiragana: [
+                    ["わ", "wa"],
+                    null,
+                    null,
+                    null,
+                    ["を", "wo"]
+                ],
+                katakana: [
+                    ["ワ", "wa"],
+                    null,
+                    null,
+                    null,
+                    ["ヲ", "wo"]
+                ]
+            },
+
+            {
+                name: "ん",
+                hiragana: [
+                    ["ん", "n"],
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                katakana: [
+                    ["ン", "n"],
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+
+        ];
+
+
+        let currentKanaType = "hiragana";
+
+
+        /* =====================================================
+           建立 50 音表
+        ===================================================== */
+
+        function renderKanaTable() {
+
+            const table = document.getElementById("kanaTable");
+
+            table.innerHTML = "";
+
+            kanaRows.forEach(row => {
+
+                const rowElement = document.createElement("div");
+                rowElement.className = "kana-row";
+
+
+                /* 行名稱 */
+
+                const label = document.createElement("div");
+                label.className = "row-label";
+                label.textContent = row.name;
+
+                rowElement.appendChild(label);
+
+
+                /* 假名 */
+
+                row[currentKanaType].forEach(item => {
+
+                    if (!item) {
+
+                        const empty = document.createElement("div");
+                        empty.className = "kana-empty";
+
+                        rowElement.appendChild(empty);
+
+                        return;
+                    }
+
+
+                    const [kana, romaji] = item;
+
+                    const card = document.createElement("button");
+
+                    card.type = "button";
+                    card.className = "kana-card";
+
+                    card.innerHTML = `
+                        <span class="kana-char">${kana}</span>
+                        <span class="kana-romaji">${romaji}</span>
+                    `;
+
+                    card.addEventListener("click", function () {
+                        speakKana(kana, card);
+                    });
+
+                    rowElement.appendChild(card);
+
+                });
+
+
+                table.appendChild(rowElement);
+
+            });
+
+        }
+
+
+        /* =====================================================
+           平假名 / 片假名切換
+        ===================================================== */
+
+        function switchKana(type) {
+
+            currentKanaType = type;
+
+            const hiraBtn =
+                document.getElementById("hiraganaBtn");
+
+            const kataBtn =
+                document.getElementById("katakanaBtn");
+
+
+            hiraBtn.classList.toggle(
+                "active",
+                type === "hiragana"
+            );
+
+            kataBtn.classList.toggle(
+                "active",
+                type === "katakana"
+            );
+
+
+            renderKanaTable();
+
+        }
+
+
+        /* =====================================================
+           日語發音
+        ===================================================== */
+
+        function speakKana(text, element) {
+
+            if (!("speechSynthesis" in window)) {
+
+                alert(
+                    "目前的瀏覽器不支援語音朗讀功能，請使用 Chrome、Edge 或 Safari。"
+                );
+
+                return;
+            }
+
+
+            /* 停止上一個發音 */
+
+            window.speechSynthesis.cancel();
+
+
+            /* 清除其他發音效果 */
+
+            document
+                .querySelectorAll(".kana-card.speaking")
+                .forEach(card => {
+                    card.classList.remove("speaking");
+                });
+
+
+            element.classList.add("speaking");
+
+
+            const utterance =
+                new SpeechSynthesisUtterance(text);
+
+
+            utterance.lang = "ja-JP";
+
+            utterance.rate = 0.82;
+
+            utterance.pitch = 1;
+
+            utterance.volume = 1;
+
+
+            /*
+             * 優先尋找日文語音。
+             * Android / Chrome / iOS / Safari
+             * 可依裝置提供的語音自動選擇。
+             */
+
+            const voices =
+                window.speechSynthesis.getVoices();
+
+            const japaneseVoice =
+                voices.find(voice =>
+                    voice.lang &&
+                    voice.lang.toLowerCase().startsWith("ja")
+                );
+
+
+            if (japaneseVoice) {
+                utterance.voice = japaneseVoice;
+            }
+
+
+            utterance.onend = function () {
+                element.classList.remove("speaking");
+            };
+
+
+            utterance.onerror = function () {
+                element.classList.remove("speaking");
+            };
+
+
+            window.speechSynthesis.speak(utterance);
+
+        }
+
+
+        /* =====================================================
+           初始載入
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                renderKanaTable();
+
+                /*
+                 * 某些瀏覽器需要先載入 voices。
+                 */
+
+                if ("speechSynthesis" in window) {
+
+                    window.speechSynthesis.getVoices();
+
+                    window.speechSynthesis.onvoiceschanged =
+                        function () {
+                            window.speechSynthesis.getVoices();
+                        };
+
+                }
+
+            }
+        );
+
+    </script>
 
 </body>
 </html>
