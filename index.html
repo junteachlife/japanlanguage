@@ -3,1294 +3,386 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>JLPT N5 日語互動學習中心</title>
-
+<title>JLPT N5・N4 日語互動學習中心</title>
 <style>
-:root{
-    --primary-color:#2c3e50;
-    --accent-color:#3498db;
-    --bg-color:#f8f9fa;
-    --card-bg:#ffffff;
-    --text-color:#333333;
-}
+:root{--primary-color:#2c3e50;--accent-color:#3498db;--bg-color:#f8f9fa;--card-bg:#fff;--text-color:#333}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg-color);color:var(--text-color);margin:0;min-height:100vh;display:flex;flex-direction:column}
+header{background:linear-gradient(135deg,#2c3e50,#4ca1af);color:#fff;text-align:center;padding:40px 20px;box-shadow:0 4px 10px rgba(0,0,0,.1)}
+header h1{margin:0 0 10px;font-size:32px} header p{margin:0;font-size:16px;opacity:.9;line-height:1.7}
+.main-container{max-width:1200px;margin:35px auto 40px;padding:0 20px;flex:1;width:100%}
+.modules-title{text-align:center;margin:0 0 25px}.modules-title h2{color:#2c3e50;font-size:27px;margin:0 0 7px}.modules-title p{color:#777;margin:0;font-size:15px}
+.grid-menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:25px}
+.module-card{background:#fff;border-radius:12px;padding:25px;box-shadow:0 6px 20px rgba(0,0,0,.05);transition:.3s;display:flex;flex-direction:column;justify-content:space-between;border-top:5px solid var(--accent-color);text-decoration:none;color:inherit;cursor:pointer}
+.module-card:hover{transform:translateY(-8px);box-shadow:0 12px 25px rgba(0,0,0,.1)}
+.card-content h3{margin-top:0;color:var(--primary-color);font-size:22px;display:flex;align-items:center;gap:10px}.card-content p{color:#666;font-size:15px;line-height:1.6;margin-bottom:20px}
+.card-footer{display:flex;justify-content:flex-end}.action-btn{color:#fff;padding:10px 20px;border-radius:6px;font-weight:bold;font-size:14px}
+#kanaLearningPage{display:none}.back-home-btn{display:inline-flex;align-items:center;gap:7px;border:none;background:#fff;color:#2c3e50;padding:11px 17px;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.08);margin-bottom:18px;transition:.2s}.back-home-btn:hover{transform:translateY(-2px);background:#f3f6f8}
+.kana-section{background:#fff;border-radius:18px;padding:28px;box-shadow:0 6px 22px rgba(0,0,0,.07)}
+.kana-header{text-align:center;margin-bottom:22px}.kana-header h2{margin:0 0 8px;color:#2c3e50;font-size:27px}.kana-header p{margin:0;color:#6c757d;line-height:1.7;font-size:15px}
+.kana-tabs{display:flex;justify-content:center;gap:12px;margin:22px 0;flex-wrap:wrap}.kana-tab{border:none;background:#eef2f5;color:#555;padding:11px 25px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;transition:.2s}.kana-tab:hover{transform:translateY(-2px)}.kana-tab.active{background:#e74c3c;color:#fff;box-shadow:0 4px 10px rgba(231,76,60,.25)}
+.kana-tip{background:#fff7e8;border:1px solid #ffe0a3;color:#805b16;border-radius:10px;padding:12px 15px;margin-bottom:22px;font-size:14px;line-height:1.7;text-align:center}
+.kana-rows{display:flex;flex-direction:column;gap:14px}.kana-row{display:grid;grid-template-columns:72px repeat(5,minmax(120px,1fr));gap:10px;align-items:stretch}.row-label{display:flex;align-items:center;justify-content:center;background:#f1f4f6;border-radius:12px;color:#2c3e50;font-weight:bold;font-size:15px;min-height:135px}
+.kana-card{border:1px solid #e1e5e8;background:#fff;border-radius:13px;min-height:135px;padding:10px 7px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:.18s}.kana-card:hover{transform:translateY(-3px);border-color:#e74c3c;box-shadow:0 5px 12px rgba(0,0,0,.08)}
+.kana-main{border:none;background:none;cursor:pointer;width:100%;padding:0}.kana-char{display:block;font-family:"Noto Sans JP","Yu Gothic","Hiragino Kaku Gothic ProN",sans-serif;font-size:30px;font-weight:600;color:#253746}.kana-romaji{display:block;margin-top:2px;font-size:12px;color:#8a969f;font-weight:600}
+.word-btn{border:none;border-top:1px dashed #e2e6e9;background:none;cursor:pointer;width:100%;margin-top:7px;padding:7px 2px 0;color:#333}.word-jp{display:block;font-family:"Noto Sans JP","Yu Gothic",sans-serif;color:#d35400;font-size:15px;font-weight:bold;line-height:1.3}.word-zh{display:block;color:#777;font-size:11px;margin-top:3px}.kana-main:hover .kana-char,.word-btn:hover .word-jp{color:#e74c3c}.kana-card.speaking{background:#fff0ed;border-color:#e74c3c;box-shadow:0 0 0 3px rgba(231,76,60,.12)}.kana-empty{min-height:135px;border-radius:12px;background:#fafafa;border:1px dashed #e8e8e8}
+
+/* 聽音測驗 */
+.quiz-launch{margin:26px 0 8px;padding:22px;background:linear-gradient(135deg,#fdf2f0,#fff8e8);border:1px solid #ffd2c8;border-radius:16px;text-align:center}
+.quiz-launch h3{margin:0 0 8px;color:#c0392b;font-size:21px}.quiz-launch p{margin:0 0 16px;color:#666;line-height:1.65;font-size:14px}
+.quiz-mode-buttons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.quiz-mode-btn{border:none;border-radius:10px;padding:12px 17px;font-size:14px;font-weight:800;cursor:pointer;background:#e74c3c;color:#fff;box-shadow:0 3px 9px rgba(231,76,60,.2)}.quiz-mode-btn:nth-child(2){background:#8e44ad}.quiz-mode-btn:nth-child(3){background:#2980b9}
+#kanaQuizPage{display:none}
+.quiz-box{max-width:760px;margin:auto;background:#fff;border-radius:18px;padding:28px;box-shadow:0 6px 22px rgba(0,0,0,.08)}
+.quiz-top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}.quiz-progress{font-weight:800;color:#2c3e50}.quiz-score{font-weight:800;color:#e67e22}
+.progress-track{height:9px;background:#edf0f2;border-radius:999px;overflow:hidden;margin-bottom:24px}.progress-fill{height:100%;width:0;background:#e74c3c;transition:.25s}
+.quiz-instruction{text-align:center;font-size:16px;color:#59636b;font-weight:700;margin-bottom:13px}
+.sound-btn{display:block;margin:0 auto 22px;border:none;border-radius:50%;width:92px;height:92px;background:#e74c3c;color:#fff;font-size:39px;cursor:pointer;box-shadow:0 8px 20px rgba(231,76,60,.25);transition:.15s}.sound-btn:hover{transform:scale(1.04)}.sound-btn:active{transform:scale(.97)}
+.sound-note{text-align:center;color:#888;font-size:12px;margin:-12px 0 20px}
+.quiz-options{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quiz-option{min-height:90px;border:2px solid #e5e8eb;background:#fff;border-radius:14px;font-family:"Noto Sans JP","Yu Gothic",sans-serif;font-size:36px;font-weight:700;color:#263746;cursor:pointer;transition:.16s}.quiz-option:hover:not(:disabled){border-color:#3498db;background:#f3f9fd;transform:translateY(-2px)}.quiz-option.correct{background:#eaf8ef;border-color:#27ae60;color:#1e8449}.quiz-option.wrong{background:#fdeceb;border-color:#e74c3c;color:#c0392b}.quiz-option:disabled{cursor:default}
+.quiz-feedback{min-height:62px;margin-top:18px;padding:13px;border-radius:11px;text-align:center;font-weight:700;line-height:1.55}.quiz-feedback.good{background:#eaf8ef;color:#1e8449}.quiz-feedback.bad{background:#fdeceb;color:#c0392b}
+.quiz-next{display:none;margin:15px auto 0;border:none;border-radius:9px;padding:11px 24px;background:#2c3e50;color:#fff;font-weight:800;cursor:pointer}
+.quiz-result{text-align:center}.quiz-result h3{font-size:27px;color:#2c3e50;margin:5px 0 10px}.result-score{font-size:45px;font-weight:900;color:#e74c3c}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.result-card{background:#f6f8f9;border-radius:12px;padding:13px 8px}.result-card b{display:block;font-size:22px;color:#2c3e50}.wrong-list{text-align:left;background:#fff8e8;border-radius:12px;padding:15px;margin:15px 0;line-height:1.8}.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.result-actions button{border:none;border-radius:9px;padding:11px 17px;font-weight:800;cursor:pointer}.retry-btn{background:#e74c3c;color:#fff}.learn-btn{background:#edf0f2;color:#2c3e50}
+footer{text-align:center;padding:20px;background:#2c3e50;color:#fff;font-size:14px;margin-top:auto}footer p{margin:0}
+@media(max-width:900px){.kana-section{overflow-x:auto}.kana-rows{min-width:760px}}
+@media(max-width:760px){header{padding:30px 16px}header h1{font-size:26px}header p{font-size:14px}.main-container{margin-top:22px;padding:0 12px}.grid-menu{grid-template-columns:1fr;gap:18px}.module-card{padding:21px}.kana-section{padding:20px 12px;border-radius:14px}.kana-header h2,.modules-title h2{font-size:23px}.kana-rows{min-width:700px}.kana-row{grid-template-columns:55px repeat(5,120px);gap:6px}.row-label,.kana-card,.kana-empty{min-height:128px}.quiz-box{padding:20px 14px}.quiz-options{gap:10px}.quiz-option{font-size:32px;min-height:82px}.result-grid{grid-template-columns:1fr 1fr 1fr}}
+
+.special-lessons{margin:28px 0 8px;padding:20px;background:#f7fbff;border:1px solid #d9ebf7;border-radius:16px}
+.special-lessons h3{text-align:center;margin:0 0 15px;color:#2471a3}
+.special-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.special-card{background:#fff;border:1px solid #e4edf3;border-radius:12px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:6px}
+.special-card b{font-size:16px;color:#2c3e50}.special-card span,.special-card small{color:#6d7a83;font-size:12px}
+.special-card button{border:none;border-radius:8px;padding:8px;background:#eef6fb;color:#2471a3;font-weight:800;cursor:pointer}
+.trainer-settings{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.trainer-settings label{font-size:12px;font-weight:800;color:#5d6d7e;text-align:left}
+.trainer-settings select{width:100%;margin-top:5px;padding:10px;border:1px solid #dce2e6;border-radius:9px;background:#fff;color:#2c3e50;font-weight:700}
+.weak-btn{background:#8e44ad!important}.wrong-btn{background:#2980b9!important}
+.mastery-dashboard{margin-top:18px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mastery-item{background:#fff;border-radius:10px;padding:10px 6px;border:1px solid #eee;font-size:12px;color:#666}
+.mastery-item b{display:block;font-size:18px;color:#2c3e50;margin-bottom:2px}
+.quiz-prompt-char{text-align:center;font-family:"Noto Sans JP","Yu Gothic",sans-serif;font-size:66px;font-weight:800;color:#253746;margin:8px 0 20px}
+.quiz-prompt-word{text-align:center;font-family:"Noto Sans JP","Yu Gothic",sans-serif;font-size:38px;font-weight:800;color:#253746;margin:8px 0 20px}
+.quiz-option.romaji-option{font-family:inherit;font-size:24px}
+.weak-analysis{text-align:left;background:#f5f7fa;border-radius:12px;padding:14px;margin:15px 0}
+.weak-analysis div{padding:6px 0;border-bottom:1px solid #e6e9ec}.weak-analysis div:last-child{border-bottom:0}
+.explain-box{font-size:13px;font-weight:600;margin-top:6px;color:#58656e}
+@media(max-width:760px){.special-grid{grid-template-columns:1fr 1fr}.trainer-settings{grid-template-columns:1fr 1fr}.mastery-dashboard{grid-template-columns:repeat(2,1fr)}}
 
-*{
-    box-sizing:border-box;
-}
-
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
-    Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:var(--bg-color);
-    color:var(--text-color);
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-}
-
-/* =========================
-   頁首
-========================= */
-
-header{
-    background:linear-gradient(135deg,#2c3e50,#4ca1af);
-    color:white;
-    text-align:center;
-    padding:40px 20px;
-    box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
-
-header h1{
-    margin:0 0 10px;
-    font-size:32px;
-}
-
-header p{
-    margin:0;
-    font-size:16px;
-    opacity:.9;
-    line-height:1.7;
-}
-
-.main-container{
-    max-width:1200px;
-    margin:35px auto 40px;
-    padding:0 20px;
-    flex:1;
-    width:100%;
-}
-
-/* =========================
-   六大學習階段
-========================= */
-
-.modules-title{
-    text-align:center;
-    margin:0 0 25px;
-}
-
-.modules-title h2{
-    color:#2c3e50;
-    font-size:27px;
-    margin:0 0 7px;
-}
-
-.modules-title p{
-    color:#777;
-    margin:0;
-    font-size:15px;
-}
-
-.grid-menu{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:25px;
-}
-
-.module-card{
-    background:var(--card-bg);
-    border-radius:12px;
-    padding:25px;
-    box-shadow:0 6px 20px rgba(0,0,0,.05);
-    transition:.3s;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    border-top:5px solid var(--accent-color);
-    text-decoration:none;
-    color:inherit;
-    cursor:pointer;
-}
-
-.module-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 12px 25px rgba(0,0,0,.1);
-}
-
-.card-content h3{
-    margin-top:0;
-    color:var(--primary-color);
-    font-size:22px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.card-content p{
-    color:#666;
-    font-size:15px;
-    line-height:1.6;
-    margin-bottom:20px;
-}
-
-.card-footer{
-    display:flex;
-    justify-content:flex-end;
-}
-
-.action-btn{
-    color:white;
-    padding:10px 20px;
-    border-radius:6px;
-    font-weight:bold;
-    font-size:14px;
-}
-
-/* =========================
-   50音學習頁
-========================= */
-
-#kanaLearningPage{
-    display:none;
-}
-
-.back-home-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    border:none;
-    background:#ffffff;
-    color:#2c3e50;
-    padding:11px 17px;
-    border-radius:10px;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-    margin-bottom:18px;
-    transition:.2s;
-}
-
-.back-home-btn:hover{
-    transform:translateY(-2px);
-    background:#f3f6f8;
-}
-
-.kana-section{
-    background:#fff;
-    border-radius:18px;
-    padding:28px;
-    box-shadow:0 6px 22px rgba(0,0,0,.07);
-}
-
-.kana-header{
-    text-align:center;
-    margin-bottom:22px;
-}
-
-.kana-header h2{
-    margin:0 0 8px;
-    color:#2c3e50;
-    font-size:27px;
-}
-
-.kana-header p{
-    margin:0;
-    color:#6c757d;
-    line-height:1.7;
-    font-size:15px;
-}
-
-.kana-tabs{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    margin:22px 0;
-    flex-wrap:wrap;
-}
-
-.kana-tab{
-    border:none;
-    background:#eef2f5;
-    color:#555;
-    padding:11px 25px;
-    border-radius:30px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.kana-tab:hover{
-    transform:translateY(-2px);
-}
-
-.kana-tab.active{
-    background:#e74c3c;
-    color:white;
-    box-shadow:0 4px 10px rgba(231,76,60,.25);
-}
-
-.kana-tip{
-    background:#fff7e8;
-    border:1px solid #ffe0a3;
-    color:#805b16;
-    border-radius:10px;
-    padding:12px 15px;
-    margin-bottom:22px;
-    font-size:14px;
-    line-height:1.7;
-    text-align:center;
-}
-
-/* =========================
-   50音各行
-========================= */
-
-.kana-rows{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-}
-
-.kana-row{
-    display:grid;
-    grid-template-columns:72px repeat(5,minmax(120px,1fr));
-    gap:10px;
-    align-items:stretch;
-}
-
-.row-label{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#f1f4f6;
-    border-radius:12px;
-    color:#2c3e50;
-    font-weight:bold;
-    font-size:15px;
-    min-height:135px;
-}
-
-/* =========================
-   單一假名卡片
-========================= */
-
-.kana-card{
-    border:1px solid #e1e5e8;
-    background:#fff;
-    border-radius:13px;
-    min-height:135px;
-    padding:10px 7px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    transition:.18s;
-}
-
-.kana-card:hover{
-    transform:translateY(-3px);
-    border-color:#e74c3c;
-    box-shadow:0 5px 12px rgba(0,0,0,.08);
-}
-
-.kana-main{
-    border:none;
-    background:none;
-    cursor:pointer;
-    width:100%;
-    padding:0;
-}
-
-.kana-char{
-    display:block;
-    font-family:"Noto Sans JP","Yu Gothic",
-    "Hiragino Kaku Gothic ProN",sans-serif;
-    font-size:30px;
-    font-weight:600;
-    color:#253746;
-}
-
-.kana-romaji{
-    display:block;
-    margin-top:2px;
-    font-size:12px;
-    color:#8a969f;
-    font-weight:600;
-}
-
-/* =========================
-   單字
-========================= */
-
-.word-btn{
-    border:none;
-    border-top:1px dashed #e2e6e9;
-    background:none;
-    cursor:pointer;
-    width:100%;
-    margin-top:7px;
-    padding:7px 2px 0;
-    color:#333;
-}
-
-.word-jp{
-    display:block;
-    font-family:"Noto Sans JP","Yu Gothic",sans-serif;
-    color:#d35400;
-    font-size:15px;
-    font-weight:bold;
-    line-height:1.3;
-}
-
-.word-zh{
-    display:block;
-    color:#777;
-    font-size:11px;
-    margin-top:3px;
-}
-
-.kana-main:hover .kana-char,
-.word-btn:hover .word-jp{
-    color:#e74c3c;
-}
-
-.kana-card.speaking{
-    background:#fff0ed;
-    border-color:#e74c3c;
-    box-shadow:0 0 0 3px rgba(231,76,60,.12);
-}
-
-.kana-empty{
-    min-height:135px;
-    border-radius:12px;
-    background:#fafafa;
-    border:1px dashed #e8e8e8;
-}
-
-/* =========================
-   Footer
-========================= */
-
-footer{
-    text-align:center;
-    padding:20px;
-    background:#2c3e50;
-    color:white;
-    font-size:14px;
-    margin-top:auto;
-}
-
-footer p{
-    margin:0;
-}
-
-/* =========================
-   平板
-========================= */
-
-@media(max-width:900px){
-
-    .kana-section{
-        overflow-x:auto;
-    }
-
-    .kana-rows{
-        min-width:760px;
-    }
-
-}
-
-/* =========================
-   手機
-========================= */
-
-@media(max-width:760px){
-
-    header{
-        padding:30px 16px;
-    }
-
-    header h1{
-        font-size:26px;
-    }
-
-    header p{
-        font-size:14px;
-    }
-
-    .main-container{
-        margin-top:22px;
-        padding:0 12px;
-    }
-
-    .grid-menu{
-        grid-template-columns:1fr;
-        gap:18px;
-    }
-
-    .module-card{
-        padding:21px;
-    }
-
-    .kana-section{
-        padding:20px 12px;
-        border-radius:14px;
-    }
-
-    .kana-header h2,
-    .modules-title h2{
-        font-size:23px;
-    }
-
-    .kana-rows{
-        min-width:700px;
-    }
-
-    .kana-row{
-        grid-template-columns:55px repeat(5,120px);
-        gap:6px;
-    }
-
-    .row-label,
-    .kana-card,
-    .kana-empty{
-        min-height:128px;
-    }
-}
 </style>
 </head>
-
 <body>
-
-<header>
-    <h1>🌸 JLPT N5 日語互動學習中心</h1>
-    <p>
-        從 50音、800+ 核心單字、文法解析、實境片語、
-        AI 對話到模擬大考的完整學習旅程
-    </p>
-</header>
-
+<header><h1>🌸 JLPT N5・N4 日語互動學習中心</h1><p>從 50音、800+ 核心單字、文法解析、實境片語、AI 對話到模擬大考的完整學習旅程</p></header>
 <div class="main-container">
+<div id="homePage">
+<div class="modules-title"><h2>📚 六大學習階段</h2><p>依照自己的進度選擇學習內容</p></div>
+<div class="grid-menu">
+<div class="module-card" onclick="openKanaLearning()" style="border-top-color:#e74c3c;"><div class="card-content"><h3>🇯🇵 第一階段：假名綜合訓練中心</h3><p>完整學習清音、濁音、半濁音與拗音的平假名／片假名，搭配代表單字、日語發音與聽音辨字測驗。</p></div><div class="card-footer"><span class="action-btn" style="background:#e74c3c;">進入學習</span></div></div>
+<a href="vocab.html" class="module-card" style="border-top-color:#3498db;"><div class="card-content"><h3>📘 第二階段：800+ 核心單字圖卡</h3><p>按主題分類的豐富單字庫，每字皆附帶專屬日文例句、真人朗讀與隨機測驗挑戰。</p></div><div class="card-footer"><span class="action-btn" style="background:#3498db;">進入單字網</span></div></a>
+<a href="grammar.html" class="module-card" style="border-top-color:#2ecc71;"><div class="card-content"><h3>🌱 第三階段：N5 核心文法解說</h3><p>系統化掌握必備助詞與句型。內含白話生動的「老師記憶筆記」及克漏字測驗。</p></div><div class="card-footer"><span class="action-btn" style="background:#2ecc71;">進入文法網</span></div></a>
+<a href="phrases.html" class="module-card" style="border-top-color:#e91e63;"><div class="card-content"><h3>🗣️ 第四階段：實用生活旅遊片語</h3><p>涵蓋購物結帳、餐廳點餐、問路求助與社交禮儀的高頻實境對話與挑戰。</p></div><div class="card-footer"><span class="action-btn" style="background:#e91e63;">進入片語網</span></div></a>
+<a href="roleplay.html" class="module-card" style="border-top-color:#9b59b6;"><div class="card-content"><h3>🤖 第五階段：AI 情境角色扮演</h3><p>解鎖 6 大日本旅遊真實情境，與超商、飯店、藥妝店員進行選項式互動對話。</p></div><div class="card-footer"><span class="action-btn" style="background:#9b59b6;">進入對話網</span></div></a>
+<a href="exam.html" class="module-card" style="border-top-color:#f39c12;"><div class="card-content"><h3>📝 第六階段：JLPT N5 綜合模擬大考</h3><p>結合字彙、文法與閱讀的綜合模擬驗收，即時計分與分析學習成果。</p></div><div class="card-footer"><span class="action-btn" style="background:#f39c12;">進行模擬考</span></div></a>
+</div></div>
 
-    <!-- ==================================================
-         首頁
-    =================================================== -->
-
-    <div id="homePage">
-
-        <div class="modules-title">
-            <h2>📚 六大學習階段</h2>
-            <p>依照自己的進度選擇學習內容</p>
-        </div>
-
-        <div class="grid-menu">
-
-            <!-- 第一階段 -->
-            <div
-                class="module-card"
-                onclick="openKanaLearning()"
-                style="border-top-color:#e74c3c;"
-            >
-                <div class="card-content">
-                    <h3>🇯🇵 第一階段：50音聲韻表</h3>
-
-                    <p>
-                        完整學習平假名與片假名，
-                        依「あ・か・さ・た・な・は・ま・や・ら・わ行」分類，
-                        搭配代表單字與日語發音練習。
-                    </p>
-                </div>
-
-                <div class="card-footer">
-                    <span
-                        class="action-btn"
-                        style="background:#e74c3c;"
-                    >
-                        進入學習
-                    </span>
-                </div>
-            </div>
+<div id="kanaLearningPage">
+<button class="back-home-btn" type="button" onclick="backToHome()">⬅️ 返回學習首頁</button>
+<section class="kana-section">
+<div class="kana-header"><h2>🇯🇵 第一階段：假名 FINAL 綜合學習</h2><p>點擊大字可聆聽「假名發音」，點擊下方單字則可聆聽「完整單字」。學完後可進行聽音辨字測驗。</p></div>
+<div class="kana-tabs">
+<button class="kana-tab active" id="hiraganaBtn" type="button" onclick="switchKana('hiragana')">あ 平假名</button>
+<button class="kana-tab" id="katakanaBtn" type="button" onclick="switchKana('katakana')">ア 片假名</button>
+</div>
+<div class="kana-tip">🔊 <strong>假名與單字都可以點擊發音</strong><br>例如：あ → <strong>あめ（雨）</strong>　 ア → <strong>アイス（冰淇淋）</strong></div>
+<div id="kanaTable" class="kana-rows"></div>
 
 
-            <!-- 第二階段 -->
-            <a
-                href="vocab.html"
-                class="module-card"
-                style="border-top-color:#3498db;"
-            >
-                <div class="card-content">
-                    <h3>📘 第二階段：800+ 核心單字圖卡</h3>
-
-                    <p>
-                        按主題分類的豐富單字庫，
-                        每字皆附帶專屬日文例句、真人朗讀與隨機測驗挑戰。
-                    </p>
-                </div>
-
-                <div class="card-footer">
-                    <span
-                        class="action-btn"
-                        style="background:#3498db;"
-                    >
-                        進入單字網
-                    </span>
-                </div>
-            </a>
-
-
-            <!-- 第三階段 -->
-            <a
-                href="grammar.html"
-                class="module-card"
-                style="border-top-color:#2ecc71;"
-            >
-                <div class="card-content">
-                    <h3>🌱 第三階段：N5 核心文法解說</h3>
-
-                    <p>
-                        系統化掌握必備助詞與句型。
-                        內含白話生動的「老師記憶筆記」及克漏字測驗。
-                    </p>
-                </div>
-
-                <div class="card-footer">
-                    <span
-                        class="action-btn"
-                        style="background:#2ecc71;"
-                    >
-                        進入文法網
-                    </span>
-                </div>
-            </a>
-
-
-            <!-- 第四階段 -->
-            <a
-                href="phrases.html"
-                class="module-card"
-                style="border-top-color:#e91e63;"
-            >
-                <div class="card-content">
-                    <h3>🗣️ 第四階段：實用生活旅遊片語</h3>
-
-                    <p>
-                        涵蓋購物結帳、餐廳點餐、問路求助與社交禮儀的
-                        高頻實境對話與挑戰。
-                    </p>
-                </div>
-
-                <div class="card-footer">
-                    <span
-                        class="action-btn"
-                        style="background:#e91e63;"
-                    >
-                        進入片語網
-                    </span>
-                </div>
-            </a>
-
-
-            <!-- 第五階段 -->
-            <a
-                href="roleplay.html"
-                class="module-card"
-                style="border-top-color:#9b59b6;"
-            >
-                <div class="card-content">
-                    <h3>🤖 第五階段：AI 情境角色扮演</h3>
-
-                    <p>
-                        解鎖 6 大日本旅遊真實情境，
-                        與超商、飯店、藥妝店員進行選項式互動對話。
-                    </p>
-                </div>
-
-                <div class="card-footer">
-                    <span
-                        class="action-btn"
-                        style="background:#9b59b6;"
-                    >
-                        進入對話網
-                    </span>
-                </div>
-            </a>
-
-
-            <!-- 第六階段 -->
-            <a
-                href="exam.html"
-                class="module-card"
-                style="border-top-color:#f39c12;"
-            >
-                <div class="card-content">
-                    <h3>📝 第六階段：JLPT N5 綜合模擬大考</h3>
-
-                    <p>
-                        結合字彙、文法與閱讀的 10 題正式模擬考，
-                        即時計分與評語，驗收學習成果。
-                    </p>
-                </div>
-
-                <div class="card-footer">
-                    <span
-                        class="action-btn"
-                        style="background:#f39c12;"
-                    >
-                        進行模擬考
-                    </span>
-                </div>
-            </a>
-
-        </div>
-    </div>
-
-
-    <!-- ==================================================
-         第一階段：50音
-    =================================================== -->
-
-    <div id="kanaLearningPage">
-
-        <button
-            class="back-home-btn"
-            type="button"
-            onclick="backToHome()"
-        >
-            ⬅️ 返回學習首頁
-        </button>
-
-        <section class="kana-section">
-
-            <div class="kana-header">
-
-                <h2>🇯🇵 第一階段：50音聲韻學習</h2>
-
-                <p>
-                    點擊大字可聆聽「假名發音」，
-                    點擊下方單字則可聆聽「完整單字」。
-                </p>
-
-            </div>
-
-
-            <div class="kana-tabs">
-
-                <button
-                    class="kana-tab active"
-                    id="hiraganaBtn"
-                    type="button"
-                    onclick="switchKana('hiragana')"
-                >
-                    あ 平假名
-                </button>
-
-                <button
-                    class="kana-tab"
-                    id="katakanaBtn"
-                    type="button"
-                    onclick="switchKana('katakana')"
-                >
-                    ア 片假名
-                </button>
-
-            </div>
-
-
-            <div class="kana-tip">
-
-                🔊 <strong>假名與單字都可以點擊發音</strong><br>
-
-                例如：
-                あ → <strong>あめ（雨）</strong>　
-                ア → <strong>アイス（冰淇淋）</strong>
-
-            </div>
-
-
-            <div
-                id="kanaTable"
-                class="kana-rows"
-            ></div>
-
-        </section>
-
-    </div>
-
+<div class="special-lessons">
+  <h3>✨ 進階發音重點</h3>
+  <div class="special-grid">
+    <div class="special-card"><b>っ／ッ　促音</b><span>短暫停頓一拍</span><button onclick="speakJapanese('きって')">🔊 きって</button><small>切手・郵票</small></div>
+    <div class="special-card"><b>ー　長音</b><span>前一個母音拉長</span><button onclick="speakJapanese('コーヒー')">🔊 コーヒー</button><small>咖啡</small></div>
+    <div class="special-card"><b>ゃ・ゅ・ょ　拗音</b><span>小字與前音合成一拍</span><button onclick="speakJapanese('りょこう')">🔊 りょこう</button><small>旅行</small></div>
+    <div class="special-card"><b>清音／濁音／半濁音</b><span>比較 は・ば・ぱ</span><button onclick="playContrast(['は','ば','ぱ'])">🔊 聽比較</button><small>注意聲音差異</small></div>
+  </div>
 </div>
 
+<div class="quiz-launch">
+  <h3>🎧 假名 FINAL 綜合訓練中心</h3>
+  <p>從「聽音辨字」進階到「字形辨識、羅馬字、平片假名互換、易混淆特訓與完整驗收」。系統會記錄弱點並提高錯題再次出現的機率。</p>
 
-<footer>
-    <p>
-        &copy; 2026 JLPT N5 Online Learning Course.
-        All rights reserved.
-    </p>
-</footer>
+  <div class="trainer-settings">
+    <label>測驗內容
+      <select id="quizKind">
+        <option value="listen">🔊 聽音 → 選假名</option>
+        <option value="romaji">🔤 看假名 → 選羅馬字</option>
+        <option value="h2k">あ→ア 平假名 → 片假名</option>
+        <option value="k2h">ア→あ 片假名 → 平假名</option>
+        <option value="confusion">👀 易混淆字形特訓</option>
+        <option value="special">✨ 促音・長音・拗音特訓</option>
+      </select>
+    </label>
+    <label>範圍
+      <select id="quizScope">
+        <option value="all">全部綜合</option>
+        <option value="seion">清音</option>
+        <option value="dakuon">濁音</option>
+        <option value="handakuon">半濁音</option>
+        <option value="youon">拗音</option>
+      </select>
+    </label>
+    <label>字體
+      <select id="quizScript">
+        <option value="mixed">平／片假名混合</option>
+        <option value="hiragana">平假名</option>
+        <option value="katakana">片假名</option>
+      </select>
+    </label>
+    <label>題數
+      <select id="quizCount">
+        <option value="10">10 題快速練習</option>
+        <option value="20">20 題挑戰</option>
+        <option value="full">完整驗收</option>
+      </select>
+    </label>
+  </div>
 
+  <div class="quiz-mode-buttons">
+    <button class="quiz-mode-btn" onclick="startConfiguredQuiz()">▶️ 開始測驗</button>
+    <button class="quiz-mode-btn weak-btn" onclick="startWeakQuiz()">🎯 弱點特訓</button>
+    <button class="quiz-mode-btn wrong-btn" onclick="startWrongQuiz()">📌 錯題再測</button>
+  </div>
+  <div id="masteryDashboard" class="mastery-dashboard"></div>
+</div>
+</section></div>
+
+<div id="kanaQuizPage">
+<button class="back-home-btn" type="button" onclick="returnToKanaLearning()">⬅️ 返回50音學習</button>
+<div class="quiz-box" id="quizBox"></div>
+</div>
+</div>
+<footer><p>&copy; 2026 JLPT N5 Online Learning Course. All rights reserved.</p></footer>
 
 <script>
+const kanaRows=[
+{name:"あ行",hiragana:[["あ","a","あめ","雨"],["い","i","いぬ","狗"],["う","u","うみ","海"],["え","e","えき","車站"],["お","o","おちゃ","茶"]],katakana:[["ア","a","アイス","冰淇淋"],["イ","i","イヤホン","耳機"],["ウ","u","ウイルス","病毒"],["エ","e","エアコン","冷氣"],["オ","o","オレンジ","柳橙"]]},
+{name:"か行",hiragana:[["か","ka","かさ","雨傘"],["き","ki","き","樹木"],["く","ku","くるま","汽車"],["け","ke","けさ","今天早上"],["こ","ko","こども","小孩"]],katakana:[["カ","ka","カメラ","相機"],["キ","ki","キウイ","奇異果"],["ク","ku","クラス","班級"],["ケ","ke","ケーキ","蛋糕"],["コ","ko","コーヒー","咖啡"]]},
+{name:"さ行",hiragana:[["さ","sa","さかな","魚"],["し","shi","しお","鹽"],["す","su","すし","壽司"],["せ","se","せかい","世界"],["そ","so","そら","天空"]],katakana:[["サ","sa","サラダ","沙拉"],["シ","shi","シャツ","襯衫"],["ス","su","スープ","湯"],["セ","se","セーター","毛衣"],["ソ","so","ソファ","沙發"]]},
+{name:"た行",hiragana:[["た","ta","たまご","蛋"],["ち","chi","ちず","地圖"],["つ","tsu","つくえ","桌子"],["て","te","て","手"],["と","to","とけい","時鐘"]],katakana:[["タ","ta","タクシー","計程車"],["チ","chi","チーズ","起司"],["ツ","tsu","ツアー","旅行團"],["テ","te","テレビ","電視"],["ト","to","トイレ","廁所"]]},
+{name:"な行",hiragana:[["な","na","なつ","夏天"],["に","ni","にく","肉"],["ぬ","nu","ぬの","布"],["ね","ne","ねこ","貓"],["の","no","のみもの","飲料"]],katakana:[["ナ","na","ナイフ","刀子"],["ニ","ni","ニュース","新聞"],["ヌ","nu","ヌードル","麵類"],["ネ","ne","ネクタイ","領帶"],["ノ","no","ノート","筆記本"]]},
+{name:"は行",hiragana:[["は","ha","はな","花"],["ひ","hi","ひこうき","飛機"],["ふ","fu","ふね","船"],["へ","he","へや","房間"],["ほ","ho","ほん","書"]],katakana:[["ハ","ha","ハンバーガー","漢堡"],["ヒ","hi","ヒーター","暖氣機"],["フ","fu","フォーク","叉子"],["ヘ","he","ヘリコプター","直升機"],["ホ","ho","ホテル","飯店"]]},
+{name:"ま行",hiragana:[["ま","ma","まど","窗戶"],["み","mi","みず","水"],["む","mu","むし","昆蟲"],["め","me","め","眼睛"],["も","mo","もも","桃子"]],katakana:[["マ","ma","マスク","口罩"],["ミ","mi","ミルク","牛奶"],["ム","mu","ムービー","電影"],["メ","me","メニュー","菜單"],["モ","mo","モデル","模特兒"]]},
+{name:"や行",hiragana:[["や","ya","やさい","蔬菜"],null,["ゆ","yu","ゆき","雪"],null,["よ","yo","よる","夜晚"]],katakana:[["ヤ","ya","ヤクルト","養樂多"],null,["ユ","yu","ユニフォーム","制服"],null,["ヨ","yo","ヨーグルト","優格"]]},
+{name:"ら行",hiragana:[["ら","ra","らいねん","明年"],["り","ri","りんご","蘋果"],["る","ru","るす","不在家"],["れ","re","れいぞうこ","冰箱"],["ろ","ro","ろうか","走廊"]],katakana:[["ラ","ra","ラーメン","拉麵"],["リ","ri","リモコン","遙控器"],["ル","ru","ルール","規則"],["レ","re","レストラン","餐廳"],["ロ","ro","ロッカー","置物櫃"]]},
+{name:"わ行",hiragana:[["わ","wa","わたし","我"],null,null,null,["を","wo","を","助詞：表示動作的對象"]],katakana:[["ワ","wa","ワイン","葡萄酒"],null,null,null,["ヲ","wo","ヲタク","御宅族"]]},
+{name:"ん",hiragana:[["ん","n","ほん","書（ん在單字結尾）"],null,null,null,null],katakana:[["ン","n","パン","麵包（ン在單字結尾）"],null,null,null,null]},
 
-/* =====================================================
-   50音資料
-   格式：
-   [假名, 羅馬字, 代表單字, 中文]
-===================================================== */
+/* 濁音・半濁音 */
+{name:"が行",hiragana:[["が","ga","がっこう","學校"],["ぎ","gi","ぎんこう","銀行"],["ぐ","gu","ぐあい","情況／身體狀況"],["げ","ge","げんき","有精神"],["ご","go","ごはん","飯／餐"]],katakana:[["ガ","ga","ガラス","玻璃"],["ギ","gi","ギター","吉他"],["グ","gu","グループ","團體"],["ゲ","ge","ゲーム","遊戲"],["ゴ","go","ゴルフ","高爾夫"]]},
+{name:"ざ行",hiragana:[["ざ","za","ざっし","雜誌"],["じ","ji","じかん","時間"],["ず","zu","みず","水"],["ぜ","ze","ぜんぶ","全部"],["ぞ","zo","ぞう","大象"]],katakana:[["ザ","za","サイズ","尺寸"],["ジ","ji","ジュース","果汁"],["ズ","zu","ズボン","褲子"],["ゼ","ze","ゼロ","零"],["ゾ","zo","ゾーン","區域"]]},
+{name:"だ行",hiragana:[["だ","da","だいがく","大學"],["ぢ","ji","はなぢ","鼻血"],["づ","zu","つづく","持續"],["で","de","でんわ","電話"],["ど","do","どうぶつ","動物"]],katakana:[["ダ","da","ダンス","舞蹈"],["ヂ","ji","ヂ","較少單獨使用"],["ヅ","zu","ヅ","較少單獨使用"],["デ","de","デパート","百貨公司"],["ド","do","ドア","門"]]},
+{name:"ば行",hiragana:[["ば","ba","ばんごう","號碼"],["び","bi","びょういん","醫院"],["ぶ","bu","ぶた","豬"],["べ","be","べんとう","便當"],["ぼ","bo","ぼうし","帽子"]],katakana:[["バ","ba","バス","公車"],["ビ","bi","ビール","啤酒"],["ブ","bu","ブログ","部落格"],["ベ","be","ベッド","床"],["ボ","bo","ボール","球"]]},
+{name:"ぱ行",hiragana:[["ぱ","pa","ぱちぱち","劈啪聲／拍手聲"],["ぴ","pi","ぴかぴか","閃亮亮"],["ぷ","pu","ぷりぷり","氣鼓鼓的樣子"],["ぺ","pe","ぺこぺこ","肚子餓的樣子"],["ぽ","po","ぽかぽか","暖呼呼"]],katakana:[["パ","pa","パン","麵包"],["ピ","pi","ピアノ","鋼琴"],["プ","pu","プール","游泳池"],["ペ","pe","ペン","筆"],["ポ","po","ポスト","郵筒"]]},
 
-const kanaRows = [
-
-{
-    name:"あ行",
-
-    hiragana:[
-        ["あ","a","あめ","雨"],
-        ["い","i","いぬ","狗"],
-        ["う","u","うみ","海"],
-        ["え","e","えき","車站"],
-        ["お","o","おちゃ","茶"]
-    ],
-
-    katakana:[
-        ["ア","a","アイス","冰淇淋"],
-        ["イ","i","イヤホン","耳機"],
-        ["ウ","u","ウイルス","病毒"],
-        ["エ","e","エアコン","冷氣"],
-        ["オ","o","オレンジ","柳橙"]
-    ]
-},
-
-{
-    name:"か行",
-
-    hiragana:[
-        ["か","ka","かさ","雨傘"],
-        ["き","ki","き","樹木"],
-        ["く","ku","くるま","汽車"],
-        ["け","ke","けさ","今天早上"],
-        ["こ","ko","こども","小孩"]
-    ],
-
-    katakana:[
-        ["カ","ka","カメラ","相機"],
-        ["キ","ki","キウイ","奇異果"],
-        ["ク","ku","クラス","班級"],
-        ["ケ","ke","ケーキ","蛋糕"],
-        ["コ","ko","コーヒー","咖啡"]
-    ]
-},
-
-{
-    name:"さ行",
-
-    hiragana:[
-        ["さ","sa","さかな","魚"],
-        ["し","shi","しお","鹽"],
-        ["す","su","すし","壽司"],
-        ["せ","se","せかい","世界"],
-        ["そ","so","そら","天空"]
-    ],
-
-    katakana:[
-        ["サ","sa","サラダ","沙拉"],
-        ["シ","shi","シャツ","襯衫"],
-        ["ス","su","スープ","湯"],
-        ["セ","se","セーター","毛衣"],
-        ["ソ","so","ソファ","沙發"]
-    ]
-},
-
-{
-    name:"た行",
-
-    hiragana:[
-        ["た","ta","たまご","蛋"],
-        ["ち","chi","ちず","地圖"],
-        ["つ","tsu","つくえ","桌子"],
-        ["て","te","て","手"],
-        ["と","to","とけい","時鐘"]
-    ],
-
-    katakana:[
-        ["タ","ta","タクシー","計程車"],
-        ["チ","chi","チーズ","起司"],
-        ["ツ","tsu","ツアー","旅行團"],
-        ["テ","te","テレビ","電視"],
-        ["ト","to","トイレ","廁所"]
-    ]
-},
-
-{
-    name:"な行",
-
-    hiragana:[
-        ["な","na","なつ","夏天"],
-        ["に","ni","にく","肉"],
-        ["ぬ","nu","ぬの","布"],
-        ["ね","ne","ねこ","貓"],
-        ["の","no","のみもの","飲料"]
-    ],
-
-    katakana:[
-        ["ナ","na","ナイフ","刀子"],
-        ["ニ","ni","ニュース","新聞"],
-        ["ヌ","nu","ヌードル","麵類"],
-        ["ネ","ne","ネクタイ","領帶"],
-        ["ノ","no","ノート","筆記本"]
-    ]
-},
-
-{
-    name:"は行",
-
-    hiragana:[
-        ["は","ha","はな","花"],
-        ["ひ","hi","ひこうき","飛機"],
-        ["ふ","fu","ふね","船"],
-        ["へ","he","へや","房間"],
-        ["ほ","ho","ほん","書"]
-    ],
-
-    katakana:[
-        ["ハ","ha","ハンバーガー","漢堡"],
-        ["ヒ","hi","ヒーター","暖氣機"],
-        ["フ","fu","フォーク","叉子"],
-        ["ヘ","he","ヘリコプター","直升機"],
-        ["ホ","ho","ホテル","飯店"]
-    ]
-},
-
-{
-    name:"ま行",
-
-    hiragana:[
-        ["ま","ma","まど","窗戶"],
-        ["み","mi","みず","水"],
-        ["む","mu","むし","昆蟲"],
-        ["め","me","め","眼睛"],
-        ["も","mo","もも","桃子"]
-    ],
-
-    katakana:[
-        ["マ","ma","マスク","口罩"],
-        ["ミ","mi","ミルク","牛奶"],
-        ["ム","mu","ムービー","電影"],
-        ["メ","me","メニュー","菜單"],
-        ["モ","mo","モデル","模特兒"]
-    ]
-},
-
-{
-    name:"や行",
-
-    hiragana:[
-        ["や","ya","やさい","蔬菜"],
-        null,
-        ["ゆ","yu","ゆき","雪"],
-        null,
-        ["よ","yo","よる","夜晚"]
-    ],
-
-    katakana:[
-        ["ヤ","ya","ヤクルト","養樂多"],
-        null,
-        ["ユ","yu","ユニフォーム","制服"],
-        null,
-        ["ヨ","yo","ヨーグルト","優格"]
-    ]
-},
-
-{
-    name:"ら行",
-
-    hiragana:[
-        ["ら","ra","らいねん","明年"],
-        ["り","ri","りんご","蘋果"],
-        ["る","ru","るす","不在家"],
-        ["れ","re","れいぞうこ","冰箱"],
-        ["ろ","ro","ろうか","走廊"]
-    ],
-
-    katakana:[
-        ["ラ","ra","ラーメン","拉麵"],
-        ["リ","ri","リモコン","遙控器"],
-        ["ル","ru","ルール","規則"],
-        ["レ","re","レストラン","餐廳"],
-        ["ロ","ro","ロッカー","置物櫃"]
-    ]
-},
-
-{
-    name:"わ行",
-
-    hiragana:[
-        ["わ","wa","わたし","我"],
-        null,
-        null,
-        null,
-        ["を","wo","を","助詞：表示動作的對象"]
-    ],
-
-    katakana:[
-        ["ワ","wa","ワイン","葡萄酒"],
-        null,
-        null,
-        null,
-        ["ヲ","wo","ヲタク","御宅族"]
-    ]
-},
-
-{
-    name:"ん",
-
-    hiragana:[
-        ["ん","n","ほん","書（ん在單字結尾）"],
-        null,
-        null,
-        null,
-        null
-    ],
-
-    katakana:[
-        ["ン","n","パン","麵包（ン在單字結尾）"],
-        null,
-        null,
-        null,
-        null
-    ]
-}
-
+/* 拗音 */
+{name:"きゃ行",hiragana:[["きゃ","kya","きゃく","客人"],["きゅ","kyu","きゅう","九"],["きょ","kyo","きょう","今天"],null,null],katakana:[["キャ","kya","キャンプ","露營"],["キュ","kyu","キュート","可愛的"],["キョ","kyo","キョウ","キョウ（音節練習）"],null,null]},
+{name:"しゃ行",hiragana:[["しゃ","sha","しゃしん","照片"],["しゅ","shu","しゅくだい","作業"],["しょ","sho","しょくどう","餐廳／食堂"],null,null],katakana:[["シャ","sha","シャツ","襯衫"],["シュ","shu","シューズ","鞋子"],["ショ","sho","ショッピング","購物"],null,null]},
+{name:"ちゃ行",hiragana:[["ちゃ","cha","ちゃいろ","茶色"],["ちゅ","chu","ちゅうごく","中國"],["ちょ","cho","ちょっと","稍微"],null,null],katakana:[["チャ","cha","チャンス","機會"],["チュ","chu","チューブ","軟管"],["チョ","cho","チョコレート","巧克力"],null,null]},
+{name:"にゃ行",hiragana:[["にゃ","nya","にゃんこ","小貓"],["にゅ","nyu","にゅうがく","入學"],["にょ","nyo","にょう","尿"],null,null],katakana:[["ニャ","nya","ニャン","喵"],["ニュ","nyu","ニュース","新聞"],["ニョ","nyo","ニョッキ","義式麵疙瘩"],null,null]},
+{name:"ひゃ行",hiragana:[["ひゃ","hya","ひゃく","一百"],["ひゅ","hyu","ひゅうひゅう","呼呼聲"],["ひょ","hyo","ひょう","表格"],null,null],katakana:[["ヒャ","hya","ヒャク","ヒャク（音節練習）"],["ヒュ","hyu","ヒューマン","人類的"],["ヒョ","hyo","ヒョウ","ヒョウ（音節練習）"],null,null]},
+{name:"みゃ行",hiragana:[["みゃ","mya","みゃく","脈搏"],["みゅ","myu","みゅう","ミュウ（音節練習）"],["みょ","myo","みょうじ","姓氏"],null,null],katakana:[["ミャ","mya","ミャンマー","緬甸"],["ミュ","myu","ミュージック","音樂"],["ミョ","myo","ミョウ","ミョウ（音節練習）"],null,null]},
+{name:"りゃ行",hiragana:[["りゃ","rya","りゃく","略／省略"],["りゅ","ryu","りゅうがく","留學"],["りょ","ryo","りょこう","旅行"],null,null],katakana:[["リャ","rya","リャク","リャク（音節練習）"],["リュ","ryu","リュック","後背包"],["リョ","ryo","リョウ","リョウ（音節練習）"],null,null]},
+{name:"ぎゃ行",hiragana:[["ぎゃ","gya","ぎゃく","相反"],["ぎゅ","gyu","ぎゅうにゅう","牛奶"],["ぎょ","gyo","ぎょうざ","餃子"],null,null],katakana:[["ギャ","gya","ギャグ","搞笑梗"],["ギュ","gyu","ギュッ","緊緊地"],["ギョ","gyo","ギョーザ","餃子"],null,null]},
+{name:"じゃ行",hiragana:[["じゃ","ja","じゃま","妨礙"],["じゅ","ju","じゅう","十"],["じょ","jo","じょせい","女性"],null,null],katakana:[["ジャ","ja","ジャム","果醬"],["ジュ","ju","ジュース","果汁"],["ジョ","jo","ジョギング","慢跑"],null,null]},
+{name:"びゃ行",hiragana:[["びゃ","bya","びゃく","百（複合讀音）"],["びゅ","byu","びゅうびゅう","呼呼地吹"],["びょ","byo","びょういん","醫院"],null,null],katakana:[["ビャ","bya","ビャ","音節練習"],["ビュ","byu","ビュー","景色／視圖"],["ビョ","byo","ビョ","音節練習"],null,null]},
+{name:"ぴゃ行",hiragana:[["ぴゃ","pya","ぴゃっ","啪的一聲"],["ぴゅ","pyu","ぴゅう","咻的聲音"],["ぴょ","pyo","ぴょんぴょん","蹦蹦跳"],null,null],katakana:[["ピャ","pya","ピャ","音節練習"],["ピュ","pyu","ピュア","純真的"],["ピョ","pyo","ピョン","跳躍聲"],null,null]}
 ];
 
-
 let currentKanaType="hiragana";
+let quizQuestions=[],quizIndex=0,quizCorrect=0,quizAnswered=false,quizWrong=[],activeConfig=null;
+const STAT_KEY="kanaFinalStatsV1", WRONG_KEY="kanaFinalWrongV1";
 
-
-/* =====================================================
-   開啟50音
-===================================================== */
+const scopeRows={
+ seion:["あ行","か行","さ行","た行","な行","は行","ま行","や行","ら行","わ行","ん"],
+ dakuon:["が行","ざ行","だ行","ば行"],
+ handakuon:["ぱ行"],
+ youon:["きゃ行","しゃ行","ちゃ行","にゃ行","ひゃ行","みゃ行","りゃ行","ぎゃ行","じゃ行","びゃ行","ぴゃ行"]
+};
+const visualConfusions={
+ hiragana:{
+  "あ":["お","め","ぬ"],"い":["り","こ","に"],"う":["ら","つ","ろ"],"え":["ん","そ","元"],"お":["あ","す","む"],
+  "き":["さ","ち","ま"],"さ":["き","ち","せ"],"ぬ":["め","ね","の"],"ね":["れ","わ","ぬ"],"れ":["わ","ね","る"],"る":["ろ","れ","ら"],"ろ":["る","ら","ろ"],
+  "は":["ほ","ま","な"],"ほ":["は","ま","も"],"わ":["れ","ね","ね"]
+ },
+ katakana:{
+  "シ":["ツ","ソ","ン"],"ツ":["シ","ソ","ン"],"ソ":["ン","シ","ツ"],"ン":["ソ","シ","ツ"],
+  "ク":["ケ","ワ","タ"],"ケ":["ク","サ","チ"],"チ":["テ","ナ","ヌ"],"テ":["チ","ナ","ヌ"],
+  "マ":["ム","ア","ヤ"],"ム":["マ","ス","ヌ"],"ル":["レ","フ","ワ"],"レ":["ル","フ","ワ"],"ヌ":["ス","ヲ","メ"],"メ":["ヌ","ナ","オ"]
+ }
+};
+const specialBank=[
+ {id:"sp1",type:"special",prompt:"哪一個單字含有「促音 っ」？",options:["きって","きて","きいて","きてい"],answer:"きって",explain:"「きって」中間的小「っ」表示促音，要短暫停頓一拍。"},
+ {id:"sp2",type:"special",prompt:"哪一個片假名單字含有長音「ー」？",options:["コーヒー","コヒ","コッヒ","コヒイ"],answer:"コーヒー",explain:"「コーヒー」用「ー」把前面的母音拉長。"},
+ {id:"sp3",type:"special",prompt:"哪一個是「kyo」的平假名？",options:["きょ","きよ","ぎょ","しょ"],answer:"きょ",explain:"「きょ」由「き＋小ょ」組成，是一拍的拗音。"},
+ {id:"sp4",type:"special",prompt:"哪一個是「sha」的片假名？",options:["シャ","シヤ","ジャ","チャ"],answer:"シャ",explain:"「シャ」由「シ＋小ャ」組成；「シヤ」是兩個較大的字，不是同一寫法。"},
+ {id:"sp5",type:"special",prompt:"「は・ば・ぱ」中，哪一個是半濁音？",options:["ぱ","ば","は","ま"],answer:"ぱ",explain:"ぱ行使用半濁點「゜」；ば行使用濁點「゛」。"},
+ {id:"sp6",type:"special",prompt:"哪一組正確表示「ryo」？",options:["りょ","りよ","りゅ","りゃ"],answer:"りょ",explain:"「ryo」寫作「りょ」，小「ょ」與「り」合成一拍。"},
+ {id:"sp7",type:"special",prompt:"「きゃく」的開頭是哪一個拗音？",options:["きゃ","きや","ぎゃ","しゃ"],answer:"きゃ",explain:"「きゃく」開頭是「きゃ」，由「き＋小ゃ」組成。"},
+ {id:"sp8",type:"special",prompt:"哪一個寫法表示「gyu」？",options:["ぎゅ","ぎゆ","きゅ","じゅ"],answer:"ぎゅ",explain:"「ぎゅ」是「ぎ＋小ゅ」，讀作 gyu。"}
+];
 
 function openKanaLearning(){
-
-    document.getElementById("homePage").style.display="none";
-
-    document.getElementById("kanaLearningPage").style.display="block";
-
-    renderKanaTable();
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
+ document.getElementById("homePage").style.display="none";document.getElementById("kanaQuizPage").style.display="none";document.getElementById("kanaLearningPage").style.display="block";
+ renderKanaTable();renderMasteryDashboard();window.scrollTo({top:0,behavior:"smooth"});
 }
-
-
-/* =====================================================
-   返回首頁
-===================================================== */
-
-function backToHome(){
-
-    if("speechSynthesis" in window){
-        window.speechSynthesis.cancel();
-    }
-
-    document.getElementById("kanaLearningPage").style.display="none";
-
-    document.getElementById("homePage").style.display="block";
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-/* =====================================================
-   建立50音表
-===================================================== */
-
+function backToHome(){cancelSpeech();document.getElementById("kanaLearningPage").style.display="none";document.getElementById("kanaQuizPage").style.display="none";document.getElementById("homePage").style.display="block";window.scrollTo({top:0,behavior:"smooth"})}
+function returnToKanaLearning(){cancelSpeech();document.getElementById("kanaQuizPage").style.display="none";document.getElementById("kanaLearningPage").style.display="block";renderMasteryDashboard();window.scrollTo({top:0,behavior:"smooth"})}
 function renderKanaTable(){
-
-    const table=document.getElementById("kanaTable");
-
-    table.innerHTML="";
-
-
-    kanaRows.forEach(row=>{
-
-        const rowElement=document.createElement("div");
-
-        rowElement.className="kana-row";
-
-
-        const label=document.createElement("div");
-
-        label.className="row-label";
-
-        label.textContent=row.name;
-
-        rowElement.appendChild(label);
-
-
-        row[currentKanaType].forEach(item=>{
-
-            if(!item){
-
-                const empty=document.createElement("div");
-
-                empty.className="kana-empty";
-
-                rowElement.appendChild(empty);
-
-                return;
-
-            }
-
-
-            const [
-                kana,
-                romaji,
-                word,
-                chinese
-            ]=item;
-
-
-            const card=document.createElement("div");
-
-            card.className="kana-card";
-
-
-            /* =========================
-               假名按鈕
-            ========================= */
-
-            const kanaButton=document.createElement("button");
-
-            kanaButton.type="button";
-
-            kanaButton.className="kana-main";
-
-            kanaButton.innerHTML=`
-                <span class="kana-char">${kana}</span>
-                <span class="kana-romaji">${romaji}</span>
-            `;
-
-
-            kanaButton.addEventListener(
-                "click",
-                function(){
-
-                    speakJapanese(
-                        kana,
-                        card
-                    );
-
-                }
-            );
-
-
-            /* =========================
-               單字按鈕
-            ========================= */
-
-            const wordButton=document.createElement("button");
-
-            wordButton.type="button";
-
-            wordButton.className="word-btn";
-
-            wordButton.innerHTML=`
-                <span class="word-jp">
-                    🔊 ${word}
-                </span>
-
-                <span class="word-zh">
-                    ${chinese}
-                </span>
-            `;
-
-
-            wordButton.addEventListener(
-                "click",
-                function(){
-
-                    speakJapanese(
-                        word,
-                        card
-                    );
-
-                }
-            );
-
-
-            card.appendChild(kanaButton);
-
-            card.appendChild(wordButton);
-
-            rowElement.appendChild(card);
-
-        });
-
-
-        table.appendChild(rowElement);
-
-    });
-
+ const table=document.getElementById("kanaTable");table.innerHTML="";
+ kanaRows.forEach(row=>{
+  const rowElement=document.createElement("div");rowElement.className="kana-row";
+  const label=document.createElement("div");label.className="row-label";label.textContent=row.name;rowElement.appendChild(label);
+  row[currentKanaType].forEach(item=>{
+   if(!item){const empty=document.createElement("div");empty.className="kana-empty";rowElement.appendChild(empty);return}
+   const [kana,romaji,word,chinese]=item,card=document.createElement("div");card.className="kana-card";
+   const kb=document.createElement("button");kb.type="button";kb.className="kana-main";kb.innerHTML=`<span class="kana-char">${kana}</span><span class="kana-romaji">${romaji}</span>`;kb.onclick=()=>speakJapanese(kana,card);
+   const wb=document.createElement("button");wb.type="button";wb.className="word-btn";wb.innerHTML=`<span class="word-jp">🔊 ${word}</span><span class="word-zh">${chinese}</span>`;wb.onclick=()=>speakJapanese(word,card);
+   card.append(kb,wb);rowElement.appendChild(card);
+  });table.appendChild(rowElement);
+ });
 }
-
-
-/* =====================================================
-   平假名 / 片假名切換
-===================================================== */
-
-function switchKana(type){
-
-    currentKanaType=type;
-
-
-    document
-        .getElementById("hiraganaBtn")
-        .classList.toggle(
-            "active",
-            type==="hiragana"
-        );
-
-
-    document
-        .getElementById("katakanaBtn")
-        .classList.toggle(
-            "active",
-            type==="katakana"
-        );
-
-
-    if("speechSynthesis" in window){
-        window.speechSynthesis.cancel();
-    }
-
-
-    renderKanaTable();
-
+function switchKana(type){currentKanaType=type;document.getElementById("hiraganaBtn").classList.toggle("active",type==="hiragana");document.getElementById("katakanaBtn").classList.toggle("active",type==="katakana");cancelSpeech();renderKanaTable()}
+function cancelSpeech(){if("speechSynthesis" in window)window.speechSynthesis.cancel()}
+function getJapaneseVoice(){const vs=window.speechSynthesis?.getVoices?.()||[];return vs.find(v=>/^ja(-|_)/i.test(v.lang))||null}
+function speakJapanese(text,element,onend){
+ if(!("speechSynthesis" in window)){alert("目前瀏覽器不支援語音朗讀，建議使用 Chrome、Edge 或 Safari。");return}
+ cancelSpeech();document.querySelectorAll(".kana-card.speaking").forEach(c=>c.classList.remove("speaking"));if(element)element.classList.add("speaking");
+ const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=.78;u.pitch=1;u.volume=1;const v=getJapaneseVoice();if(v)u.voice=v;
+ u.onend=()=>{if(element)element.classList.remove("speaking");if(onend)onend()};u.onerror=()=>{if(element)element.classList.remove("speaking")};window.speechSynthesis.speak(u)
 }
-
-
-/* =====================================================
-   日語朗讀
-===================================================== */
-
-function speakJapanese(text,element){
-
-    if(!("speechSynthesis" in window)){
-
-        alert(
-            "目前的瀏覽器不支援語音朗讀功能，請使用 Chrome、Edge 或 Safari。"
-        );
-
-        return;
-
-    }
-
-
-    window.speechSynthesis.cancel();
-
-
-    document
-        .querySelectorAll(".kana-card.speaking")
-        .forEach(card=>{
-            card.classList.remove("speaking");
-        });
-
-
-    if(element){
-        element.classList.add("speaking");
-    }
-
-
-    const utterance=
-        new SpeechSynthesisUtterance(text);
-
-
-    utterance.lang="ja-JP";
-
-    utterance.rate=0.82;
-
-    utterance.pitch=1;
-
-    utterance.volume=1;
-
-
-    const voices=
-        window.speechSynthesis.getVoices();
-
-
-    const japaneseVoice=
-        voices.find(voice=>
-            voice.lang &&
-            voice.lang
-                .toLowerCase()
-                .startsWith("ja")
-        );
-
-
-    if(japaneseVoice){
-        utterance.voice=japaneseVoice;
-    }
-
-
-    utterance.onend=function(){
-
-        if(element){
-            element.classList.remove("speaking");
-        }
-
-    };
-
-
-    utterance.onerror=function(){
-
-        if(element){
-            element.classList.remove("speaking");
-        }
-
-    };
-
-
-    window.speechSynthesis.speak(
-        utterance
-    );
-
+function playContrast(arr,i=0){if(i>=arr.length)return;speakJapanese(arr[i],null,()=>setTimeout(()=>playContrast(arr,i+1),250))}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function getStats(){try{return JSON.parse(localStorage.getItem(STAT_KEY)||"{}")}catch(e){return {}}}
+function saveStats(x){localStorage.setItem(STAT_KEY,JSON.stringify(x))}
+function getWrong(){try{return JSON.parse(localStorage.getItem(WRONG_KEY)||"[]")}catch(e){return []}}
+function saveWrong(x){localStorage.setItem(WRONG_KEY,JSON.stringify([...new Set(x)]))}
+function classifyRow(name){for(const [k,v] of Object.entries(scopeRows))if(v.includes(name))return k;return "seion"}
+function allPairs(scope="all"){
+ return kanaRows.flatMap(row=>row.hiragana.map((h,i)=>{
+  const k=row.katakana[i];if(!h||!k)return null;
+  return {id:`${row.name}:${h[0]}`,row:row.name,scope:classifyRow(row.name),hira:h[0],kata:k[0],romaji:h[1],word:h[2],zh:h[3],sound:h[0]}
+ }).filter(Boolean)).filter(x=>scope==="all"||x.scope===scope)
 }
-
-
-/* =====================================================
-   初始載入
-===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-        /*
-         * 首頁載入時只顯示六大學習階段，
-         * 不直接顯示50音表。
-         */
-
-        document.getElementById("homePage").style.display="block";
-
-        document.getElementById("kanaLearningPage").style.display="none";
-
-
-        if("speechSynthesis" in window){
-
-            window.speechSynthesis.getVoices();
-
-            window.speechSynthesis.onvoiceschanged=
-                function(){
-
-                    window.speechSynthesis.getVoices();
-
-                };
-
-        }
-
-    }
-);
+function randomScript(cfg){return cfg.script==="mixed"?(Math.random()<.5?"hiragana":"katakana"):cfg.script}
+function uniqueOptions(answer,pool,n=4){
+ let vals=[answer,...shuffle(pool.filter(x=>x!==answer))];return [...new Set(vals)].slice(0,n)
+}
+function makeVisualOptions(answer,script,pool){
+ let map=visualConfusions[script]||{},preferred=(map[answer]||[]).filter(x=>pool.includes(x));
+ return shuffle(uniqueOptions(answer,[...preferred,...shuffle(pool)],4))
+}
+function makeQuestion(item,cfg,index){
+ let script=randomScript(cfg),char=script==="hiragana"?item.hira:item.kata;
+ if(cfg.kind==="listen"){
+   // ぢ/づ與じ/ず在現代標準語單音聽辨上不公平，單音題排除。
+   return {id:`listen:${script}:${item.id}`,kind:"listen",item,script,prompt:`請選出你聽到的${script==="hiragana"?"平假名":"片假名"}`,answer:char,
+    options:makeVisualOptions(char,script,allPairs(cfg.scope).map(x=>script==="hiragana"?x.hira:x.kata)),
+    explain:`這個聲音對應「${char}」（${item.romaji}）。`,sound:item.sound};
+ }
+ if(cfg.kind==="romaji"){
+   let romans=allPairs(cfg.scope).map(x=>x.romaji);return {id:`romaji:${script}:${item.id}`,kind:"romaji",item,script,prompt:"請選出這個假名的羅馬字",display:char,answer:item.romaji,options:shuffle(uniqueOptions(item.romaji,romans,4)),explain:`「${char}」的羅馬字是 ${item.romaji}。`};
+ }
+ if(cfg.kind==="h2k"){
+   let pool=allPairs(cfg.scope).map(x=>x.kata);return {id:`h2k:${item.id}`,kind:"h2k",item,script:"katakana",prompt:"請選出對應的片假名",display:item.hira,answer:item.kata,options:makeVisualOptions(item.kata,"katakana",pool),explain:`「${item.hira}」與「${item.kata}」表示同一個音 ${item.romaji}。`};
+ }
+ if(cfg.kind==="k2h"){
+   let pool=allPairs(cfg.scope).map(x=>x.hira);return {id:`k2h:${item.id}`,kind:"k2h",item,script:"hiragana",prompt:"請選出對應的平假名",display:item.kata,answer:item.hira,options:makeVisualOptions(item.hira,"hiragana",pool),explain:`「${item.kata}」與「${item.hira}」表示同一個音 ${item.romaji}。`};
+ }
+ // confusion
+ let pool=allPairs(cfg.scope).map(x=>script==="hiragana"?x.hira:x.kata);
+ return {id:`confusion:${script}:${item.id}`,kind:"confusion",item,script,prompt:`請找出「${item.romaji}」`,answer:char,options:makeVisualOptions(char,script,pool),explain:`${item.romaji} 對應「${char}」。注意相近字形的筆畫方向與位置。`};
+}
+function buildPool(cfg){
+ if(cfg.kind==="special")return shuffle(specialBank.map(x=>({...x,item:{id:x.id,scope:"special",romaji:"special"}})));
+ let pool=allPairs(cfg.scope);
+ if(cfg.kind==="listen")pool=pool.filter(x=>!["ぢ","づ"].includes(x.hira)); // 不做無語境單音強迫辨識
+ if(cfg.kind==="confusion"){
+   pool=pool.filter(x=>visualConfusions.hiragana[x.hira]||visualConfusions.katakana[x.kata]);
+   if(!pool.length)pool=allPairs(cfg.scope);
+ }
+ return pool.map((x,i)=>makeQuestion(x,cfg,i));
+}
+function weaknessScore(q){
+ const st=getStats()[q.id]||{c:0,w:0,streak:0};return (st.w*3)-(st.c*.5)-(st.streak*1.5);
+}
+function weightedOrder(pool){
+ return [...pool].sort((a,b)=>weaknessScore(b)-weaknessScore(a)+((Math.random()-.5)*1.5));
+}
+function configuredCount(pool,cfg){
+ if(cfg.count==="full")return pool.length;return Math.min(Number(cfg.count)||10,pool.length)
+}
+function readConfig(){
+ return {kind:document.getElementById("quizKind").value,scope:document.getElementById("quizScope").value,script:document.getElementById("quizScript").value,count:document.getElementById("quizCount").value};
+}
+function startConfiguredQuiz(){startQuiz(readConfig(),"normal")}
+function startWeakQuiz(){startQuiz(readConfig(),"weak")}
+function startWrongQuiz(){startQuiz(readConfig(),"wrong")}
+function startQuiz(cfg,mode="normal"){
+ activeConfig={...cfg,mode};let pool=buildPool(cfg);
+ if(mode==="wrong"){const wrong=new Set(getWrong());pool=pool.filter(q=>wrong.has(q.id));if(!pool.length){alert("目前這個範圍沒有錯題紀錄，先進行一般測驗吧！");return}}
+ if(mode==="weak")pool=weightedOrder(pool);else pool=shuffle(pool);
+ let n=configuredCount(pool,cfg);quizQuestions=pool.slice(0,n);quizIndex=0;quizCorrect=0;quizAnswered=false;quizWrong=[];
+ if(!quizQuestions.length){alert("目前選擇的範圍沒有可用題目，請更換範圍。");return}
+ document.getElementById("homePage").style.display="none";document.getElementById("kanaLearningPage").style.display="none";document.getElementById("kanaQuizPage").style.display="block";renderQuiz();window.scrollTo({top:0,behavior:"smooth"})
+}
+function kindName(k){return {listen:"聽音辨字",romaji:"假名→羅馬字",h2k:"平假名→片假名",k2h:"片假名→平假名",confusion:"易混淆字形",special:"促音・長音・拗音"}[k]||"假名測驗"}
+function renderQuiz(){
+ const box=document.getElementById("quizBox");if(quizIndex>=quizQuestions.length){renderQuizResult();return}
+ const q=quizQuestions[quizIndex];quizAnswered=false;
+ let stimulus=q.kind==="listen"?`<button class="sound-btn" id="quizSound" type="button">🔊</button><div class="sound-note">不顯示羅馬字｜可以重播聲音</div>`:
+ q.display?`<div class="quiz-prompt-char">${q.display}</div>`:"";
+ box.innerHTML=`<div class="quiz-top"><div class="quiz-progress">🧠 ${kindName(activeConfig.kind)}　${quizIndex+1} / ${quizQuestions.length}</div><div class="quiz-score">答對 ${quizCorrect} 題</div></div>
+ <div class="progress-track"><div class="progress-fill" style="width:${quizIndex/quizQuestions.length*100}%"></div></div>
+ <div class="quiz-instruction">${q.prompt}</div>${stimulus}
+ <div class="quiz-options">${q.options.map(o=>`<button class="quiz-option ${q.kind==="romaji"?"romaji-option":""}" data-value="${String(o).replace(/"/g,"&quot;")}">${o}</button>`).join("")}</div>
+ <div id="quizFeedback" class="quiz-feedback"></div><button id="quizNext" class="quiz-next" type="button">${quizIndex===quizQuestions.length-1?"查看結果":"下一題 ➜"}</button>`;
+ if(q.kind==="listen"){document.getElementById("quizSound").onclick=()=>speakJapanese(q.sound);setTimeout(()=>speakJapanese(q.sound),260)}
+ document.querySelectorAll(".quiz-option").forEach(b=>b.onclick=()=>answerQuestion(b,q));
+ document.getElementById("quizNext").onclick=()=>{quizIndex++;renderQuiz()}
+}
+function updateStat(q,ok){
+ let all=getStats(),st=all[q.id]||{c:0,w:0,streak:0,last:0};st[ok?"c":"w"]++;st.streak=ok?st.streak+1:0;st.last=Date.now();all[q.id]=st;saveStats(all);
+ let wrong=getWrong();if(ok&&st.streak>=2)wrong=wrong.filter(x=>x!==q.id);if(!ok)wrong.push(q.id);saveWrong(wrong)
+}
+function answerQuestion(btn,q){
+ if(quizAnswered)return;quizAnswered=true;const chosen=btn.dataset.value,ok=chosen===String(q.answer);if(ok)quizCorrect++;else quizWrong.push(q);updateStat(q,ok);
+ document.querySelectorAll(".quiz-option").forEach(b=>{b.disabled=true;if(b.dataset.value===String(q.answer))b.classList.add("correct");else if(b===btn&&!ok)b.classList.add("wrong")});
+ const f=document.getElementById("quizFeedback");f.className="quiz-feedback "+(ok?"good":"bad");
+ f.innerHTML=(ok?"⭕ 答對了！":"❌ 這次選錯了。")+` 正確答案是 <strong>${q.answer}</strong>。<div class="explain-box">${q.explain}</div>`;
+ document.getElementById("quizNext").style.display="block";if(!ok&&q.kind==="listen")setTimeout(()=>speakJapanese(q.sound),250)
+}
+function categoryStats(){
+ const all=getStats(),groups={listen:[0,0],romaji:[0,0],h2k:[0,0],k2h:[0,0],confusion:[0,0],special:[0,0]};
+ Object.entries(all).forEach(([id,st])=>{let k=id.split(":")[0];if(groups[k]){groups[k][0]+=st.c;groups[k][1]+=st.w}});
+ return groups
+}
+function renderMasteryDashboard(){
+ const el=document.getElementById("masteryDashboard");if(!el)return;const g=categoryStats();
+ el.innerHTML=Object.entries(g).map(([k,[c,w]])=>{let n=c+w,p=n?Math.round(c/n*100):0;return `<div class="mastery-item"><b>${n?p+"%":"—"}</b>${kindName(k)}<br><small>${n?`${n} 次作答`:"尚未測驗"}</small></div>`}).join("")
+}
+function renderQuizResult(){
+ cancelSpeech();const total=quizQuestions.length,pct=Math.round(quizCorrect/Math.max(1,total)*100);
+ const weak=[...quizWrong].sort((a,b)=>weaknessScore(b)-weaknessScore(a)).slice(0,6);
+ let msg=pct===100?"本回全部正確，表現非常穩定。":pct>=85?"整體熟練，建議再做弱點特訓確認。":pct>=70?"基礎已建立，還有幾組假名值得加強。":"建議先回學習表重聽，再用弱點特訓逐步補強。";
+ document.getElementById("quizBox").innerHTML=`<div class="quiz-result"><h3>🎉 ${kindName(activeConfig.kind)}完成</h3><div class="result-score">${pct}%</div><p>${msg}</p>
+ <div class="result-grid"><div class="result-card"><b>${total}</b>總題數</div><div class="result-card"><b>${quizCorrect}</b>答對</div><div class="result-card"><b>${total-quizCorrect}</b>答錯</div></div>
+ ${weak.length?`<div class="weak-analysis"><strong>🎯 本回優先複習</strong>${weak.map(q=>`<div>${q.kind==="listen"?"🔊 ":""}<b>${q.answer}</b>　${q.item?.romaji&&q.item.romaji!=="special"?`(${q.item.romaji})　`:""}${q.explain}</div>`).join("")}</div>`:`<div class="wrong-list"><strong>🌟 本回沒有錯題。</strong></div>`}
+ <div class="result-actions"><button class="retry-btn" onclick='startQuiz(activeConfig,"normal")'>再測一次</button><button class="retry-btn" onclick='startQuiz(activeConfig,"weak")'>弱點特訓</button><button class="learn-btn" onclick="returnToKanaLearning()">回假名學習</button></div></div>`
+}
+document.addEventListener("DOMContentLoaded",()=>{
+ document.getElementById("homePage").style.display="block";document.getElementById("kanaLearningPage").style.display="none";document.getElementById("kanaQuizPage").style.display="none";
+ if("speechSynthesis" in window){window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices()}
+ renderMasteryDashboard();
+});
 
 </script>
-
 </body>
 </html>
