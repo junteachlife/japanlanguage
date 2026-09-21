@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JLPT N5・N4 核心單字學習中心</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23fff%22/><circle cx=%2250%22 cy=%2250%22 r=%2238%22 fill=%22%23e53935%22/><text x=%2250%22 y=%2266%22 text-anchor=%22middle%22 font-size=%2250%22 font-family=%22sans-serif%22 font-weight=%22700%22 fill=%22white%22>日</text></svg>">
 
 <style>
 :root{
@@ -901,6 +902,45 @@ function saveWrongWords(arr){
     );
 }
 
+
+/* ===== JLPT 全站共用學習摘要（不取代原有紀錄） ===== */
+const JLPT_SHARED_PROGRESS_KEY="jlptLearningCenterProgressV1";
+
+function readSharedProgress(){
+    try{
+        return JSON.parse(localStorage.getItem(JLPT_SHARED_PROGRESS_KEY)||"{}");
+    }catch{
+        return {};
+    }
+}
+
+function syncVocabToSharedProgress(){
+    const progress=getProgress();
+    const wrong=getWrongWords();
+    const n5=allVocab.filter(x=>x.level==="N5");
+    const n4=allVocab.filter(x=>x.level==="N4");
+    const masteredN5=n5.filter(x=>progress[x.uid]==="mastered").length;
+    const masteredN4=n4.filter(x=>progress[x.uid]==="mastered").length;
+    const learningCount=allVocab.filter(x=>progress[x.uid]==="learning"||progress[x.uid]==="new").length;
+
+    const shared=readSharedProgress();
+    shared.vocab={
+        updatedAt:new Date().toISOString(),
+        total:allVocab.length,
+        n5Total:n5.length,
+        n4Total:n4.length,
+        mastered:masteredN5+masteredN4,
+        masteredN5,
+        masteredN4,
+        masteredN5Pct:n5.length?Math.round(masteredN5/n5.length*100):0,
+        masteredN4Pct:n4.length?Math.round(masteredN4/n4.length*100):0,
+        learningCount,
+        wrongCount:wrong.length,
+        wrongIds:[...wrong]
+    };
+    localStorage.setItem(JLPT_SHARED_PROGRESS_KEY,JSON.stringify(shared));
+}
+
 function statusText(status){
     if(status==="mastered") return "😊 已熟悉";
     if(status==="learning") return "🤔 學習中";
@@ -1477,6 +1517,7 @@ function setLearningStatus(status){
     progress[currentModalItem.uid]=status;
 
     saveProgress(progress);
+    syncVocabToSharedProgress();
 
     updateModalStatus();
     updateDashboard();
@@ -1621,6 +1662,7 @@ function clearWrongWords(){
     }
 
     saveWrongWords([]);
+    syncVocabToSharedProgress();
     renderWrongWords();
 }
 
@@ -1969,6 +2011,7 @@ function checkAnswer(selected,button){
             );
 
             saveWrongWords(wrong);
+            syncVocabToSharedProgress();
         }
     }
 
@@ -2069,6 +2112,18 @@ document.addEventListener(
     }
 );
 
+
+function applyIncomingStudyRoute(){
+    const hash=location.hash.replace("#","").toLowerCase();
+    if(hash==="wrong" || hash==="vocab-wrong"){
+        switchTab("wrong");
+    }else if(hash==="review" || hash==="vocab-review"){
+        switchTab("review");
+    }else if(hash==="quiz" || hash==="vocab-quiz"){
+        switchTab("quiz");
+    }
+}
+
 function initialize(){
 
     document.getElementById("romajiToggle").textContent=
@@ -2076,9 +2131,12 @@ function initialize(){
 
     updateDashboard();
     renderCategories();
+    syncVocabToSharedProgress();
 }
 
 initialize();
+applyIncomingStudyRoute();
+window.addEventListener("hashchange",applyIncomingStudyRoute);
 
 </script>
 
